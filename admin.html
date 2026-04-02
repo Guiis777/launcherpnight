@@ -125,12 +125,46 @@
 </header>
 
 <div class="tabs">
-  <button class="tab-btn active" data-tab="game">Atualizar Jogo</button>
+  <button class="tab-btn active" data-tab="full" style="color:#4ade80;border-bottom-color:#059669">⚡ Deploy Completo</button>
+  <button class="tab-btn" data-tab="game">Atualizar Jogo</button>
   <button class="tab-btn" data-tab="launcher">Atualizar Launcher</button>
+  <button class="tab-btn" data-tab="zip">Gerar ZIP</button>
+</div>
+
+<!-- TAB: DEPLOY COMPLETO -->
+<div class="tab-content active" id="tab-full">
+  <p style="font-size:12px;color:#9ca3af;">Sobe os arquivos do jogo, atualiza o launcher e gera o instalador .exe — tudo em um clique.</p>
+
+  <div>
+    <label>Pasta do Repositório</label>
+    <div class="row">
+      <input type="text" id="repo-dir-full" placeholder="C:\Users\gui\Downloads\Launcher" oninput="syncField('repo-dir-full','repo-dir'); syncField('repo-dir-full','repo-dir-launcher'); saveSettings();">
+      <button onclick="selectFolderTo('repo-dir-full', true)">Procurar</button>
+    </div>
+  </div>
+
+  <div>
+    <label>Pasta Local do Jogo <span style="color:#6b7280">(deixe vazio para pular o deploy do jogo)</span></label>
+    <div class="row">
+      <input type="text" id="game-dir-full" placeholder="Pasta com os arquivos do jogo..." oninput="syncField('game-dir-full','game-dir'); saveSettings();">
+      <button onclick="selectFolderTo('game-dir-full', false)">Procurar</button>
+    </div>
+  </div>
+
+  <div>
+    <label>Mensagem do commit</label>
+    <input type="text" id="commit-msg-full" placeholder="update">
+  </div>
+
+  <div class="actions">
+    <button class="green" id="btn-deploy-full" onclick="deployAll()" style="font-size:14px;padding:10px 28px;font-weight:600;">⚡ DEPLOY COMPLETO</button>
+  </div>
+
+  <div class="log-box" id="log-full"></div>
 </div>
 
 <!-- TAB: JOGO -->
-<div class="tab-content active" id="tab-game">
+<div class="tab-content" id="tab-game">
   <div>
     <label>Pasta do Repositório (launcherpnight)</label>
     <div class="row">
@@ -185,6 +219,51 @@
   <div class="log-box" id="log-launcher"></div>
 </div>
 
+<!-- TAB: ZIP -->
+<div class="tab-content" id="tab-zip">
+  <div>
+    <label>Pasta Local do Jogo (source)</label>
+    <div class="row">
+      <input type="text" id="zip-source" placeholder="Selecione a pasta com os arquivos do jogo...">
+      <button onclick="selectZipSource()">Procurar</button>
+    </div>
+  </div>
+
+  <div>
+    <label>Pasta de destino do client.zip</label>
+    <div class="row">
+      <input type="text" id="zip-dest" placeholder="Onde salvar o client.zip...">
+      <button onclick="selectZipDest()">Procurar</button>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="green" onclick="generateZip()">Gerar client.zip</button>
+  </div>
+
+  <div class="log-box" id="log-zip"></div>
+
+  <hr style="margin:8px 0">
+
+  <div>
+    <label>Depois de subir o ZIP no Google Drive, configure o link direto no config.js:</label>
+    <p style="font-size:12px;color:#9ca3af;margin-top:4px;">
+      1. Faça upload do <code style="color:#a78bfa">client.zip</code> no Google Drive<br>
+      2. Clique direito → <b>Compartilhar</b> → <b>Qualquer pessoa com o link</b><br>
+      3. Pegue o <b>ID</b> do link (ex: <code style="color:#a78bfa">1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs</code>)<br>
+      4. Cole abaixo e clique em <b>Salvar no config.js</b>
+    </p>
+  </div>
+
+  <div>
+    <label>ID do arquivo no Google Drive</label>
+    <div class="row">
+      <input type="text" id="drive-id" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs">
+      <button onclick="saveDriveUrl()">Salvar no config.js</button>
+    </div>
+  </div>
+</div>
+
 <div class="status-bar" id="status">Pronto.</div>
 
 <script>
@@ -199,6 +278,32 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
   });
 });
+
+// Sync field value between inputs sharing the same data
+function syncField(from, to) {
+  const src = document.getElementById(from);
+  const dst = document.getElementById(to);
+  if (src && dst) dst.value = src.value;
+}
+
+// Settings persistence
+async function loadSettings() {
+  const s = await ipcRenderer.invoke('load-settings');
+  const fill = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+  fill('repo-dir', s.repoDir); fill('repo-dir-launcher', s.repoDir); fill('repo-dir-full', s.repoDir);
+  fill('game-dir', s.gameDir); fill('game-dir-full', s.gameDir);
+  fill('zip-source', s.zipSource); fill('zip-dest', s.zipDest); fill('drive-id', s.driveId);
+}
+function saveSettings() {
+  ipcRenderer.invoke('save-settings', {
+    repoDir: document.getElementById('repo-dir-full').value || document.getElementById('repo-dir').value,
+    gameDir: document.getElementById('game-dir-full').value || document.getElementById('game-dir').value,
+    zipSource: document.getElementById('zip-source').value,
+    zipDest: document.getElementById('zip-dest').value,
+    driveId: document.getElementById('drive-id').value,
+  });
+}
+loadSettings();
 
 let gameFilesReady = false;
 
@@ -215,13 +320,32 @@ function setStatus(msg) {
   document.getElementById('status').textContent = msg;
 }
 
+async function selectFolderTo(fieldId, isRepo) {
+  const folder = await ipcRenderer.invoke('select-folder');
+  if (!folder) return;
+  document.getElementById(fieldId).value = folder;
+  if (isRepo) {
+    syncField(fieldId, 'repo-dir'); syncField(fieldId, 'repo-dir-launcher'); syncField(fieldId, 'repo-dir-full');
+  } else {
+    syncField(fieldId, 'game-dir'); syncField(fieldId, 'game-dir-full');
+  }
+  saveSettings();
+  if (fieldId === 'game-dir' || fieldId === 'game-dir-full') {
+    gameFilesReady = false;
+    document.getElementById('btn-deploy-game').disabled = true;
+    document.getElementById('file-count').textContent = 'Clique em "Verificar Arquivos" para confirmar';
+  }
+}
+
 async function selectGameFolder() {
   const folder = await ipcRenderer.invoke('select-folder');
   if (folder) {
     document.getElementById('game-dir').value = folder;
+    document.getElementById('game-dir-full').value = folder;
     gameFilesReady = false;
     document.getElementById('btn-deploy-game').disabled = true;
     document.getElementById('file-count').textContent = 'Clique em "Verificar Arquivos" para confirmar';
+    saveSettings();
   }
 }
 
@@ -278,6 +402,99 @@ async function deployLauncher() {
   ipcRenderer.removeAllListeners('deploy-log');
 
   setStatus(result.success ? 'Launcher publicado!' : 'Erro.');
+}
+
+async function selectZipSource() {
+  const folder = await ipcRenderer.invoke('select-folder');
+  if (folder) document.getElementById('zip-source').value = folder;
+}
+async function selectZipDest() {
+  const folder = await ipcRenderer.invoke('select-folder');
+  if (folder) document.getElementById('zip-dest').value = folder;
+}
+
+async function generateZip() {
+  const sourceDir = document.getElementById('zip-source').value.trim();
+  const outputDir = document.getElementById('zip-dest').value.trim();
+  if (!sourceDir || !outputDir) return alert('Preencha os dois campos.');
+
+  document.getElementById('log-zip').innerHTML = '';
+  setStatus('Gerando client.zip...');
+  log('log-zip', '📦 Iniciando compressão...');
+
+  ipcRenderer.on('zip-progress', (_, p) => {
+    log('log-zip', `   ${p.entries} arquivos (${(p.bytes / 1024 / 1024).toFixed(1)} MB)`);
+  });
+
+  const result = await ipcRenderer.invoke('generate-zip', { sourceDir, outputDir });
+  ipcRenderer.removeAllListeners('zip-progress');
+
+  if (result.success) {
+    log('log-zip', `✅ ZIP gerado: ${result.path} (${(result.size / 1024 / 1024).toFixed(1)} MB)`);
+    setStatus('ZIP gerado com sucesso!');
+  } else {
+    log('log-zip', '❌ ' + result.error);
+    setStatus('Erro ao gerar ZIP.');
+  }
+}
+
+async function saveDriveUrl() {
+  const id = document.getElementById('drive-id').value.trim();
+  if (!id) return alert('Cole o ID do arquivo do Google Drive.');
+  saveSettings();
+  const url = `https://drive.usercontent.google.com/download?id=${id}&export=download&confirm=t`;
+  const result = await ipcRenderer.invoke('set-zip-url', { url });
+  if (result.success) {
+    alert(`ZIP_URL salvo em src/config.js:\n${url}`);
+    setStatus('ZIP_URL atualizado no config.js');
+  } else {
+    alert('Erro: ' + result.error);
+  }
+}
+
+async function deployAll() {
+  const gameDir = document.getElementById('game-dir-full').value.trim();
+  const repoDir = document.getElementById('repo-dir-full').value.trim();
+  const commitMsg = document.getElementById('commit-msg-full').value.trim() || 'update';
+  if (!repoDir) return alert('Configure a pasta do repositório.');
+
+  const btn = document.getElementById('btn-deploy-full');
+  btn.disabled = true;
+  document.getElementById('log-full').innerHTML = '';
+  setStatus('Deploy completo em andamento...');
+
+  // Step 1: Deploy game
+  if (gameDir) {
+    log('log-full', '🎮 [1/3] Subindo arquivos do jogo...');
+    ipcRenderer.on('deploy-log', (_, msg) => log('log-full', msg));
+    const r1 = await ipcRenderer.invoke('deploy', { sourceDir: gameDir, repoDir, commitMsg });
+    ipcRenderer.removeAllListeners('deploy-log');
+    if (!r1.success) { log('log-full', '❌ Falhou. Abortando.'); btn.disabled = false; setStatus('Erro.'); return; }
+  } else {
+    log('log-full', 'ℹ️ [1/3] Pasta do jogo não configurada — pulando.');
+  }
+
+  // Step 2: Deploy launcher
+  log('log-full', '🚀 [2/3] Publicando launcher...');
+  ipcRenderer.on('deploy-log', (_, msg) => log('log-full', msg));
+  const r2 = await ipcRenderer.invoke('deploy-launcher-only', { repoDir, commitMsg });
+  ipcRenderer.removeAllListeners('deploy-log');
+  if (!r2.success) { log('log-full', '❌ Falhou. Abortando.'); btn.disabled = false; setStatus('Erro.'); return; }
+
+  // Step 3: Build .exe
+  log('log-full', '🔨 [3/3] Gerando instalador .exe...');
+  ipcRenderer.on('build-log', (_, msg) => log('log-full', msg));
+  const r3 = await ipcRenderer.invoke('build-exe', { repoDir });
+  ipcRenderer.removeAllListeners('build-log');
+
+  if (r3.success) {
+    log('log-full', '✅ TUDO CONCLUÍDO! Instalador gerado em dist/');
+    setStatus('✅ Deploy completo!');
+  } else {
+    log('log-full', '❌ Erro no build: ' + r3.error);
+    setStatus('Erro no build.');
+  }
+  btn.disabled = false;
 }
 </script>
 </body>

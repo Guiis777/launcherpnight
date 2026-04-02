@@ -2,9 +2,42 @@ const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
-const { execSync, exec } = require('child_process');
+const { execSync, execFile } = require('child_process');
+const archiver = require('archiver');
 
-let win;
+const SETTINGS_PATH = path.join(__dirname, 'admin-settings.json');
+
+ipcMain.handle('load-settings', () => {
+  try {
+    if (fs.existsSync(SETTINGS_PATH)) return JSON.parse(fs.readFileSync(SETTINGS_PATH, 'utf8'));
+  } catch {}
+  return {};
+});
+
+ipcMain.handle('save-settings', (_, data) => {
+  try {
+    let existing = {};
+    if (fs.existsSync(SETTINGS_PATH)) {
+      try { existing = JSON.parse(fs.readFileSync(SETTINGS_PATH, 'utf8')); } catch {}
+    }
+    fs.writeFileSync(SETTINGS_PATH, JSON.stringify({ ...existing, ...data }, null, 2), 'utf8');
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: e.message };
+  }
+});
+
+ipcMain.handle('build-exe', async (_, { repoDir }) => {
+  try {
+    win.webContents.send('build-log', '⚙️  Rodando electron-builder (pode levar alguns minutos)...');
+    const env = { ...process.env, CSC_IDENTITY_AUTO_DISCOVERY: 'false', CSC_LINK: '' };
+    execSync('npm run build', { cwd: repoDir, maxBuffer: 256 * 1024 * 1024, env });
+    win.webContents.send('build-log', '✅ Build concluído! Arquivo em dist/');
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: e.stderr ? e.stderr.toString().slice(-500) : e.message };
+  }
+});
 
 app.whenReady().then(() => {
   win = new BrowserWindow({
@@ -146,9 +179,35 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
   }
 });
 
+// Gera client.zip da pasta do jogo
+ipcMain.handle('generate-zip', async (_, { sourceDir, outputDir }) => {
+  const zipPath = path.join(outputDir, 'client.zip');
+  return new Promise((resolve) => {
+    const output = fs.createWriteStream(zipPath);
+    const archive = archiver('zip', { zlib: { level: 6 } });
+    let lastSent = 0;
+
+    archive.on('progress', (p) => {
+      const now = Date.now();
+      if (now - lastSent < 500) return;
+      lastSent = now;
+      win.webContents.send('zip-progress', {
+        entries: p.entries.processed,
+        bytes: p.fs.processedBytes
+      });
+    });
+
+    output.on('close', () => resolve({ success: true, path: zipPath, size: archive.pointer() }));
+    archive.on('error', (err) => resolve({ success: false, error: err.message }));
+
+    archive.pipe(output);
+    archive.directory(sourceDir, false);
+    archive.finalize();
+  });
+});
+
 // Só salva o manifest do launcher (sem copiar arquivos do jogo)
-ipcMain.handle('deploy-launcher-only', async (_, { repoDir, commitMsg }) => {
-  const log = [];
+ipcMain.handle('deploy-launcher-only', async (_, { repoDir, commitMsg }) => {  const log = [];
   const send = (msg) => { log.push(msg); win.webContents.send('deploy-log', msg); };
 
   try {
@@ -199,5 +258,17 @@ ipcMain.handle('deploy-launcher-only', async (_, { repoDir, commitMsg }) => {
   } catch (e) {
     send(`❌ Erro: ${e.message}`);
     return { success: false, error: e.message, log };
+  }
+});
+
+ipcMain.handle('set-zip-url', (_, { url }) => {
+  try {
+    const configPath = path.join(__dirname, 'src', 'config.js');
+    let content = fs.readFileSync(configPath, 'utf8');
+    content = content.replace(/ZIP_URL:\s*['"][^'"]*['"]/, `ZIP_URL: '${url}'`);
+    fs.writeFileSync(configPath, content, 'utf8');
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: e.message };
   }
 });

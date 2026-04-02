@@ -16,6 +16,7 @@ const DEFAULT_GAME_PATH = path.join(APP_PATH, 'assets', 'cliente');
 const updater = new Updater({
   baseUrl: config.FILES_BASE,
   hashFile: 'hash.xml',
+  zipUrl: config.ZIP_URL || null,
   gamePath: localStorage.getItem('gamePath') || DEFAULT_GAME_PATH
 });
 
@@ -223,14 +224,14 @@ let isUpdating = false;
 // Detecta se o jogo já está instalado
 function getClientExe() {
   const pref = localStorage.getItem('tq-renderer') || 'dx';
-  return pref === 'gl' ? 'otclient_gl.exe' : 'otclient_dx.exe';
+  return pref === 'gl' ? 'PokeNight_GL.exe' : 'PokeNight_DX.exe';
 }
 
 function isGameInstalled() {
   const gamePath = updater.getGamePath();
   // Instalado se qualquer um dos exe existe
-  return fs.existsSync(path.join(gamePath, 'otclient_dx.exe'))
-      || fs.existsSync(path.join(gamePath, 'otclient_gl.exe'));
+  return fs.existsSync(path.join(gamePath, 'PokeNight_DX.exe'))
+      || fs.existsSync(path.join(gamePath, 'PokeNight_GL.exe'));
 }
 
 // Atualiza texto do botão baseado no estado
@@ -249,7 +250,7 @@ async function startGame() {
   
   if (!fs.existsSync(exePath)) {
     // Tentar o outro exe como fallback
-    const altExe = exeName === 'otclient_dx.exe' ? 'otclient_gl.exe' : 'otclient_dx.exe';
+    const altExe = exeName === 'PokeNight_DX.exe' ? 'PokeNight_GL.exe' : 'PokeNight_DX.exe';
     const altPath = path.join(gamePath, altExe);
     if (fs.existsSync(altPath)) {
       setPlayButtonState('disabled', 'INICIANDO...');

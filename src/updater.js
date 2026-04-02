@@ -27,6 +27,8 @@ class Updater extends EventEmitter {
     // Config remoto (será buscado do servidor)
     this.remoteConfig = null;
     this.zipFile = options.zipFile || 'client.zip';
+    // URL direta para o zip (ex: Google Drive) — se definida, usa em vez de baseUrl+zipFile
+    this.zipUrl = options.zipUrl || null;
   }
 
   // Busca updater-config.json do servidor
@@ -75,8 +77,8 @@ class Updater extends EventEmitter {
     }
 
     // Versão mudou - verificar se precisa clean install
-    const exeDx = path.join(this.gamePath, 'otclient_dx.exe');
-    const exeGl = path.join(this.gamePath, 'otclient_gl.exe');
+    const exeDx = path.join(this.gamePath, 'PokeNight_DX.exe');
+    const exeGl = path.join(this.gamePath, 'PokeNight_GL.exe');
     const hasExistingInstall = fs.existsSync(exeDx) || fs.existsSync(exeGl);
 
     // Se forceCleanInstall está ativo E já tem instalação, limpar
@@ -117,8 +119,8 @@ class Updater extends EventEmitter {
 
   // Detecta se é primeira instalação (nenhum exe do client existe)
   isFirstRun() {
-    const exeDx = path.join(this.gamePath, 'otclient_dx.exe');
-    const exeGl = path.join(this.gamePath, 'otclient_gl.exe');
+    const exeDx = path.join(this.gamePath, 'PokeNight_DX.exe');
+    const exeGl = path.join(this.gamePath, 'PokeNight_GL.exe');
     return !fs.existsSync(exeDx) && !fs.existsSync(exeGl);
   }
 
@@ -543,6 +545,8 @@ class Updater extends EventEmitter {
   // Verifica se o client.zip existe no servidor
   async hasRemoteZip() {
     try {
+      // Se zipUrl direto está configurado (Google Drive, etc.), sempre considera disponível
+      if (this.zipUrl) return { exists: true, size: 0 };
       const url = this.baseUrl + this.zipFile + '?t=' + Date.now();
       const response = await axios.head(url, { timeout: 10000 });
       const size = parseInt(response.headers['content-length'] || '0', 10);
@@ -554,7 +558,7 @@ class Updater extends EventEmitter {
 
   // Baixa client.zip e extrai localmente (para primeira instalação)
   async downloadAndExtractZip() {
-    const url = this.baseUrl + this.zipFile + '?t=' + Date.now();
+    const url = this.zipUrl || (this.baseUrl + this.zipFile + '?t=' + Date.now());
     const zipPath = path.join(this.gamePath, '_client-download.zip');
 
     this.emit('status', 'Baixando cliente do jogo...');

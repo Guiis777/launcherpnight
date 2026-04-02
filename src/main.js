@@ -7,7 +7,7 @@ let mainWindow;
 
 // Configuração do atualizador do launcher
 const launcherUpdater = new LauncherUpdater({
-  baseUrl: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/launcher/',
+  baseUrl: 'https://cdn.jsdelivr.net/gh/Guiis777/launcherpnight@main/server/u/launcher/',
   localPath: path.join(__dirname, 'src')
 });
 

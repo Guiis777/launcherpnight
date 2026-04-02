@@ -1,5 +1,7 @@
 node_modules/
 dist/
+admin-settings.json
+dist/
 build/
 *.log
 .env
