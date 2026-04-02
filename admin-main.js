@@ -124,10 +124,11 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
     // 6. Git add + commit + push
     send('🚀 Fazendo git commit e push...');
     const msg = commitMsg || `update game files ${new Date().toISOString().slice(0,10)}`;
+    const gitOpts = { cwd: repoDir, maxBuffer: 256 * 1024 * 1024 };
 
-    execSync('git add .', { cwd: repoDir });
+    execSync('git add .', gitOpts);
     try {
-      execSync(`git commit -m "${msg}"`, { cwd: repoDir });
+      execSync(`git commit -m "${msg}"`, gitOpts);
     } catch (e) {
       if (e.message.includes('nothing to commit')) {
         send('ℹ️ Nenhuma mudança para commitar');
@@ -135,7 +136,7 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
       }
       throw e;
     }
-    execSync('git push', { cwd: repoDir });
+    execSync('git push', gitOpts);
     send('✅ Push concluído! O launcher vai se atualizar automaticamente.');
 
     return { success: true, log };
@@ -180,9 +181,10 @@ ipcMain.handle('deploy-launcher-only', async (_, { repoDir, commitMsg }) => {
     // Git
     send('🚀 Fazendo git commit e push...');
     const msg = commitMsg || `update launcher ${new Date().toISOString().slice(0,10)}`;
-    execSync('git add .', { cwd: repoDir });
+    const gitOpts = { cwd: repoDir, maxBuffer: 256 * 1024 * 1024 };
+    execSync('git add .', gitOpts);
     try {
-      execSync(`git commit -m "${msg}"`, { cwd: repoDir });
+      execSync(`git commit -m "${msg}"`, gitOpts);
     } catch (e) {
       if (e.message.includes('nothing to commit')) {
         send('ℹ️ Nenhuma mudança para commitar');
@@ -190,7 +192,7 @@ ipcMain.handle('deploy-launcher-only', async (_, { repoDir, commitMsg }) => {
       }
       throw e;
     }
-    execSync('git push', { cwd: repoDir });
+    execSync('git push', gitOpts);
     send('✅ Push do launcher concluído!');
 
     return { success: true, log };
