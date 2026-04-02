@@ -8,6 +8,7 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
+    "admin": "electron admin-main.js",
     "build": "electron-builder --win --x64",
     "dist": "electron-builder"
   },
@@ -16,7 +17,9 @@
     "productName": "PokeNight Launcher",
     "win": {
       "target": "nsis",
-      "icon": "assets/tamer_quest_icon.ico"
+      "icon": "assets/tamer_quest_icon.ico",
+      "sign": null,
+      "signingHashAlgorithms": null
     },
     "nsis": {
       "oneClick": true,
@@ -26,11 +29,9 @@
     },
     "files": [
       "**/*",
-      "!node_modules/**",
-      "node_modules/axios/**",
-      "node_modules/archiver/**",
-      "node_modules/basic-ftp/**",
-      "node_modules/fs-extra/**"
+      "!dist/**",
+      "!server/**",
+      "!.git/**"
     ],
     "extraResources": [],
     "asar": false

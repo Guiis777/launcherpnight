@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>PokeNight Admin</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f1a;
+      color: #e0daf5;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #1a1a2e;
+      border-bottom: 2px solid #7c3aed;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header h1 { font-size: 18px; color: #a78bfa; letter-spacing: 0.08em; }
+    header span { font-size: 11px; color: #6b7280; }
+
+    .tabs {
+      display: flex;
+      background: #13131f;
+      border-bottom: 1px solid #2d2d44;
+    }
+    .tab-btn {
+      padding: 10px 24px;
+      background: none;
+      border: none;
+      color: #6b7280;
+      font-size: 13px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab-btn.active { color: #a78bfa; border-bottom-color: #7c3aed; }
+
+    .tab-content { display: none; flex: 1; overflow: hidden; flex-direction: column; padding: 20px 24px; gap: 14px; }
+    .tab-content.active { display: flex; }
+
+    label { font-size: 12px; color: #9ca3af; margin-bottom: 4px; display: block; }
+
+    .row { display: flex; gap: 8px; align-items: flex-end; }
+    .row input { flex: 1; }
+
+    input[type=text] {
+      width: 100%;
+      background: #1e1e30;
+      border: 1px solid #3d3d5c;
+      color: #e0daf5;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+    }
+    input[type=text]:focus { border-color: #7c3aed; }
+
+    button {
+      background: #7c3aed;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    button:hover { background: #6d28d9; }
+    button:disabled { background: #3d3d5c; cursor: not-allowed; }
+    button.secondary { background: #2d2d44; }
+    button.secondary:hover { background: #3d3d5c; }
+    button.green { background: #059669; }
+    button.green:hover { background: #047857; }
+
+    .file-count {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+    .file-count span { color: #a78bfa; font-weight: 600; }
+
+    .log-box {
+      flex: 1;
+      background: #0a0a14;
+      border: 1px solid #2d2d44;
+      border-radius: 6px;
+      padding: 12px;
+      overflow-y: auto;
+      font-family: 'Consolas', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      min-height: 120px;
+    }
+    .log-box .line { padding: 1px 0; }
+    .log-box .line.ok { color: #4ade80; }
+    .log-box .line.err { color: #f87171; }
+    .log-box .line.info { color: #a78bfa; }
+    .log-box .line.plain { color: #9ca3af; }
+
+    .status-bar {
+      background: #1a1a2e;
+      border-top: 1px solid #2d2d44;
+      padding: 6px 24px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .actions { display: flex; gap: 8px; }
+
+    hr { border: none; border-top: 1px solid #2d2d44; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>PokeNight Admin</h1>
+  <span>Gerenciador de updates</span>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="game">Atualizar Jogo</button>
+  <button class="tab-btn" data-tab="launcher">Atualizar Launcher</button>
+</div>
+
+<!-- TAB: JOGO -->
+<div class="tab-content active" id="tab-game">
+  <div>
+    <label>Pasta do Repositório (launcherpnight)</label>
+    <div class="row">
+      <input type="text" id="repo-dir" placeholder="C:\Users\gui\Downloads\Launcher" value="C:\Users\gui\Downloads\Launcher">
+    </div>
+  </div>
+
+  <div>
+    <label>Pasta Local do Jogo (arquivos para subir)</label>
+    <div class="row">
+      <input type="text" id="game-dir" placeholder="Selecione a pasta com os arquivos do jogo...">
+      <button onclick="selectGameFolder()">Procurar</button>
+    </div>
+    <div class="file-count" id="file-count">Selecione uma pasta para ver os arquivos</div>
+  </div>
+
+  <div>
+    <label>Mensagem do commit (opcional)</label>
+    <input type="text" id="commit-msg-game" placeholder="update game files">
+  </div>
+
+  <div class="actions">
+    <button onclick="previewFiles()">Verificar Arquivos</button>
+    <button class="green" id="btn-deploy-game" onclick="deployGame()" disabled>Subir para GitHub</button>
+  </div>
+
+  <div class="log-box" id="log-game"></div>
+</div>
+
+<!-- TAB: LAUNCHER -->
+<div class="tab-content" id="tab-launcher">
+  <div>
+    <label>Pasta do Repositório (launcherpnight)</label>
+    <div class="row">
+      <input type="text" id="repo-dir-launcher" placeholder="C:\Users\gui\Downloads\Launcher" value="C:\Users\gui\Downloads\Launcher">
+    </div>
+  </div>
+
+  <p style="font-size:12px;color:#9ca3af;">
+    Isso vai copiar automaticamente os arquivos de <code style="color:#a78bfa">src/</code> para <code style="color:#a78bfa">server/u/launcher/</code>, gerar o <code style="color:#a78bfa">manifest.json</code> e fazer push no GitHub. Os launchers dos players atualizam automaticamente.
+  </p>
+
+  <div>
+    <label>Mensagem do commit (opcional)</label>
+    <input type="text" id="commit-msg-launcher" placeholder="update launcher UI">
+  </div>
+
+  <div class="actions">
+    <button class="green" onclick="deployLauncher()">Publicar Atualização do Launcher</button>
+  </div>
+
+  <div class="log-box" id="log-launcher"></div>
+</div>
+
+<div class="status-bar" id="status">Pronto.</div>
+
+<script>
+const { ipcRenderer } = require('electron');
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+let gameFilesReady = false;
+
+function log(boxId, msg) {
+  const box = document.getElementById(boxId);
+  const line = document.createElement('div');
+  line.className = 'line ' + (msg.startsWith('✅') ? 'ok' : msg.startsWith('❌') ? 'err' : msg.startsWith('🚀') || msg.startsWith('📂') || msg.startsWith('📋') || msg.startsWith('🔧') ? 'info' : 'plain');
+  line.textContent = msg;
+  box.appendChild(line);
+  box.scrollTop = box.scrollHeight;
+}
+
+function setStatus(msg) {
+  document.getElementById('status').textContent = msg;
+}
+
+async function selectGameFolder() {
+  const folder = await ipcRenderer.invoke('select-folder');
+  if (folder) {
+    document.getElementById('game-dir').value = folder;
+    gameFilesReady = false;
+    document.getElementById('btn-deploy-game').disabled = true;
+    document.getElementById('file-count').textContent = 'Clique em "Verificar Arquivos" para confirmar';
+  }
+}
+
+async function previewFiles() {
+  const dir = document.getElementById('game-dir').value.trim();
+  if (!dir) return alert('Selecione a pasta do jogo primeiro.');
+  const logBox = document.getElementById('log-game');
+  logBox.innerHTML = '';
+  log('log-game', '📂 Verificando arquivos...');
+  const result = await ipcRenderer.invoke('preview-files', dir);
+  if (!result.success) {
+    log('log-game', '❌ ' + result.error);
+    return;
+  }
+  result.files.slice(0, 20).forEach(f => log('log-game', '   ' + f));
+  if (result.files.length > 20) log('log-game', `   ... e mais ${result.files.length - 20} arquivos`);
+  log('log-game', `✅ Total: ${result.files.length} arquivos`);
+  document.getElementById('file-count').innerHTML = `<span>${result.files.length}</span> arquivos encontrados`;
+  gameFilesReady = true;
+  document.getElementById('btn-deploy-game').disabled = false;
+}
+
+async function deployGame() {
+  if (!gameFilesReady) return;
+  const sourceDir = document.getElementById('game-dir').value.trim();
+  const repoDir = document.getElementById('repo-dir').value.trim();
+  const commitMsg = document.getElementById('commit-msg-game').value.trim();
+  if (!sourceDir || !repoDir) return alert('Preencha os campos.');
+
+  document.getElementById('btn-deploy-game').disabled = true;
+  document.getElementById('log-game').innerHTML = '';
+  setStatus('Fazendo deploy...');
+
+  ipcRenderer.on('deploy-log', (_, msg) => log('log-game', msg));
+
+  const result = await ipcRenderer.invoke('deploy', { sourceDir, repoDir, commitMsg });
+  ipcRenderer.removeAllListeners('deploy-log');
+
+  setStatus(result.success ? 'Deploy concluído!' : 'Erro no deploy.');
+  document.getElementById('btn-deploy-game').disabled = false;
+}
+
+async function deployLauncher() {
+  const repoDir = document.getElementById('repo-dir-launcher').value.trim();
+  const commitMsg = document.getElementById('commit-msg-launcher').value.trim();
+  if (!repoDir) return alert('Preencha a pasta do repositório.');
+
+  document.getElementById('log-launcher').innerHTML = '';
+  setStatus('Publicando atualização do launcher...');
+
+  ipcRenderer.on('deploy-log', (_, msg) => log('log-launcher', msg));
+
+  const result = await ipcRenderer.invoke('deploy-launcher-only', { repoDir, commitMsg });
+  ipcRenderer.removeAllListeners('deploy-log');
+
+  setStatus(result.success ? 'Launcher publicado!' : 'Erro.');
+}
+</script>
+</body>
+</html>
