@@ -73,6 +73,10 @@
             <span class="play-icon">▶</span>
             <span class="play-text">JOGAR</span>
           </button>
+          <div class="renderer-select" id="renderer-select">
+            <button class="ren-btn active" id="ren-dx" onclick="setRenderer('dx')" title="DirectX — recomendado para a maioria">DX</button>
+            <button class="ren-btn" id="ren-gl" onclick="setRenderer('gl')" title="OpenGL — para placas sem suporte a DX">GL</button>
+          </div>
           <div class="progress-container" id="progress-container" style="display: none;">
             <div class="progress-bar">
               <div class="progress-fill" id="progress-fill"></div>
