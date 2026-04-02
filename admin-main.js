@@ -31,11 +31,13 @@ ipcMain.handle('build-exe', async (_, { repoDir }) => {
   try {
     win.webContents.send('build-log', '⚙️  Rodando electron-builder (pode levar alguns minutos)...');
     const env = { ...process.env, CSC_IDENTITY_AUTO_DISCOVERY: 'false', CSC_LINK: '' };
-    execSync('npm run build', { cwd: repoDir, maxBuffer: 256 * 1024 * 1024, env });
+    const out = execSync('npm run build 2>&1', { cwd: repoDir, maxBuffer: 256 * 1024 * 1024, env }).toString();
+    win.webContents.send('build-log', out.slice(-800));
     win.webContents.send('build-log', '✅ Build concluído! Arquivo em dist/');
     return { success: true };
   } catch (e) {
-    return { success: false, error: e.stderr ? e.stderr.toString().slice(-500) : e.message };
+    const msg = (e.stdout ? e.stdout.toString() : '') + (e.stderr ? e.stderr.toString() : '') || e.message;
+    return { success: false, error: msg.slice(-1000) };
   }
 });
 
