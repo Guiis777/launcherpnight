@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https:; img-src 'self' data:;">
+  <title>Tamer Quest</title>
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background 4K art + overlay -->
+  <div class="bg-layer">
+    <img src="../assets/image.png" alt="" class="bg-image">
+    <div class="bg-overlay"></div>
+  </div>
+
+  <!-- Title Bar -->
+  <div class="title-bar">
+    <div class="title-bar-left">
+      <img src="../assets/tamer_quest_icon.gif" alt="TQ" class="title-logo">
+      <span class="title-text">Tamer Quest</span>
+    </div>
+    <div class="title-bar-right">
+      <button class="title-btn" id="btn-minimize">
+        <svg width="10" height="1" viewBox="0 0 10 1"><rect width="10" height="1" fill="currentColor"/></svg>
+      </button>
+      <button class="title-btn" id="btn-maximize">
+        <svg width="10" height="10" viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9" fill="none" stroke="currentColor"/></svg>
+      </button>
+      <button class="title-btn close-btn" id="btn-close">
+        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor" stroke-width="1.2"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <button class="nav-btn active" data-page="home">Início</button>
+      <button class="nav-btn" data-page="news">Novidades</button>
+      <button class="nav-btn" data-page="settings">Configurações</button>
+    </div>
+    <div class="top-nav-right" id="nav-auth-area">
+      <button class="nav-login-btn" id="btn-nav-login">Entrar</button>
+      <div class="nav-user" id="nav-user" style="display:none">
+        <select class="char-select" id="nav-char-select"></select>
+        <button class="nav-logout-btn" id="btn-nav-logout" title="Sair">✕</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <main class="content">
+
+    <!-- HOME -->
+    <section class="page active" id="page-home">
+      <!-- Emblemas Recentes -->
+      <div class="home-emblems-bar" data-goto="beta1e2">
+        <span class="heb-label">Emblemas Recentes</span>
+        <div class="heb-list">
+          <div class="heb-item">
+            <div class="emblem-sprite" style="background-image:url('../assets/emblems/beta1e2/emblem_first_32x32_sheet_1.png')"></div>
+            <span class="heb-name">Reação em Cadeia Nv.2</span>
+          </div>
+          <div class="heb-item">
+            <div class="emblem-sprite" style="background-image:url('../assets/emblems/beta1e2/emblem_first_32x32_sheet_2.png')"></div>
+            <span class="heb-name">Reação em Cadeia Nv.1</span>
+          </div>
+        </div>
+        <span class="heb-cta">Ver detalhes ›</span>
+      </div>
+
+      <div class="home-center">
+        <img src="../assets/tamer_quest_icon.gif" alt="Tamer Quest" class="home-logo">
+        <h1 class="home-title">TAMER QUEST</h1>
+        <p class="home-subtitle">Capture · Treine · Batalhe</p>
+
+        <div class="home-status">
+          <div class="status-chip">
+            <span class="status-indicator online"></span>
+            <span class="status-text">Online</span>
+            <span class="sep">·</span>
+            <span class="players-online">Servidor disponível</span>
+          </div>
+          <div class="status-chip">
+            <span class="version-number">Beta 3</span>
+            <span class="sep">·</span>
+            <span class="version-status">Atualizado</span>
+          </div>
+        </div>
+
+        <div class="play-section">
+          <button class="play-btn" id="btn-play">
+            <span class="play-icon">▶</span>
+            <span class="play-text">JOGAR</span>
+          </button>
+          <div class="progress-container" id="progress-container" style="display: none;">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <span class="progress-text" id="progress-text">Baixando... 0%</span>
+          </div>
+        </div>
+
+        <!-- Destaques / Highlights -->
+        <div class="home-highlights">
+          <div class="highlight-card" data-goto="pvp">
+            <img src="../assets/cliente/updates/03/pvp_ranked_tamer_quest.png" class="highlight-img" alt="PVP">
+            <div class="highlight-info">
+              <span class="highlight-badge">NOVO</span>
+              <span class="highlight-title">PVP Casual & Ranked</span>
+              <span class="highlight-sub">Picks, Bans e Elos</span>
+            </div>
+          </div>
+          <div class="highlight-card" data-goto="beta3">
+            <img src="../assets/cliente/updates/02/beta_3.png" class="highlight-img" alt="Beta 3">
+            <div class="highlight-info">
+              <span class="highlight-badge">NOVO</span>
+              <span class="highlight-title">Beta 3</span>
+              <span class="highlight-sub">Uma Nova Era</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWS -->
+    <section class="page" id="page-news">
+      <div class="page-inner">
+
+        <!-- === FEED VIEW === -->
+        <div id="news-feed-view">
+          <h2 class="page-title">Novidades</h2>
+          <div class="news-feed" id="news-feed">
+
+            <!-- PVP -->
+            <article class="news-card news-featured" data-post="pvp">
+              <div class="news-card-image">
+                <img src="../assets/cliente/updates/03/pvp_ranked_tamer_quest.png" alt="PVP Ranked" class="news-image">
+                <div class="news-badge">NOVO</div>
+              </div>
+              <div class="news-body">
+                <div class="news-meta">
+                  <span class="news-date">05 Mar 2026</span>
+                  <span class="news-tag">Novo Sistema</span>
+                </div>
+                <h3 class="news-heading">PVP Casual & Ranked — Picks, Bans e Elos!</h3>
+                <p class="news-excerpt">O novo sistema de PVP chegou! Enfrente outros Tamers no modo Casual ou suba de Elo no Ranked com picks e bans estratégicos, novo balanceamento e muito mais.</p>
+                <div class="news-card-bottom">
+                  <span class="news-author">Equipe Tamer Quest</span>
+                  <div class="news-stats">
+                    <span class="ns-likes" data-post="pvp"><span class="lk-count">0</span> curtidas</span>
+                    <span class="ns-comments" data-post="pvp"><span class="cm-count">0</span> comentários</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Beta 3 -->
+            <article class="news-card news-featured" data-post="beta3">
+              <div class="news-card-image">
+                <img src="../assets/cliente/updates/02/beta_3.png" alt="Beta 3" class="news-image">
+                <div class="news-badge">NOVO</div>
+              </div>
+              <div class="news-body">
+                <div class="news-meta">
+                  <span class="news-date">05 Mar 2026</span>
+                  <span class="news-tag">Atualização</span>
+                </div>
+                <h3 class="news-heading">Beta 3 — Uma Nova Era Começa!</h3>
+                <p class="news-excerpt">O Beta 3 do Tamer Quest chegou com mudanças profundas! Novo launcher, novo client, novas mecânicas e muito mais conteúdo. Estamos apenas começando — aguardem grandes novidades nas próximas semanas. Preparem-se, Tamers!</p>
+                <div class="news-card-bottom">
+                  <span class="news-author">Equipe Tamer Quest</span>
+                  <div class="news-stats">
+                    <span class="ns-likes" data-post="beta3"><span class="lk-count">0</span> curtidas</span>
+                    <span class="ns-comments" data-post="beta3"><span class="cm-count">0</span> comentários</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Beta 1 & 2 -->
+            <article class="news-card" data-post="beta1e2">
+              <div class="news-card-image">
+                <img src="../assets/cliente/updates/01/evento1k.png" alt="Beta 1 & 2" class="news-image">
+              </div>
+              <div class="news-body">
+                <div class="news-meta">
+                  <span class="news-date">27 Fev 2026</span>
+                  <span class="news-tag">Encerramento</span>
+                </div>
+                <h3 class="news-heading">Fim do Beta 1 & Beta 2 — Obrigado!</h3>
+                <p class="news-excerpt">Encerramos oficialmente as fases Beta 1 e Beta 2 do Tamer Quest. Foram meses incríveis de testes, feedback e evolução. Agradecemos a cada jogador que participou, reportou bugs e nos ajudou a construir algo melhor. Vocês são a base de tudo. O que vem a seguir vai surpreender!</p>
+                <div class="news-card-bottom">
+                  <span class="news-author">Equipe Tamer Quest</span>
+                  <div class="news-stats">
+                    <span class="ns-likes" data-post="beta1e2"><span class="lk-count">0</span> curtidas</span>
+                    <span class="ns-comments" data-post="beta1e2"><span class="cm-count">0</span> comentários</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <!-- === DETAIL VIEW === -->
+        <div id="news-detail-view" style="display:none">
+          <button class="btn-back" id="btn-news-back">← Voltar</button>
+
+          <div id="detail-content">
+            <div class="detail-image-wrap" id="detail-img-wrap"></div>
+            <div class="detail-text" id="detail-text"></div>
+          </div>
+
+          <!-- Emblems / Recompensas (futuro) -->
+          <div class="detail-emblems" id="detail-emblems" style="display:none"></div>
+
+          <!-- Ações -->
+          <div class="detail-actions">
+            <button class="btn-like" id="btn-like">
+              <span class="like-heart">♡</span> Curtir <span id="detail-like-count">0</span>
+            </button>
+          </div>
+
+          <!-- Comentários -->
+          <div class="comments-section">
+            <h3 class="cs-title">Comentários <span class="cs-total" id="detail-cm-count">0</span></h3>
+
+            <div id="comments-list"></div>
+
+            <!-- Form (logado) -->
+            <div class="cf-box" id="cf-box" style="display:none">
+              <div class="cf-header">
+                <span>Comentando como</span>
+                <select id="cf-char" class="char-select"></select>
+              </div>
+              <div class="cf-tabs">
+                <button class="cf-tab active" data-type="comment">Comentário</button>
+                <button class="cf-tab" data-type="suggestion">Sugestão</button>
+              </div>
+              <textarea id="cf-text" class="cf-textarea" placeholder="Escreva aqui..." maxlength="500" rows="3"></textarea>
+              <button class="cf-submit" id="cf-submit">Enviar</button>
+            </div>
+
+            <!-- Hint (não logado) -->
+            <div class="cf-login-hint" id="cf-login-hint">
+              Faça <a href="#" id="hint-login-link">login</a> para curtir e comentar.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="page" id="page-settings">
+      <div class="page-inner">
+        <h2 class="page-title">Configurações</h2>
+        <div class="settings-group">
+          <h3 class="settings-heading">Geral</h3>
+          <div class="setting-item">
+            <label>Renderizador</label>
+            <div class="setting-input">
+              <select id="renderer-select" class="setting-select">
+                <option value="dx">DirectX (Recomendado)</option>
+                <option value="gl">OpenGL</option>
+              </select>
+            </div>
+          </div>
+          <div class="setting-item">
+            <label>Pasta do Jogo</label>
+            <div class="setting-input">
+              <input type="text" id="game-path" placeholder="C:\Games\TML" readonly>
+              <button class="btn-secondary" id="btn-browse">Procurar</button>
+            </div>
+          </div>
+          <div class="setting-item">
+            <label>Iniciar com Windows</label>
+            <label class="switch">
+              <input type="checkbox" id="auto-start">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <label>Fechar launcher ao iniciar o jogo</label>
+            <label class="switch">
+              <input type="checkbox" id="close-on-launch" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="settings-group">
+          <h3 class="settings-heading">Manutenção</h3>
+          <div class="setting-item">
+            <label>Forçar verificação de todos os arquivos</label>
+            <button class="btn-secondary" id="btn-force-update">Verificar Arquivos</button>
+          </div>
+        </div>
+        <div class="settings-group">
+          <h3 class="settings-heading">Cliente não abre?</h3>
+          <p class="settings-hint">Se o jogo não abre ou fecha sozinho, instale o Visual C++ Redistributable. Isso resolve a maioria dos problemas.</p>
+          <div class="setting-item">
+            <label>Instalar Visual C++ Redistributable</label>
+            <button class="btn-secondary btn-vcredist" id="btn-vcredist">Instalar VC Redist</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <span class="footer-version">Tamer Quest · Beta 3</span>
+    <div class="social-links">
+      <button class="social-btn discord-img-btn" id="btn-discord" data-url="">
+        <img src="../assets/discord-button.png" alt="Discord" class="discord-btn-img">
+      </button>
+      <button class="social-btn" id="btn-site" data-url="">SITE</button>
+    </div>
+  </footer>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="login-overlay" style="display:none">
+    <div class="login-modal">
+      <button class="modal-close" id="login-close">✕</button>
+      <img src="../assets/tamer_quest_icon.gif" class="login-logo" alt="TQ">
+      <h2 class="login-title">Entrar</h2>
+      <div class="login-msg" id="login-msg"></div>
+      <form id="login-form" autocomplete="off">
+        <div class="login-field">
+          <label for="login-email">E-mail / Conta</label>
+          <input type="text" id="login-email" placeholder="seu@email.com" required>
+        </div>
+        <div class="login-field">
+          <label for="login-password">Senha</label>
+          <input type="password" id="login-password" placeholder="********" required>
+        </div>
+        <button type="submit" class="btn-login-submit" id="btn-login-submit">ENTRAR</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
