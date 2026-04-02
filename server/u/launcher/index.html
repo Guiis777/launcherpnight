@@ -4,23 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https:; img-src 'self' data:;">
-  <title>Tamer Quest</title>
+  <title>PokeNight</title>
   <link rel="stylesheet" href="../assets/fonts/fonts.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- Background 4K art + overlay -->
+  <!-- Background -->
   <div class="bg-layer">
-    <img src="../assets/image.png" alt="" class="bg-image">
-    <div class="bg-overlay"></div>
+    <div class="bg-overlay" style="opacity:1"></div>
   </div>
 
   <!-- Title Bar -->
   <div class="title-bar">
     <div class="title-bar-left">
-      <img src="../assets/tamer_quest_icon.gif" alt="TQ" class="title-logo">
-      <span class="title-text">Tamer Quest</span>
+      <span class="title-text">PokeNight</span>
     </div>
     <div class="title-bar-right">
       <button class="title-btn" id="btn-minimize">
@@ -56,25 +54,10 @@
 
     <!-- HOME -->
     <section class="page active" id="page-home">
-      <!-- Emblemas Recentes -->
-      <div class="home-emblems-bar" data-goto="beta1e2">
-        <span class="heb-label">Emblemas Recentes</span>
-        <div class="heb-list">
-          <div class="heb-item">
-            <div class="emblem-sprite" style="background-image:url('../assets/emblems/beta1e2/emblem_first_32x32_sheet_1.png')"></div>
-            <span class="heb-name">Reação em Cadeia Nv.2</span>
-          </div>
-          <div class="heb-item">
-            <div class="emblem-sprite" style="background-image:url('../assets/emblems/beta1e2/emblem_first_32x32_sheet_2.png')"></div>
-            <span class="heb-name">Reação em Cadeia Nv.1</span>
-          </div>
-        </div>
-        <span class="heb-cta">Ver detalhes ›</span>
-      </div>
+
 
       <div class="home-center">
-        <img src="../assets/tamer_quest_icon.gif" alt="Tamer Quest" class="home-logo">
-        <h1 class="home-title">TAMER QUEST</h1>
+        <h1 class="home-title" style="font-size:3rem;letter-spacing:0.15em">PokeNight</h1>
         <p class="home-subtitle">Capture · Treine · Batalhe</p>
 
         <div class="home-status">
@@ -104,25 +87,7 @@
           </div>
         </div>
 
-        <!-- Destaques / Highlights -->
-        <div class="home-highlights">
-          <div class="highlight-card" data-goto="pvp">
-            <img src="../assets/cliente/updates/03/pvp_ranked_tamer_quest.png" class="highlight-img" alt="PVP">
-            <div class="highlight-info">
-              <span class="highlight-badge">NOVO</span>
-              <span class="highlight-title">PVP Casual & Ranked</span>
-              <span class="highlight-sub">Picks, Bans e Elos</span>
-            </div>
-          </div>
-          <div class="highlight-card" data-goto="beta3">
-            <img src="../assets/cliente/updates/02/beta_3.png" class="highlight-img" alt="Beta 3">
-            <div class="highlight-info">
-              <span class="highlight-badge">NOVO</span>
-              <span class="highlight-title">Beta 3</span>
-              <span class="highlight-sub">Uma Nova Era</span>
-            </div>
-          </div>
-        </div>
+
       </div>
     </section>
 
@@ -138,7 +103,6 @@
             <!-- PVP -->
             <article class="news-card news-featured" data-post="pvp">
               <div class="news-card-image">
-                <img src="../assets/cliente/updates/03/pvp_ranked_tamer_quest.png" alt="PVP Ranked" class="news-image">
                 <div class="news-badge">NOVO</div>
               </div>
               <div class="news-body">
@@ -149,7 +113,7 @@
                 <h3 class="news-heading">PVP Casual & Ranked — Picks, Bans e Elos!</h3>
                 <p class="news-excerpt">O novo sistema de PVP chegou! Enfrente outros Tamers no modo Casual ou suba de Elo no Ranked com picks e bans estratégicos, novo balanceamento e muito mais.</p>
                 <div class="news-card-bottom">
-                  <span class="news-author">Equipe Tamer Quest</span>
+                  <span class="news-author">Equipe PokeNight</span>
                   <div class="news-stats">
                     <span class="ns-likes" data-post="pvp"><span class="lk-count">0</span> curtidas</span>
                     <span class="ns-comments" data-post="pvp"><span class="cm-count">0</span> comentários</span>
@@ -161,7 +125,6 @@
             <!-- Beta 3 -->
             <article class="news-card news-featured" data-post="beta3">
               <div class="news-card-image">
-                <img src="../assets/cliente/updates/02/beta_3.png" alt="Beta 3" class="news-image">
                 <div class="news-badge">NOVO</div>
               </div>
               <div class="news-body">
@@ -170,9 +133,9 @@
                   <span class="news-tag">Atualização</span>
                 </div>
                 <h3 class="news-heading">Beta 3 — Uma Nova Era Começa!</h3>
-                <p class="news-excerpt">O Beta 3 do Tamer Quest chegou com mudanças profundas! Novo launcher, novo client, novas mecânicas e muito mais conteúdo. Estamos apenas começando — aguardem grandes novidades nas próximas semanas. Preparem-se, Tamers!</p>
+                  <p class="news-excerpt">O Beta 3 do PokeNight chegou com mudanças profundas! Novo launcher, novo client, novas mecânicas e muito mais conteúdo. Estamos apenas começando — aguardem grandes novidades nas próximas semanas. Preparem-se!</p>
                 <div class="news-card-bottom">
-                  <span class="news-author">Equipe Tamer Quest</span>
+                  <span class="news-author">Equipe PokeNight</span>
                   <div class="news-stats">
                     <span class="ns-likes" data-post="beta3"><span class="lk-count">0</span> curtidas</span>
                     <span class="ns-comments" data-post="beta3"><span class="cm-count">0</span> comentários</span>
@@ -184,17 +147,15 @@
             <!-- Beta 1 & 2 -->
             <article class="news-card" data-post="beta1e2">
               <div class="news-card-image">
-                <img src="../assets/cliente/updates/01/evento1k.png" alt="Beta 1 & 2" class="news-image">
-              </div>
               <div class="news-body">
                 <div class="news-meta">
                   <span class="news-date">27 Fev 2026</span>
                   <span class="news-tag">Encerramento</span>
                 </div>
                 <h3 class="news-heading">Fim do Beta 1 & Beta 2 — Obrigado!</h3>
-                <p class="news-excerpt">Encerramos oficialmente as fases Beta 1 e Beta 2 do Tamer Quest. Foram meses incríveis de testes, feedback e evolução. Agradecemos a cada jogador que participou, reportou bugs e nos ajudou a construir algo melhor. Vocês são a base de tudo. O que vem a seguir vai surpreender!</p>
+                  <p class="news-excerpt">Encerramos oficialmente as fases Beta 1 e Beta 2 do PokeNight. Foram meses incríveis de testes, feedback e evolução. Agradecemos a cada jogador que participou, reportou bugs e nos ajudou a construir algo melhor. Vocês são a base de tudo. O que vem a seguir vai surpreender!</p>
                 <div class="news-card-bottom">
-                  <span class="news-author">Equipe Tamer Quest</span>
+                  <span class="news-author">Equipe PokeNight</span>
                   <div class="news-stats">
                     <span class="ns-likes" data-post="beta1e2"><span class="lk-count">0</span> curtidas</span>
                     <span class="ns-comments" data-post="beta1e2"><span class="cm-count">0</span> comentários</span>
