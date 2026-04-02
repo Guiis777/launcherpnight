@@ -7,7 +7,7 @@ let mainWindow;
 
 // Configuração do atualizador do launcher
 const launcherUpdater = new LauncherUpdater({
-  baseUrl: 'https://tamerquest.com/u/launcher/', // Pasta no servidor com os arquivos de UI
+  baseUrl: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/launcher/',
   localPath: path.join(__dirname, 'src')
 });
 

@@ -40,13 +40,7 @@
       <button class="nav-btn" data-page="news">Novidades</button>
       <button class="nav-btn" data-page="settings">Configurações</button>
     </div>
-    <div class="top-nav-right" id="nav-auth-area">
-      <button class="nav-login-btn" id="btn-nav-login">Entrar</button>
-      <div class="nav-user" id="nav-user" style="display:none">
-        <select class="char-select" id="nav-char-select"></select>
-        <button class="nav-logout-btn" id="btn-nav-logout" title="Sair">✕</button>
-      </div>
-    </div>
+
   </nav>
 
   <!-- Content -->
@@ -192,24 +186,7 @@
 
             <div id="comments-list"></div>
 
-            <!-- Form (logado) -->
-            <div class="cf-box" id="cf-box" style="display:none">
-              <div class="cf-header">
-                <span>Comentando como</span>
-                <select id="cf-char" class="char-select"></select>
-              </div>
-              <div class="cf-tabs">
-                <button class="cf-tab active" data-type="comment">Comentário</button>
-                <button class="cf-tab" data-type="suggestion">Sugestão</button>
-              </div>
-              <textarea id="cf-text" class="cf-textarea" placeholder="Escreva aqui..." maxlength="500" rows="3"></textarea>
-              <button class="cf-submit" id="cf-submit">Enviar</button>
-            </div>
 
-            <!-- Hint (não logado) -->
-            <div class="cf-login-hint" id="cf-login-hint">
-              Faça <a href="#" id="hint-login-link">login</a> para curtir e comentar.
-            </div>
           </div>
         </div>
 
@@ -275,35 +252,14 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <span class="footer-version">Tamer Quest · Beta 3</span>
+    <span class="footer-version">PokeNight · Beta 1</span>
     <div class="social-links">
-      <button class="social-btn discord-img-btn" id="btn-discord" data-url="">
-        <img src="../assets/discord-button.png" alt="Discord" class="discord-btn-img">
-      </button>
+      <button class="social-btn" id="btn-discord" data-url="">Discord</button>
       <button class="social-btn" id="btn-site" data-url="">SITE</button>
     </div>
   </footer>
 
-  <!-- Login Modal -->
-  <div class="modal-overlay" id="login-overlay" style="display:none">
-    <div class="login-modal">
-      <button class="modal-close" id="login-close">✕</button>
-      <img src="../assets/tamer_quest_icon.gif" class="login-logo" alt="TQ">
-      <h2 class="login-title">Entrar</h2>
-      <div class="login-msg" id="login-msg"></div>
-      <form id="login-form" autocomplete="off">
-        <div class="login-field">
-          <label for="login-email">E-mail / Conta</label>
-          <input type="text" id="login-email" placeholder="seu@email.com" required>
-        </div>
-        <div class="login-field">
-          <label for="login-password">Senha</label>
-          <input type="password" id="login-password" placeholder="********" required>
-        </div>
-        <button type="submit" class="btn-login-submit" id="btn-login-submit">ENTRAR</button>
-      </form>
-    </div>
-  </div>
+
 
   <script src="renderer.js"></script>
 </body>

@@ -2,7 +2,6 @@ const { ipcRenderer } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const Updater = require('./updater');
-const Auth = require('./auth');
 const NewsManager = require('./news');
 const config = require('./config');
 
@@ -389,109 +388,7 @@ document.querySelectorAll('.social-btn').forEach(btn => {
 // ==========================================
 // Auth & News System
 // ==========================================
-const auth = new Auth();
-const news = new NewsManager(auth);
-
-// Wire news login request
-news.onRequestLogin = () => openLoginModal();
-
-// ---- Login Modal ----
-function openLoginModal() {
-  const overlay = document.getElementById('login-overlay');
-  if (overlay) overlay.style.display = 'flex';
-  const msg = document.getElementById('login-msg');
-  if (msg) { msg.textContent = ''; msg.className = 'login-msg'; }
-}
-
-function closeLoginModal() {
-  const overlay = document.getElementById('login-overlay');
-  if (overlay) overlay.style.display = 'none';
-}
-
-function showLoginMsg(text, type) {
-  const msg = document.getElementById('login-msg');
-  if (msg) {
-    msg.textContent = text;
-    msg.className = `login-msg ${type}`;
-  }
-}
-
-// ---- Nav Auth UI ----
-function updateNavAuth() {
-  const loginBtn = document.getElementById('btn-nav-login');
-  const userArea = document.getElementById('nav-user');
-  const charSelect = document.getElementById('nav-char-select');
-
-  if (auth.isLoggedIn()) {
-    if (loginBtn) loginBtn.style.display = 'none';
-    if (userArea) userArea.style.display = 'flex';
-    if (charSelect) {
-      charSelect.innerHTML = auth.getCharacters().map(c =>
-        `<option value="${c.name}" ${c.name === auth.getSelectedCharacter()?.name ? 'selected' : ''}>${c.name} (Lv.${c.level || '?'})</option>`
-      ).join('');
-    }
-  } else {
-    if (loginBtn) loginBtn.style.display = 'block';
-    if (userArea) userArea.style.display = 'none';
-  }
-}
-
-// Nav login button
-document.getElementById('btn-nav-login')?.addEventListener('click', openLoginModal);
-
-// Login modal close
-document.getElementById('login-close')?.addEventListener('click', closeLoginModal);
-document.getElementById('login-overlay')?.addEventListener('click', (e) => {
-  if (e.target.id === 'login-overlay') closeLoginModal();
-});
-
-// Login form submit
-document.getElementById('login-form')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-
-  if (!email || !password) {
-    showLoginMsg('Preencha todos os campos.', 'error');
-    return;
-  }
-
-  const btn = document.getElementById('btn-login-submit');
-  if (btn) { btn.disabled = true; btn.textContent = 'AGUARDE...'; }
-
-  const result = await auth.login(email, password);
-
-  if (result.success) {
-    showLoginMsg('Login realizado com sucesso!', 'success');
-    updateNavAuth();
-    news.onAuthChanged();
-    setTimeout(closeLoginModal, 800);
-  } else {
-    showLoginMsg(result.error || 'Erro no login.', 'error');
-  }
-
-  if (btn) { btn.disabled = false; btn.textContent = 'ENTRAR'; }
-});
-
-// Character select
-document.getElementById('nav-char-select')?.addEventListener('change', (e) => {
-  auth.selectCharacter(e.target.value);
-  news.onAuthChanged();
-});
-
-// Logout
-document.getElementById('btn-nav-logout')?.addEventListener('click', () => {
-  auth.logout();
-  updateNavAuth();
-  news.onAuthChanged();
-});
-
-// Login link in static detail hint
-document.getElementById('hint-login-link')?.addEventListener('click', (e) => {
-  e.preventDefault();
-  openLoginModal();
-});
-
+const news = new NewsManager();
 
 
 // ==========================================
@@ -514,7 +411,6 @@ document.addEventListener('DOMContentLoaded', () => {
   checkServerStatus();
   setInterval(checkServerStatus, 30000);
   updatePlayButton();
-  updateNavAuth();
   news.init();
 
   // Renderer select (DX / GL)
@@ -607,121 +503,11 @@ let currentCommentType = 'comment';
 
 // ---- Auth UI ----
 function updateAuthUI() {
-  const loginBtn = document.getElementById('btn-nav-login');
-  const userArea = document.getElementById('nav-user');
-  const charSelect = document.getElementById('nav-char-select');
   const cfBox = document.getElementById('cf-box');
   const cfHint = document.getElementById('cf-login-hint');
-
-  if (auth.isLoggedIn()) {
-    loginBtn.style.display = 'none';
-    userArea.style.display = 'flex';
-
-    // Populate character selects
-    const chars = auth.getCharacters();
-    const selected = auth.getSelectedCharacter();
-
-    [charSelect, document.getElementById('cf-char')].forEach(sel => {
-      if (!sel) return;
-      sel.innerHTML = '';
-      chars.forEach(c => {
-        const opt = document.createElement('option');
-        opt.value = c.name;
-        opt.textContent = `${c.name} (Lv ${c.level})`;
-        if (selected && selected.name === c.name) opt.selected = true;
-        sel.appendChild(opt);
-      });
-    });
-
-    if (cfBox) cfBox.style.display = 'block';
-    if (cfHint) cfHint.style.display = 'none';
-  } else {
-    loginBtn.style.display = '';
-    userArea.style.display = 'none';
-    if (cfBox) cfBox.style.display = 'none';
-    if (cfHint) cfHint.style.display = '';
-  }
+  if (cfBox) cfBox.style.display = 'none';
+  if (cfHint) cfHint.style.display = 'none';
 }
-
-// ---- Login Modal ----
-function openLoginModal() {
-  document.getElementById('login-overlay').style.display = 'flex';
-  document.getElementById('login-msg').textContent = '';
-  document.getElementById('login-msg').className = 'login-msg';
-  document.getElementById('login-email').value = '';
-  document.getElementById('login-password').value = '';
-  document.getElementById('login-email').focus();
-}
-
-function closeLoginModal() {
-  document.getElementById('login-overlay').style.display = 'none';
-}
-
-document.getElementById('btn-nav-login')?.addEventListener('click', openLoginModal);
-document.getElementById('login-close')?.addEventListener('click', closeLoginModal);
-document.getElementById('hint-login-link')?.addEventListener('click', (e) => {
-  e.preventDefault();
-  openLoginModal();
-});
-
-// Close modal on overlay click
-document.getElementById('login-overlay')?.addEventListener('click', (e) => {
-  if (e.target === e.currentTarget) closeLoginModal();
-});
-
-// Login form
-document.getElementById('login-form')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  const msg = document.getElementById('login-msg');
-  const submit = document.getElementById('btn-login-submit');
-
-  if (!email || !password) return;
-
-  submit.disabled = true;
-  submit.textContent = 'ENTRANDO...';
-  msg.textContent = '';
-  msg.className = 'login-msg';
-
-  try {
-    const result = await auth.login(email, password);
-    if (result.success) {
-      msg.textContent = 'Login realizado!';
-      msg.className = 'login-msg success';
-      updateAuthUI();
-      setTimeout(() => closeLoginModal(), 600);
-    } else {
-      msg.textContent = result.error || 'Erro ao fazer login';
-      msg.className = 'login-msg error';
-    }
-  } catch (err) {
-    msg.textContent = 'Erro de conexão';
-    msg.className = 'login-msg error';
-  }
-
-  submit.disabled = false;
-  submit.textContent = 'ENTRAR';
-});
-
-// Logout
-document.getElementById('btn-nav-logout')?.addEventListener('click', () => {
-  auth.logout();
-  updateAuthUI();
-});
-
-// Character selection sync between nav and comment form
-document.getElementById('nav-char-select')?.addEventListener('change', (e) => {
-  auth.selectCharacter(e.target.value);
-  const cfChar = document.getElementById('cf-char');
-  if (cfChar) cfChar.value = e.target.value;
-});
-
-document.getElementById('cf-char')?.addEventListener('change', (e) => {
-  auth.selectCharacter(e.target.value);
-  const navChar = document.getElementById('nav-char-select');
-  if (navChar) navChar.value = e.target.value;
-});
 
 // ---- Comments ----
 async function loadComments() {
@@ -788,7 +574,7 @@ function openDetail(postId) {
   // Auth-dependent UI
   updateAuthUI();
 
-  // Scroll to top of news page
+  // Scroll to top
   document.querySelector('#page-news .page-inner')?.scrollTo(0, 0);
 }
 
@@ -804,12 +590,8 @@ function updateDetailLike() {
   const post = commentsData[currentPostId] || { likes: [], comments: [] };
   const btn = document.getElementById('btn-like');
   const count = document.getElementById('detail-like-count');
-  const sel = auth.getSelectedCharacter();
-
-  const isLiked = sel && post.likes && post.likes.includes(sel.name);
-  btn.classList.toggle('liked', !!isLiked);
-  btn.querySelector('.like-heart').textContent = isLiked ? '\u2764' : '\u2661';
-  count.textContent = post.likes ? post.likes.length : 0;
+  if (count) count.textContent = post.likes ? post.likes.length : 0;
+  if (btn) btn.querySelector('.like-heart').textContent = '\u2661';
 }
 
 function renderComments() {
@@ -880,29 +662,12 @@ document.getElementById('btn-news-back')?.addEventListener('click', closeDetail)
 
 // Like button
 document.getElementById('btn-like')?.addEventListener('click', async () => {
-  if (!auth.isLoggedIn()) {
-    openLoginModal();
-    return;
-  }
-  const sel = auth.getSelectedCharacter();
-  if (!sel) return;
-
   const btn = document.getElementById('btn-like');
   btn.disabled = true;
-
   try {
-    const result = await ipcRenderer.invoke('comments-like', {
-      postId: currentPostId,
-      characterName: sel.name
-    });
-    if (result.success) {
-      commentsData = result.data;
-      updateDetailLike();
-    }
-  } catch (e) {
-    console.error('[Like] Error:', e);
-  }
-
+    const result = await ipcRenderer.invoke('comments-like', { postId: currentPostId, characterName: 'anon' });
+    if (result.success) { commentsData = result.data; updateDetailLike(); }
+  } catch (e) { console.error('[Like] Error:', e); }
   btn.disabled = false;
 });
 
@@ -956,6 +721,5 @@ document.getElementById('cf-submit')?.addEventListener('click', async () => {
   submitBtn.textContent = 'Enviar';
 });
 
-// ---- Init auth & comments ----
-updateAuthUI();
+// ---- Init comments ----
 loadComments();

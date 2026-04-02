@@ -1,13 +1,39 @@
 {
-  "name": "tml-launcher",
-  "version": "3.0.0",
-  "description": "TML Game Launcher",
+  "name": "pokenight-launcher",
+  "version": "1.0.0",
+  "description": "PokeNight Game Launcher",
   "main": "main.js",
-  "author": "TML",
+  "author": "PokeNight",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "dev": "electron . --dev"
+    "dev": "electron . --dev",
+    "build": "electron-builder --win --x64",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.pokenight.launcher",
+    "productName": "PokeNight Launcher",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/tamer_quest_icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "installerIcon": "assets/tamer_quest_icon.ico",
+      "shortcutName": "PokeNight Launcher"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/**",
+      "node_modules/axios/**",
+      "node_modules/archiver/**",
+      "node_modules/basic-ftp/**",
+      "node_modules/fs-extra/**"
+    ],
+    "extraResources": [],
+    "asar": false
   },
   "dependencies": {
     "archiver": "^7.0.1",
@@ -17,6 +43,7 @@
     "ssh2": "^1.17.0"
   },
   "devDependencies": {
-    "electron": "^28.0.0"
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
   }
 }

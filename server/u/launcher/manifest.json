@@ -1,44 +1,44 @@
 ﻿{
-    "version":  "2026-03-06T18:55:06.157Z",
+    "version":  "2026-04-01T22:57:00.044Z",
     "files":  [
                   {
                       "name":  "auth.js",
-                      "md5":  "629669d010904f00a69b9d2890e4122c"
+                      "md5":  "5fc6af9fcec697ba8ded729c40b0b6aa"
                   },
                   {
                       "name":  "config.js",
-                      "md5":  "4cfe16d20bdc79319d2028211d1399e6"
+                      "md5":  "8db134c2e74e1b3d16868e9e62a7280a"
                   },
                   {
                       "name":  "index.html",
-                      "md5":  "4c56d3292bf42fe418b320bd87753fb6"
+                      "md5":  "c52ddb44aa199e51b51e20159019bd8b"
                   },
                   {
                       "name":  "launcher-updater.js",
-                      "md5":  "259bc167ec646150b724e1f12d8e9e51"
+                      "md5":  "d797aafd8e714d44f1a61630fb179eaa"
                   },
                   {
                       "name":  "news-config.json",
-                      "md5":  "4a0a3e5c4ed06d0cf6b38bfc4df9882d"
+                      "md5":  "69a65b860a8e0bb53ed9d5817859bb8a"
                   },
                   {
                       "name":  "news.js",
-                      "md5":  "36c0eeceb775f56c0ebf37aacdedb893"
+                      "md5":  "dcbb7a453bd4f6d66a76252fc54435f1"
                   },
                   {
                       "name":  "renderer.js",
-                      "md5":  "a108a289feffce52084b371322b2e53b"
+                      "md5":  "e1560301a26c6b95c487bc69c6414114"
                   },
                   {
                       "name":  "styles.css",
-                      "md5":  "6aecec96a7acf22020d85c206c28cfbb"
+                      "md5":  "6cc1d21d769a910ad00d69f7d6a636a6"
                   },
                   {
                       "name":  "updater.js",
-                      "md5":  "317d45e01ba15c6c7df3371e79a07131"
+                      "md5":  "7067fd20d2e8574e6818cfa29334da27"
                   },
                   {
-                      "md5":  "58747f1be26daf9f41f3231e2d26478a",
+                      "md5":  "9fe05538d3b735c69eb4fab06fd055e4",
                       "root":  true,
                       "name":  "main.js"
                   }
