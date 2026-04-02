@@ -30,7 +30,7 @@ ipcMain.handle('save-settings', (_, data) => {
 ipcMain.handle('build-exe', async (_, { repoDir }) => {
   try {
     win.webContents.send('build-log', '⚙️  Rodando electron-builder (pode levar alguns minutos)...');
-    const env = { ...process.env, CSC_IDENTITY_AUTO_DISCOVERY: 'false', CSC_LINK: '' };
+    const env = { ...process.env, CSC_IDENTITY_AUTO_DISCOVERY: 'false', CSC_LINK: '', WIN_CSC_LINK: '', CSC_KEY_PASSWORD: '' };
     const out = execSync('npm run build 2>&1', { cwd: repoDir, maxBuffer: 256 * 1024 * 1024, env }).toString();
     win.webContents.send('build-log', out.slice(-800));
     win.webContents.send('build-log', '✅ Build concluído! Arquivo em dist/');
