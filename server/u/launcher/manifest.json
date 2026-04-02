@@ -1,45 +1,55 @@
 {
-  "version": "2026-04-02T05:08:40.595Z",
+  "version": "2026-04-02T07:04:24.724Z",
   "files": [
     {
       "name": "auth.js",
-      "md5": "5fc6af9fcec697ba8ded729c40b0b6aa"
+      "md5": "5fc6af9fcec697ba8ded729c40b0b6aa",
+      "root": false
     },
     {
       "name": "config.js",
-      "md5": "eed83876c48093478f0a125ff8aab606"
+      "md5": "eed83876c48093478f0a125ff8aab606",
+      "root": false
     },
     {
       "name": "index.html",
-      "md5": "9c0410f5460131e0fbb821576211b7e7"
+      "md5": "9c0410f5460131e0fbb821576211b7e7",
+      "root": false
     },
     {
       "name": "launcher-updater.js",
-      "md5": "d797aafd8e714d44f1a61630fb179eaa"
+      "md5": "d797aafd8e714d44f1a61630fb179eaa",
+      "root": false
     },
     {
       "name": "news-config.json",
-      "md5": "69a65b860a8e0bb53ed9d5817859bb8a"
+      "md5": "69a65b860a8e0bb53ed9d5817859bb8a",
+      "root": false
     },
     {
       "name": "news.js",
-      "md5": "dcbb7a453bd4f6d66a76252fc54435f1"
+      "md5": "dcbb7a453bd4f6d66a76252fc54435f1",
+      "root": false
     },
     {
       "name": "renderer.js",
-      "md5": "d9c223a1c9a388628ad69daaf1c0ec88"
+      "md5": "d9c223a1c9a388628ad69daaf1c0ec88",
+      "root": false
     },
     {
       "name": "styles.css",
-      "md5": "e89b386850b55be81fcc7ff6a651764d"
+      "md5": "e89b386850b55be81fcc7ff6a651764d",
+      "root": false
     },
     {
       "name": "updater.js",
-      "md5": "d804df920c8d46ea5a283f932eb89a4d"
+      "md5": "d804df920c8d46ea5a283f932eb89a4d",
+      "root": false
     },
     {
       "name": "main.js",
-      "md5": "9c073f239b1e00d19d0d2ecbb0d2801b"
+      "md5": "4dbfc01bb6913147fd2840d6708847ce",
+      "root": true
     }
   ]
 }

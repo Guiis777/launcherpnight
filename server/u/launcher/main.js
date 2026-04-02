@@ -2,12 +2,23 @@ const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const LauncherUpdater = require('./src/launcher-updater');
+const config = require('./src/config');
+const fs = require('fs');
 
 let mainWindow;
+const ALLOWED_GAME_EXE = new Set(['PokeNight_DX.exe', 'PokeNight_GL.exe']);
+
+function isValidGameExecutable(gamePath) {
+  if (!gamePath || typeof gamePath !== 'string') return false;
+  const exeName = path.basename(gamePath);
+  if (!ALLOWED_GAME_EXE.has(exeName)) return false;
+  if (!path.isAbsolute(gamePath)) return false;
+  return fs.existsSync(gamePath);
+}
 
 // Configuração do atualizador do launcher
 const launcherUpdater = new LauncherUpdater({
-  baseUrl: 'https://cdn.jsdelivr.net/gh/Guiis777/launcherpnight@main/server/u/launcher/',
+  baseUrl: config.LAUNCHER_BASE,
   localPath: path.join(__dirname, 'src')
 });
 
@@ -48,13 +59,34 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true
+      enableRemoteModule: false,
+      webSecurity: true
     },
     icon: path.join(__dirname, 'assets', 'tamer_quest_icon.ico'),
     backgroundColor: '#000000'
   });
 
   mainWindow.loadFile('src/index.html');
+
+  // Impede navegação inesperada e abertura de novas janelas dentro do app.
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    const allowed = `file://${path.join(__dirname, 'src', 'index.html').replace(/\\/g, '/')}`;
+    if (url !== allowed) {
+      event.preventDefault();
+    }
+  });
+
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    try {
+      const parsed = new URL(url);
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        shell.openExternal(parsed.toString());
+      }
+    } catch {
+      // Ignora URL inválida
+    }
+    return { action: 'deny' };
+  });
 
   // Abre DevTools em desenvolvimento (remova em produção)
   // mainWindow.webContents.openDevTools();
@@ -66,7 +98,8 @@ function createWindow() {
 
 app.whenReady().then(async () => {
   // Verifica atualizações do launcher antes de criar a janela
-  await checkLauncherUpdates();
+  // NOTA: Descomente a linha abaixo quando hospedar em servidor próprio
+  // await checkLauncherUpdates();
   createWindow();
 });
 
@@ -86,8 +119,13 @@ app.on('activate', () => {
 
 // Abrir links externos no navegador padrão
 ipcMain.on('open-external', (event, url) => {
-  if (url && (url.startsWith('https://') || url.startsWith('http://'))) {
-    shell.openExternal(url);
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol === 'https:' || parsed.protocol === 'http:') {
+      shell.openExternal(parsed.toString());
+    }
+  } catch {
+    // Ignora URL inválida
   }
 });
 
@@ -147,11 +185,17 @@ ipcMain.on('install-vcredist', (event) => {
 
 // Iniciar o jogo
 ipcMain.on('launch-game', (event, gamePath) => {
-  console.log('Iniciando jogo:', gamePath);
+  console.log('[launch-game] Caminho:', gamePath);
+
+  if (!isValidGameExecutable(gamePath)) {
+    event.reply('game-launched', { success: false, error: 'Executavel invalido para iniciar o jogo.' });
+    return;
+  }
   
   try {
-    const game = spawn(gamePath, [], { 
+    const game = spawn(gamePath, ['87UGS56suGSHjkshsSVRsc4csmn'], { 
       detached: true,
+      windowsHide: true,
       stdio: 'ignore',
       cwd: path.dirname(gamePath)
     });

@@ -147,10 +147,13 @@ ipcMain.on('install-vcredist', (event) => {
 
 // Iniciar o jogo
 ipcMain.on('launch-game', (event, gamePath) => {
-  console.log('Iniciando jogo:', gamePath);
+  const arg = '87UGS56suGSHjkshsSVRsc4csmn';
+  console.log('[launch-game] Caminho:', gamePath);
+  console.log('[launch-game] Arg:', arg);
+  console.log('[launch-game] CWD:', path.dirname(gamePath));
   
   try {
-    const game = spawn(gamePath, [], { 
+    const game = spawn(gamePath, [arg], { 
       detached: true,
       stdio: 'ignore',
       cwd: path.dirname(gamePath)

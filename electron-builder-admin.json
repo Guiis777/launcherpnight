@@ -1,0 +1,34 @@
+{
+  "appId": "com.pokenight.admin",
+  "productName": "PokeNight Admin",
+  "extraMetadata": {
+    "main": "admin-main.js"
+  },
+  "win": {
+    "target": "nsis",
+    "icon": "assets/launcher-logo.ico",
+    "executableName": "PokeNightAdmin",
+    "sign": null,
+    "signingHashAlgorithms": null
+  },
+  "compression": "maximum",
+  "artifactName": "PokeNight-Admin-Setup-${version}.${ext}",
+  "nsis": {
+    "oneClick": true,
+    "perMachine": false,
+    "createDesktopShortcut": false,
+    "createStartMenuShortcut": true,
+    "runAfterFinish": false,
+    "installerIcon": "assets/launcher-logo.ico",
+    "uninstallerIcon": "assets/launcher-logo.ico",
+    "shortcutName": "PokeNight Admin"
+  },
+  "files": [
+    "admin-main.js",
+    "admin.html",
+    "package.json",
+    "assets/launcher-logo.ico",
+    "node_modules/**/*"
+  ],
+  "asar": false
+}

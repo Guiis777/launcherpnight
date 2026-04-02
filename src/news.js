@@ -76,10 +76,7 @@ class NewsManager {
 
       return `
         <article class="news-card ${item.featured ? 'news-featured' : ''}" data-news-id="${item.id}">
-          <div class="news-card-image">
-            <img src="${item.image}" alt="${esc(item.title)}" class="news-image" onerror="this.style.opacity='0.3'">
-            ${item.badge ? `<div class="news-badge">${item.badge}</div>` : ''}
-          </div>
+          ${item.badge ? `<div class="news-badge">${item.badge}</div>` : ''}
           <div class="news-body">
             <div class="news-meta">
               <span class="news-date">${item.date}</span>

@@ -222,46 +222,34 @@
 <!-- TAB: ZIP -->
 <div class="tab-content" id="tab-zip">
   <div>
+    <label>GitHub Token <span style="color:#6b7280">(Settings → Developer settings → Personal access tokens → repo scope)</span></label>
+    <div class="row">
+      <input type="text" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" oninput="saveSettings()">
+    </div>
+  </div>
+
+  <div>
     <label>Pasta Local do Jogo (source)</label>
     <div class="row">
-      <input type="text" id="zip-source" placeholder="Selecione a pasta com os arquivos do jogo...">
+      <input type="text" id="zip-source" placeholder="Selecione a pasta com os arquivos do jogo..." oninput="saveSettings()">
       <button onclick="selectZipSource()">Procurar</button>
     </div>
   </div>
 
   <div>
-    <label>Pasta de destino do client.zip</label>
+    <label>Pasta temporária para salvar o client.zip</label>
     <div class="row">
-      <input type="text" id="zip-dest" placeholder="Onde salvar o client.zip...">
+      <input type="text" id="zip-dest" placeholder="Onde salvar o client.zip temporariamente..." oninput="saveSettings()">
       <button onclick="selectZipDest()">Procurar</button>
     </div>
   </div>
 
   <div class="actions">
-    <button class="green" onclick="generateZip()">Gerar client.zip</button>
+    <button onclick="generateZip()">1. Gerar client.zip</button>
+    <button class="green" id="btn-upload-release" onclick="uploadToRelease()" disabled>2. Upload para GitHub Release</button>
   </div>
 
   <div class="log-box" id="log-zip"></div>
-
-  <hr style="margin:8px 0">
-
-  <div>
-    <label>Depois de subir o ZIP no Google Drive, configure o link direto no config.js:</label>
-    <p style="font-size:12px;color:#9ca3af;margin-top:4px;">
-      1. Faça upload do <code style="color:#a78bfa">client.zip</code> no Google Drive<br>
-      2. Clique direito → <b>Compartilhar</b> → <b>Qualquer pessoa com o link</b><br>
-      3. Pegue o <b>ID</b> do link (ex: <code style="color:#a78bfa">1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs</code>)<br>
-      4. Cole abaixo e clique em <b>Salvar no config.js</b>
-    </p>
-  </div>
-
-  <div>
-    <label>ID do arquivo no Google Drive</label>
-    <div class="row">
-      <input type="text" id="drive-id" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs">
-      <button onclick="saveDriveUrl()">Salvar no config.js</button>
-    </div>
-  </div>
 </div>
 
 <div class="status-bar" id="status">Pronto.</div>
@@ -292,7 +280,8 @@ async function loadSettings() {
   const fill = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
   fill('repo-dir', s.repoDir); fill('repo-dir-launcher', s.repoDir); fill('repo-dir-full', s.repoDir);
   fill('game-dir', s.gameDir); fill('game-dir-full', s.gameDir);
-  fill('zip-source', s.zipSource); fill('zip-dest', s.zipDest); fill('drive-id', s.driveId);
+  fill('zip-source', s.zipSource); fill('zip-dest', s.zipDest);
+  fill('gh-token', s.ghToken);
 }
 function saveSettings() {
   ipcRenderer.invoke('save-settings', {
@@ -300,7 +289,7 @@ function saveSettings() {
     gameDir: document.getElementById('game-dir-full').value || document.getElementById('game-dir').value,
     zipSource: document.getElementById('zip-source').value,
     zipDest: document.getElementById('zip-dest').value,
-    driveId: document.getElementById('drive-id').value,
+    ghToken: document.getElementById('gh-token').value,
   });
 }
 loadSettings();
@@ -413,42 +402,70 @@ async function selectZipDest() {
   if (folder) document.getElementById('zip-dest').value = folder;
 }
 
+let _lastZipPath = null;
+
 async function generateZip() {
   const sourceDir = document.getElementById('zip-source').value.trim();
   const outputDir = document.getElementById('zip-dest').value.trim();
   if (!sourceDir || !outputDir) return alert('Preencha os dois campos.');
 
   document.getElementById('log-zip').innerHTML = '';
+  document.getElementById('btn-upload-release').disabled = true;
   setStatus('Gerando client.zip...');
   log('log-zip', '📦 Iniciando compressão...');
 
   ipcRenderer.on('zip-progress', (_, p) => {
-    log('log-zip', `   ${p.entries} arquivos (${(p.bytes / 1024 / 1024).toFixed(1)} MB)`);
+    const logBox = document.getElementById('log-zip');
+    const last = logBox.lastChild;
+    const msg = `   ${p.entries} arquivos (${(p.bytes / 1024 / 1024).toFixed(1)} MB)`;
+    if (last && last.textContent.startsWith('   ')) { last.textContent = msg; } 
+    else { log('log-zip', msg); }
   });
 
   const result = await ipcRenderer.invoke('generate-zip', { sourceDir, outputDir });
   ipcRenderer.removeAllListeners('zip-progress');
 
   if (result.success) {
+    _lastZipPath = result.path;
     log('log-zip', `✅ ZIP gerado: ${result.path} (${(result.size / 1024 / 1024).toFixed(1)} MB)`);
-    setStatus('ZIP gerado com sucesso!');
+    log('log-zip', '👆 Agora clique em "Upload para GitHub Release"');
+    document.getElementById('btn-upload-release').disabled = false;
+    setStatus('ZIP gerado!');
   } else {
     log('log-zip', '❌ ' + result.error);
     setStatus('Erro ao gerar ZIP.');
   }
 }
 
-async function saveDriveUrl() {
-  const id = document.getElementById('drive-id').value.trim();
-  if (!id) return alert('Cole o ID do arquivo do Google Drive.');
-  saveSettings();
-  const url = `https://drive.usercontent.google.com/download?id=${id}&export=download&confirm=t`;
-  const result = await ipcRenderer.invoke('set-zip-url', { url });
+async function uploadToRelease() {
+  const token = document.getElementById('gh-token').value.trim();
+  if (!token) return alert('Cole seu GitHub Token primeiro.');
+  if (!_lastZipPath) return alert('Gere o client.zip primeiro.');
+
+  document.getElementById('btn-upload-release').disabled = true;
+  log('log-zip', '🚀 Fazendo upload para GitHub Releases...');
+  setStatus('Enviando para GitHub...');
+
+  ipcRenderer.on('upload-progress', (_, p) => {
+    const logBox = document.getElementById('log-zip');
+    const last = logBox.lastChild;
+    const msg = `   Enviando... ${(p.sent / 1024 / 1024).toFixed(1)} / ${(p.total / 1024 / 1024).toFixed(1)} MB (${p.pct}%)`;
+    if (last && last.textContent.startsWith('   Enviando')) { last.textContent = msg; }
+    else { log('log-zip', msg); }
+  });
+
+  const result = await ipcRenderer.invoke('upload-release', { zipPath: _lastZipPath, token });
+  ipcRenderer.removeAllListeners('upload-progress');
+
   if (result.success) {
-    alert(`ZIP_URL salvo em src/config.js:\n${url}`);
-    setStatus('ZIP_URL atualizado no config.js');
+    log('log-zip', `✅ Upload concluído! URL: ${result.url}`);
+    log('log-zip', '✅ ZIP_URL já foi salvo no config.js automaticamente');
+    log('log-zip', '👉 Agora vá em "Atualizar Launcher" e publique');
+    setStatus('Upload concluído!');
   } else {
-    alert('Erro: ' + result.error);
+    log('log-zip', '❌ ' + result.error);
+    setStatus('Erro no upload.');
+    document.getElementById('btn-upload-release').disabled = false;
   }
 }
 

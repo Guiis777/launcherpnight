@@ -10,21 +10,33 @@
     "dev": "electron . --dev",
     "admin": "electron admin-main.js",
     "build": "electron-builder --win --x64",
+    "build:installer": "electron-builder --win nsis --x64",
+    "build:admin": "electron-builder --win --x64 --config electron-builder-admin.json",
     "dist": "electron-builder"
   },
   "build": {
     "appId": "com.pokenight.launcher",
-    "productName": "PokeNight Launcher",
+    "productName": "PokeNight",
     "win": {
       "target": "nsis",
-      "icon": "assets/tamer_quest_icon.ico",
+      "icon": "assets/launcher-logo.ico",
+      "executableName": "PokeNight",
       "sign": null,
       "signingHashAlgorithms": null
     },
+    "compression": "maximum",
+    "artifactName": "PokeNight-Setup-${version}.${ext}",
     "nsis": {
-      "oneClick": true,
+      "oneClick": false,
       "perMachine": false,
-      "installerIcon": "assets/tamer_quest_icon.ico",
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "assets/launcher-logo.ico",
+      "uninstallerIcon": "assets/launcher-logo.ico",
+      "uninstallDisplayName": "PokeNight Launcher",
       "shortcutName": "PokeNight Launcher"
     },
     "files": [

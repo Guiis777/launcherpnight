@@ -5,7 +5,8 @@ const crypto = require('crypto');
 const { execSync, execFile } = require('child_process');
 const archiver = require('archiver');
 
-const SETTINGS_PATH = path.join(__dirname, 'admin-settings.json');
+// userData funciona tanto em dev quanto quando instalado (ex: AppData\Roaming\PokeNight Admin)
+const SETTINGS_PATH = path.join(app.getPath('userData'), 'admin-settings.json');
 
 ipcMain.handle('load-settings', () => {
   try {
@@ -156,12 +157,16 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
     send('🔧 Gerando manifest do launcher...');
     const launcherDir = path.join(repoDir, 'server', 'u', 'launcher');
     if (fs.existsSync(launcherDir)) {
+      const rootMain = path.join(repoDir, 'main.js');
+      if (fs.existsSync(rootMain)) {
+        fs.copyFileSync(rootMain, path.join(launcherDir, 'main.js'));
+      }
       const uiFiles = ['auth.js','config.js','index.html','launcher-updater.js','news-config.json','news.js','renderer.js','styles.css','updater.js','main.js'];
       const entries = [];
       for (const f of uiFiles) {
         const fp = path.join(launcherDir, f);
         if (fs.existsSync(fp)) {
-          entries.push({ name: f, md5: md5(fp).toLowerCase() });
+          entries.push({ name: f, md5: md5(fp).toLowerCase(), root: f === 'main.js' });
         }
       }
       const manifest = { version: new Date().toISOString(), files: entries };
@@ -230,7 +235,7 @@ ipcMain.handle('deploy-launcher-only', async (_, { repoDir, commitMsg }) => {  c
     send('📋 Sincronizando arquivos do launcher...');
     const srcDir = path.join(repoDir, 'src');
     const launcherDir = path.join(repoDir, 'server', 'u', 'launcher');
-    const uiFiles = ['auth.js','config.js','index.html','launcher-updater.js','news-config.json','news.js','renderer.js','styles.css','updater.js','main.js'];
+    const uiFiles = ['auth.js','config.js','index.html','launcher-updater.js','news-config.json','news.js','renderer.js','styles.css','updater.js'];
     for (const f of uiFiles) {
       const src = path.join(srcDir, f);
       if (fs.existsSync(src)) {
@@ -239,13 +244,19 @@ ipcMain.handle('deploy-launcher-only', async (_, { repoDir, commitMsg }) => {  c
       }
     }
 
+    const rootMain = path.join(repoDir, 'main.js');
+    if (fs.existsSync(rootMain)) {
+      fs.copyFileSync(rootMain, path.join(launcherDir, 'main.js'));
+      send('   Copiado: main.js (raiz)');
+    }
+
     // Gera manifest
     send('🔧 Gerando manifest...');
     const entries = [];
-    for (const f of uiFiles) {
+    for (const f of [...uiFiles, 'main.js']) {
       const fp = path.join(launcherDir, f);
       if (fs.existsSync(fp)) {
-        entries.push({ name: f, md5: md5(fp).toLowerCase() });
+        entries.push({ name: f, md5: md5(fp).toLowerCase(), root: f === 'main.js' });
       }
     }
     const manifest = { version: new Date().toISOString(), files: entries };
@@ -283,6 +294,130 @@ ipcMain.handle('set-zip-url', (_, { url }) => {
     content = content.replace(/ZIP_URL:\s*['"][^'"]*['"]/, `ZIP_URL: '${url}'`);
     fs.writeFileSync(configPath, content, 'utf8');
     return { success: true };
+  } catch (e) {
+    return { success: false, error: e.message };
+  }
+});
+
+// Upload client.zip para GitHub Releases (cria/atualiza release "game-client")
+ipcMain.handle('upload-release', async (_, { zipPath, token }) => {
+  const https = require('https');
+  const owner = 'Guiis777';
+  const repo  = 'launcherpnight';
+  const tag   = 'game-client';
+
+  function ghRequest(method, endpoint, body, extraHeaders) {
+    return new Promise((resolve, reject) => {
+      const isUpload = extraHeaders && extraHeaders['Content-Type'] === 'application/zip';
+      const host = isUpload ? 'uploads.github.com' : 'api.github.com';
+      const options = {
+        hostname: host,
+        path: isUpload ? endpoint : `/repos/${owner}/${repo}${endpoint}`,
+        method,
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github+json',
+          'User-Agent': 'PokeNight-Admin',
+          ...extraHeaders
+        }
+      };
+      const req = https.request(options, (res) => {
+        let data = '';
+        res.on('data', d => data += d);
+        res.on('end', () => {
+          try { resolve({ status: res.statusCode, body: JSON.parse(data) }); }
+          catch { resolve({ status: res.statusCode, body: data }); }
+        });
+      });
+      req.on('error', reject);
+      if (body && !isUpload) req.write(typeof body === 'string' ? body : JSON.stringify(body));
+      if (!isUpload) req.end();
+    });
+  }
+
+  try {
+    // 1. Verificar/criar release
+    let releaseId, uploadUrl;
+    const existing = await ghRequest('GET', `/releases/tags/${tag}`);
+    if (existing.status === 200) {
+      releaseId = existing.body.id;
+      uploadUrl = existing.body.upload_url.replace('{?name,label}', '');
+      // Deletar asset antigo se existir
+      const assets = await ghRequest('GET', `/releases/${releaseId}/assets`);
+      if (assets.status === 200) {
+        for (const a of assets.body) {
+          if (a.name === 'client.zip') {
+            await ghRequest('DELETE', `/releases/assets/${a.id}`);
+          }
+        }
+      }
+    } else {
+      const created = await ghRequest('POST', '/releases', {
+        tag_name: tag, name: 'Game Client', body: 'PokeNight game client files.',
+        draft: false, prerelease: false
+      });
+      if (created.status !== 201) return { success: false, error: `Erro ao criar release: ${JSON.stringify(created.body)}` };
+      releaseId = created.body.id;
+      uploadUrl = created.body.upload_url.replace('{?name,label}', '');
+    }
+
+    // 2. Upload do arquivo com progresso
+    const fileSize = fs.statSync(zipPath).size;
+    const fileStream = fs.createReadStream(zipPath);
+
+    const url = await new Promise((resolve, reject) => {
+      const uploadUrlParsed = new URL(uploadUrl + '?name=client.zip');
+      let sent = 0;
+      let lastEmit = 0;
+
+      const options = {
+        hostname: uploadUrlParsed.hostname,
+        path: uploadUrlParsed.pathname + uploadUrlParsed.search,
+        method: 'POST',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github+json',
+          'User-Agent': 'PokeNight-Admin',
+          'Content-Type': 'application/zip',
+          'Content-Length': fileSize,
+        }
+      };
+
+      const req = https.request(options, (res) => {
+        let data = '';
+        res.on('data', d => data += d);
+        res.on('end', () => {
+          try {
+            const body = JSON.parse(data);
+            resolve(body.browser_download_url || null);
+          } catch { reject(new Error('Resposta inválida do GitHub')); }
+        });
+      });
+      req.on('error', reject);
+
+      fileStream.on('data', (chunk) => {
+        sent += chunk.length;
+        const now = Date.now();
+        if (now - lastEmit > 500) {
+          lastEmit = now;
+          win.webContents.send('upload-progress', {
+            sent, total: fileSize, pct: Math.round((sent / fileSize) * 100)
+          });
+        }
+      });
+
+      fileStream.pipe(req);
+    });
+
+    if (!url) return { success: false, error: 'Upload sem URL de retorno' };
+
+    // 3. Salvar URL no config.js automaticamente
+    const configPath = path.join(__dirname, 'src', 'config.js');
+    let content = fs.readFileSync(configPath, 'utf8');
+    content = content.replace(/ZIP_URL:\s*['"][^'"]*['"]/, `ZIP_URL: '${url}'`);
+    fs.writeFileSync(configPath, content, 'utf8');
+
+    return { success: true, url };
   } catch (e) {
     return { success: false, error: e.message };
   }
