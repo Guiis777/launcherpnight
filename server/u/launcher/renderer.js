@@ -227,6 +227,18 @@ function getClientExe() {
   return pref === 'gl' ? 'PokeNight_GL.exe' : 'PokeNight_DX.exe';
 }
 
+function setRenderer(type) {
+  localStorage.setItem('tq-renderer', type);
+  document.getElementById('ren-dx').classList.toggle('active', type === 'dx');
+  document.getElementById('ren-gl').classList.toggle('active', type === 'gl');
+}
+
+// Init renderer buttons
+(function() {
+  const pref = localStorage.getItem('tq-renderer') || 'dx';
+  setRenderer(pref);
+})();
+
 function isGameInstalled() {
   const gamePath = updater.getGamePath();
   // Instalado se qualquer um dos exe existe
