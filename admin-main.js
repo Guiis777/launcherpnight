@@ -124,18 +124,27 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
     const destDir = path.join(repoDir, 'server', 'u');
     if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
 
-    // 3. Copiar arquivos
-    send('📋 Copiando arquivos para o repositório...');
-    let copied = 0;
+    // 3. Copiar apenas arquivos que mudaram (comparar MD5)
+    send('📋 Verificando o que mudou...');
+    let copied = 0, skipped = 0;
     for (const file of files) {
       const src = path.join(sourceDir, file.replace(/\//g, path.sep));
       const dst = path.join(destDir, file.replace(/\//g, path.sep));
       fs.mkdirSync(path.dirname(dst), { recursive: true });
-      fs.copyFileSync(src, dst);
-      copied++;
-      if (copied % 50 === 0) send(`   Copiados ${copied}/${files.length}...`);
+
+      let changed = true;
+      if (fs.existsSync(dst)) {
+        const srcHash = md5(src);
+        const dstHash = md5(dst);
+        if (srcHash === dstHash) { skipped++; changed = false; }
+      }
+
+      if (changed) {
+        fs.copyFileSync(src, dst);
+        copied++;
+      }
     }
-    send(`✅ ${copied} arquivos copiados`);
+    send(`✅ ${copied} alterados copiados, ${skipped} sem mudança ignorados`);
 
     // 4. Gerar hash.xml
     send('🔧 Gerando hash.xml...');
