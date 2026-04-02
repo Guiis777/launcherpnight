@@ -2,13 +2,12 @@ const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const LauncherUpdater = require('./src/launcher-updater');
-const config = require('./src/config');
 
 let mainWindow;
 
 // Configuração do atualizador do launcher
 const launcherUpdater = new LauncherUpdater({
-  baseUrl: config.LAUNCHER_BASE,
+  baseUrl: 'https://cdn.jsdelivr.net/gh/Guiis777/launcherpnight@main/server/u/launcher/',
   localPath: path.join(__dirname, 'src')
 });
 
@@ -67,8 +66,7 @@ function createWindow() {
 
 app.whenReady().then(async () => {
   // Verifica atualizações do launcher antes de criar a janela
-  // NOTA: Descomente a linha abaixo quando hospedar em servidor próprio
-  // await checkLauncherUpdates();
+  await checkLauncherUpdates();
   createWindow();
 });
 

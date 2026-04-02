@@ -5,12 +5,15 @@
 
 module.exports = {
   // URL base do servidor de arquivos (onde ficam os updates do jogo)
-  // Estrutura esperada: {FILES_BASE}/hash.xml, {FILES_BASE}/client.zip, etc.
-  FILES_BASE: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/',
+  FILES_BASE: 'https://cdn.jsdelivr.net/gh/Guiis777/launcherpnight@main/server/u/',
 
-  // URL base do launcher updater (onde ficam os arquivos de UI do launcher)
-  // Estrutura esperada: {LAUNCHER_BASE}/manifest.json, {LAUNCHER_BASE}/renderer.js, etc.
-  LAUNCHER_BASE: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/launcher/',
+  // URL base do launcher updater
+  LAUNCHER_BASE: 'https://cdn.jsdelivr.net/gh/Guiis777/launcherpnight@main/server/u/launcher/',
+
+  // URL do client.zip para primeira instalação (Google Drive ou outro host rápido)
+  // Deixe vazio ('') para desativar o zip e usar download incremental
+  // Formato Google Drive: https://drive.usercontent.google.com/download?id=SEU_FILE_ID&export=download&confirm=t
+  ZIP_URL: '',
 
   // URL base da API de autenticação
   // Endpoints: {API_BASE}/accounts/authentication.php
