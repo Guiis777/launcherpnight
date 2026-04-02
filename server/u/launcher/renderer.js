@@ -17,7 +17,9 @@ const updater = new Updater({
   baseUrl: config.FILES_BASE,
   hashFile: 'hash.xml',
   zipUrl: config.ZIP_URL || null,
-  gamePath: localStorage.getItem('gamePath') || DEFAULT_GAME_PATH
+  gamePath: localStorage.getItem('gamePath') || DEFAULT_GAME_PATH,
+  concurrentDownloads: 15,
+  concurrentDownloadsFirstRun: 20,
 });
 
 // ==========================================
@@ -107,6 +109,25 @@ function formatBytes(bytes) {
 // Eventos do Updater
 // ==========================================
 let _isDownloading = false;
+let _dlSpeedTracker = { bytes: 0, time: Date.now(), speed: 0 };
+
+function calcSpeed(receivedTotal) {
+  const now = Date.now();
+  const elapsed = (now - _dlSpeedTracker.time) / 1000;
+  if (elapsed >= 1) {
+    const diff = receivedTotal - _dlSpeedTracker.bytes;
+    _dlSpeedTracker.speed = diff / elapsed;
+    _dlSpeedTracker.bytes = receivedTotal;
+    _dlSpeedTracker.time = now;
+  }
+  return _dlSpeedTracker.speed;
+}
+
+function formatSpeed(bps) {
+  if (bps <= 0) return '';
+  if (bps > 1024 * 1024) return ` · ${(bps / 1024 / 1024).toFixed(1)} MB/s`;
+  return ` · ${(bps / 1024).toFixed(0)} KB/s`;
+}
 
 updater.on('status', (message) => {
   // Não resetar a barra de progresso durante download de arquivo
@@ -125,21 +146,26 @@ updater.on('check-progress', ({ checked, total, file, needsUpdate }) => {
 });
 
 updater.on('download-progress', ({ file, downloadedFiles, totalFiles }) => {
-  _isDownloading = false; // Arquivo terminou
+  _isDownloading = false;
   const percent = totalFiles > 0 ? (downloadedFiles / totalFiles) * 100 : 0;
   updateProgress(percent, `Baixando: ${file} (${downloadedFiles}/${totalFiles})`);
 });
 
+let _totalReceived = 0;
 updater.on('file-download-progress', ({ file, received, total, percent, downloadedFiles, totalFiles }) => {
   _isDownloading = true;
-  const dlInfo = totalFiles > 0 ? ` (${downloadedFiles}/${totalFiles})` : '';
+  _totalReceived += received;
+  const speed = calcSpeed(_totalReceived);
+  const speedStr = formatSpeed(speed);
+  const dlInfo = totalFiles > 1 ? ` (${downloadedFiles}/${totalFiles})` : '';
+
   if (total > 0 && percent >= 0) {
-    // Temos Content-Length: mostra porcentagem real
-    updateProgress(percent, `Baixando: ${file}${dlInfo} - ${percent}% (${formatBytes(received)}/${formatBytes(total)})`);
+    const eta = speed > 0 ? Math.round((total - received) / speed) : 0;
+    const etaStr = eta > 5 ? ` · ~${eta < 60 ? eta + 's' : Math.round(eta/60) + 'min'}` : '';
+    updateProgress(percent, `Baixando: ${file}${dlInfo} · ${percent}%${speedStr}${etaStr}`);
   } else {
-    // Sem Content-Length: mostra só bytes baixados (barra pulsa)
     const fakePct = Math.min(95, Math.round((received / (500 * 1024 * 1024)) * 100));
-    updateProgress(fakePct, `Baixando: ${file}${dlInfo} - ${formatBytes(received)}`);
+    updateProgress(fakePct, `Baixando: ${file}${dlInfo} · ${formatBytes(received)}${speedStr}`);
   }
 });
 

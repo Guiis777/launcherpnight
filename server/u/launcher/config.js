@@ -5,7 +5,7 @@
 
 module.exports = {
   // URL base do servidor de arquivos (onde ficam os updates do jogo)
-  FILES_BASE: 'https://cdn.jsdelivr.net/gh/Guiis777/launcherpnight@main/server/u/',
+  FILES_BASE: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/',
 
   // URL base do launcher updater
   LAUNCHER_BASE: 'https://cdn.jsdelivr.net/gh/Guiis777/launcherpnight@main/server/u/launcher/',
