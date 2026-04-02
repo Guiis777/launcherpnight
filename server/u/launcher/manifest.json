@@ -1,55 +1,60 @@
-{
-  "version": "2026-04-02T07:04:24.724Z",
-  "files": [
-    {
-      "name": "auth.js",
-      "md5": "5fc6af9fcec697ba8ded729c40b0b6aa",
-      "root": false
-    },
-    {
-      "name": "config.js",
-      "md5": "eed83876c48093478f0a125ff8aab606",
-      "root": false
-    },
-    {
-      "name": "index.html",
-      "md5": "9c0410f5460131e0fbb821576211b7e7",
-      "root": false
-    },
-    {
-      "name": "launcher-updater.js",
-      "md5": "d797aafd8e714d44f1a61630fb179eaa",
-      "root": false
-    },
-    {
-      "name": "news-config.json",
-      "md5": "69a65b860a8e0bb53ed9d5817859bb8a",
-      "root": false
-    },
-    {
-      "name": "news.js",
-      "md5": "dcbb7a453bd4f6d66a76252fc54435f1",
-      "root": false
-    },
-    {
-      "name": "renderer.js",
-      "md5": "d9c223a1c9a388628ad69daaf1c0ec88",
-      "root": false
-    },
-    {
-      "name": "styles.css",
-      "md5": "e89b386850b55be81fcc7ff6a651764d",
-      "root": false
-    },
-    {
-      "name": "updater.js",
-      "md5": "d804df920c8d46ea5a283f932eb89a4d",
-      "root": false
-    },
-    {
-      "name": "main.js",
-      "md5": "4dbfc01bb6913147fd2840d6708847ce",
-      "root": true
-    }
-  ]
+﻿{
+    "version":  "2026-04-02T13:57:51.836Z",
+    "files":  [
+                  {
+                      "md5":  "5fc6af9fcec697ba8ded729c40b0b6aa",
+                      "root":  false,
+                      "name":  "auth.js"
+                  },
+                  {
+                      "md5":  "e02d71d1add40631394f62599598dc80",
+                      "root":  false,
+                      "name":  "config.js"
+                  },
+                  {
+                      "md5":  "9f9ad1b9a111964aa0d0734e890e0f55",
+                      "root":  false,
+                      "name":  "index.html"
+                  },
+                  {
+                      "md5":  "87ef79bf90d6813a2d968770cf1c50ac",
+                      "root":  false,
+                      "name":  "launcher-updater.js"
+                  },
+                  {
+                      "md5":  "3851314c49d72db1f15353454a49b6e7",
+                      "root":  false,
+                      "name":  "news-config.json"
+                  },
+                  {
+                      "md5":  "c0602c1c8bdef7b45fb11068a0b13ad1",
+                      "root":  false,
+                      "name":  "news.js"
+                  },
+                  {
+                      "md5":  "989d5059d0b9bf8d1b3817d9a256df2d",
+                      "root":  false,
+                      "name":  "renderer.js"
+                  },
+                  {
+                      "md5":  "e6a8ccc215e224a6879afe13024f6c81",
+                      "root":  false,
+                      "name":  "styles.css"
+                  },
+                  {
+                      "md5":  "df9c9ea14fd6c513714420e4f0477e35",
+                      "root":  false,
+                      "name":  "updater.js"
+                  },
+                  {
+                      "md5":  "f42c22ad58a47950ae7e6178ba174e80",
+                      "root":  true,
+                      "name":  "main.js"
+                  },
+                  {
+                      "md5":  "7b3c2040d164af77d232b41c5abb4005",
+                      "name":  "Pallet-Town-Theme.ogg",
+                      "subdir":  "assets"
+                  }
+              ]
 }

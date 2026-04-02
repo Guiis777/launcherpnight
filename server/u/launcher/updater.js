@@ -4,11 +4,19 @@ const fs = require('fs');
 const path = require('path');
 const { EventEmitter } = require('events');
 const { execFile } = require('child_process');
+const https = require('https');
+const http = require('http');
+
+// Agentes com keep-alive reutilizam conexões TCP — evita handshake por arquivo
+const _httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 32, timeout: 60000 });
+const _httpAgent  = new http.Agent({  keepAlive: true, maxSockets: 32, timeout: 60000 });
 
 class Updater extends EventEmitter {
   constructor(options = {}) {
     super();
     this.baseUrl = options.baseUrl || 'https://tamerquest.com/u/';
+    // URL alternativa para binários bloqueados pelo CDN principal (.exe, .dll)
+    this.baseUrlRaw = options.baseUrlRaw || this.baseUrl;
     this.configUrl = options.configUrl || (this.baseUrl + 'updater-config.json');
     this.hashFile = options.hashFile || 'hash.xml';
     // __dirname resolve corretamente em dev e em produção com asar:false
@@ -29,6 +37,8 @@ class Updater extends EventEmitter {
     this.zipFile = options.zipFile || 'client.zip';
     // URL direta para o zip (ex: Google Drive) — se definida, usa em vez de baseUrl+zipFile
     this.zipUrl = options.zipUrl || null;
+    // Caminho para o cliente bundled no installer (copiar para gamePath no primeiro uso)
+    this.bundledClientPath = options.bundledClientPath || null;
   }
 
   // Busca updater-config.json do servidor
@@ -117,6 +127,67 @@ class Updater extends EventEmitter {
     } catch (e) {}
   }
 
+  // Copia o cliente bundled do installer para o gamePath
+  // Usa robocopy (rápido no Windows), com fallback para cópia Node
+  async copyBundledClient(srcPath) {
+    this.emit('status', 'Copiando cliente do jogo...');
+    if (!fs.existsSync(this.gamePath)) {
+      fs.mkdirSync(this.gamePath, { recursive: true });
+    }
+
+    let progressTimer = null;
+    let dotCount = 0;
+    progressTimer = setInterval(() => {
+      dotCount = (dotCount + 1) % 4;
+      const dots = '.'.repeat(dotCount + 1);
+      this.emit('status', `Copiando cliente${dots}`);
+      this.emit('file-download-progress', { percent: -1, downloadedFiles: 0, totalFiles: 0 });
+    }, 800);
+
+    try {
+      await new Promise((resolve, reject) => {
+        execFile('robocopy', [
+          srcPath, this.gamePath,
+          '/E',    // inclui subpastas e pastas vazias
+          '/NFL',  // sem log de arquivo
+          '/NDL',  // sem log de pasta
+          '/NJH',  // sem cabeçalho
+          '/NJS',  // sem sumário
+          '/NC',   // sem classes
+          '/NS',   // sem tamanhos
+          '/NP'    // sem percentual
+        ], { timeout: 600000 }, (err) => {
+          const code = err ? err.code : 0;
+          // robocopy: código < 8 = sucesso (0=nada, 1=copiado, 2=extra, 3=ambos)
+          if (code < 8) resolve();
+          else reject(new Error(`robocopy falhou com código ${code}`));
+        });
+      });
+    } catch (robocopyErr) {
+      console.warn('[Updater] robocopy falhou, usando cópia Node:', robocopyErr.message);
+      await this._nodeCopyDir(srcPath, this.gamePath);
+    } finally {
+      clearInterval(progressTimer);
+    }
+
+    this.emit('status', 'Cliente copiado!');
+  }
+
+  // Cópia recursiva assíncrona (fallback do robocopy)
+  async _nodeCopyDir(src, dest) {
+    if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
+    const entries = fs.readdirSync(src, { withFileTypes: true });
+    for (const entry of entries) {
+      const srcFull = path.join(src, entry.name);
+      const destFull = path.join(dest, entry.name);
+      if (entry.isDirectory()) {
+        await this._nodeCopyDir(srcFull, destFull);
+      } else {
+        await fs.promises.copyFile(srcFull, destFull);
+      }
+    }
+  }
+
   // Detecta se é primeira instalação (nenhum exe do client existe)
   isFirstRun() {
     const exeDx = path.join(this.gamePath, 'PokeNight_DX.exe');
@@ -184,7 +255,7 @@ class Updater extends EventEmitter {
   async fetchHashList() {
     try {
       const url = this.baseUrl + this.hashFile + '?t=' + Date.now();
-      this.emit('status', 'Baixando lista de arquivos...');
+      this.emit('status', 'Verificando atualizações...');
       
       const response = await axios.get(url, { 
         responseType: 'text',
@@ -192,7 +263,7 @@ class Updater extends EventEmitter {
         headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
       });
       
-      return this.parseHashXml(response.data);
+      return { files: this.parseHashXml(response.data), xmlContent: response.data };
     } catch (error) {
       this.emit('error', `Erro ao baixar lista de arquivos: ${error.message}`);
       throw error;
@@ -311,8 +382,9 @@ class Updater extends EventEmitter {
   // Faz GET nativo (https/http) retornando stream - funciona em Electron diferente de axios
   _nativeGet(url) {
     return new Promise((resolve, reject) => {
-      const mod = url.startsWith('https') ? require('https') : require('http');
-      const req = mod.get(url, { headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' } }, (res) => {
+      const mod = url.startsWith('https') ? https : http;
+      const agent = url.startsWith('https') ? _httpsAgent : _httpAgent;
+      const req = mod.get(url, { agent, headers: {} }, (res) => {
         // Seguir redirects
         if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
           return this._nativeGet(res.headers.location).then(resolve).catch(reject);
@@ -332,16 +404,17 @@ class Updater extends EventEmitter {
   }
 
   async _getDownloadResponse(fileName) {
-    const primaryUrl = this.baseUrl + encodeURI(fileName) + '?v=' + Date.now();
+    // Binários (.exe, .dll, .so) são bloqueados por CDNs como jsDelivr — usa raw URL para eles
+    const isBinary = /\.(exe|dll|so|dylib|bin)$/i.test(fileName);
+    const base = isBinary ? this.baseUrlRaw : this.baseUrl;
+    const primaryUrl = base + encodeURI(fileName);
     let res = await this._nativeGet(primaryUrl);
     let usedUrl = primaryUrl;
 
-    // Alguns mirrors/CDNs podem retornar 404 em /u/ para clientes específicos.
-    // Se isso acontecer, tenta automaticamente o endpoint /otclient/.
     if (res.statusCode === 404) {
       const fallbackBase = this._fallbackBaseUrl();
       if (fallbackBase) {
-        const fallbackUrl = fallbackBase + encodeURI(fileName) + '?v=' + Date.now();
+        const fallbackUrl = fallbackBase + encodeURI(fileName);
         const fallbackRes = await this._nativeGet(fallbackUrl);
         if (fallbackRes.statusCode < 400) {
           console.warn(`[Updater] Fallback /otclient aplicado para ${fileName}`);
@@ -384,7 +457,7 @@ class Updater extends EventEmitter {
         let lastProgressEmit = 0;
 
         await new Promise((resolve, reject) => {
-          const writer = fs.createWriteStream(tmpPath);
+          const writer = fs.createWriteStream(tmpPath, { highWaterMark: 1024 * 1024 }); // 1MB buffer
           let finished = false;
           
           // Timeout de inatividade: se não receber dados por 30s, aborta
@@ -563,17 +636,17 @@ class Updater extends EventEmitter {
 
     this.emit('status', 'Baixando cliente do jogo...');
 
-    // Download usando https nativo (garante stream real)
-    const https = require('https');
-    const http = require('http');
+    // Usa módulos https/http declarados no topo com keep-alive agent
     const client = url.startsWith('https') ? https : http;
+    const agent  = url.startsWith('https') ? _httpsAgent : _httpAgent;
 
     await new Promise((resolve, reject) => {
-      const request = client.get(url, (response) => {
+      const request = client.get(url, { agent }, (response) => {
         // Seguir redirects
         if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
           const redirectClient = response.headers.location.startsWith('https') ? https : http;
-          redirectClient.get(response.headers.location, (res) => handleResponse(res));
+          const redirectAgent  = response.headers.location.startsWith('https') ? _httpsAgent : _httpAgent;
+          redirectClient.get(response.headers.location, { agent: redirectAgent }, (res) => handleResponse(res));
           return;
         }
         handleResponse(response);
@@ -773,42 +846,48 @@ class Updater extends EventEmitter {
       // Na primeira instalação, sempre força verificação completa
       if (firstRun) {
         forceCheck = true;
-        this.emit('status', 'Instalando cliente do jogo...');
         this.emit('first-run', true);
       }
 
-      // PRIMEIRA INSTALAÇÃO: baixar zip completo (sem verificar hash)
-      // Se o client veio bundled no installer, pula o zip e vai pro incremental
+      // PRIMEIRA INSTALAÇÃO: se há cliente bundled no installer, copiar para gamePath
+      // Depois cai no check incremental para garantir que está na versão mais recente
       if (firstRun) {
-        const zipInfo = await this.hasRemoteZip();
-        if (zipInfo.exists) {
-          this.emit('status', 'Baixando cliente completo via zip...');
-          await this.downloadAndExtractZip();
-          this.saveUpdaterVersion();
-          this.emit('status', 'Instalação concluída!');
-          this.emit('complete', { updated: 1 });
-          return true;
+        const hasBundled = this.bundledClientPath && fs.existsSync(this.bundledClientPath);
+        if (hasBundled) {
+          this.emit('status', 'Instalando cliente do jogo...');
+          await this.copyBundledClient(this.bundledClientPath);
+          // Apagar arquivos de controle copiados da máquina de build — serão recriados frescos
+          try { if (fs.existsSync(this.updateInfoFile)) fs.unlinkSync(this.updateInfoFile); } catch (e) {}
+          try { if (fs.existsSync(this.versionFile)) fs.unlinkSync(this.versionFile); } catch (e) {}
+          // Continua abaixo para check incremental (atualiza diffs desde o installer)
+        } else {
+          // Sem bundled — tenta baixar zip completo
+          const zipInfo = await this.hasRemoteZip();
+          if (zipInfo.exists) {
+            this.emit('status', 'Baixando cliente completo via zip...');
+            await this.downloadAndExtractZip();
+            this.saveUpdaterVersion();
+            this.emit('status', 'Instalação concluída!');
+            this.emit('complete', { updated: 1 });
+            return true;
+          }
         }
       }
 
-      // 1. Verificar se hash.xml mudou (controle por data do servidor)
+      // 1. Baixar hash.xml e verificar se mudou pelo conteúdo (mais confiável que ETag/Last-Modified)
+      const { files: serverFiles, xmlContent } = await this.fetchHashList();
+
       if (!forceCheck) {
-        this.emit('status', 'Verificando atualizações...');
-        const remoteStatus = await this.hasRemoteChanged();
-        
-        if (!remoteStatus.changed) {
+        const xmlHash = crypto.createHash('md5').update(xmlContent).digest('hex');
+        const savedInfo = this.loadUpdateInfo();
+        if (savedInfo.xmlHash && savedInfo.xmlHash === xmlHash) {
           this.emit('status', 'Jogo atualizado!');
           this.emit('complete', { updated: 0, skipped: true });
           return true;
         }
-
-        // Guardar headers para salvar depois
-        this._pendingHeaders = remoteStatus.headers;
+        this._pendingXmlHash = xmlHash;
       }
 
-      // 2. Baixar lista de hashes do servidor
-      const serverFiles = await this.fetchHashList();
-      
       if (serverFiles.length === 0) {
         this.emit('error', 'Nenhum arquivo encontrado no hash.xml');
         return false;
@@ -827,11 +906,10 @@ class Updater extends EventEmitter {
       if (filesToUpdate.length === 0) {
         this.emit('status', 'Jogo atualizado!');
         
-        // Salvar info de última verificação bem-sucedida
-        if (this._pendingHeaders) {
+        // Salvar xmlHash para evitar re-verificação na próxima vez
+        if (this._pendingXmlHash) {
           this.saveUpdateInfo({
-            lastModified: this._pendingHeaders.lastModified,
-            etag: this._pendingHeaders.etag,
+            xmlHash: this._pendingXmlHash,
             lastCheck: new Date().toISOString(),
             totalFiles: serverFiles.length
           });
@@ -856,66 +934,22 @@ class Updater extends EventEmitter {
       const failedFiles = await this.downloadFilesParallel(filesToUpdate);
       this.concurrentDownloads = prevConcurrent;
 
-      // 5. VERIFICAÇÃO FINAL DE INTEGRIDADE
-      // Após todos os downloads, re-verificar todos os arquivos baixados.
-      // Se algum estiver corrompido, deletar e re-baixar.
-      this.emit('status', 'Verificando integridade dos arquivos...');
-      const corruptedFiles = [];
-      let verifyCount = 0;
-
-      for (const file of filesToUpdate) {
-        verifyCount++;
-        const localPath = path.join(this.gamePath, file.name);
-
-        if (!fs.existsSync(localPath)) {
-          corruptedFiles.push(file);
-          continue;
-        }
-
-        const localMd5 = await this.calculateMD5(localPath);
-        if (localMd5 !== file.md5.toLowerCase()) {
-          console.warn(`[Updater] Integridade falhou: ${file.name} (esperado: ${file.md5}, atual: ${localMd5})`);
-          try { fs.unlinkSync(localPath); } catch (e) {}
-          corruptedFiles.push(file);
-        }
-
-        if (verifyCount % 50 === 0 || verifyCount === filesToUpdate.length) {
-          this.emit('status', `Verificando: ${verifyCount}/${filesToUpdate.length}`);
-        }
-      }
-
-      // Re-baixar arquivos corrompidos (uma rodada extra)
-      if (corruptedFiles.length > 0) {
-        console.log(`[Updater] ${corruptedFiles.length} arquivo(s) corrompido(s) — re-baixando...`);
-        this.emit('status', `Re-baixando ${corruptedFiles.length} arquivo(s) corrompido(s)...`);
+      // 5. Verificação final: só re-baixa arquivos que realmente falharam
+      if (failedFiles.length > 0) {
+        console.log(`[Updater] ${failedFiles.length} arquivo(s) com falha — re-baixando...`);
+        this.emit('status', `Re-baixando ${failedFiles.length} arquivo(s) com falha...`);
         this.downloadedFiles = 0;
-        this.totalFiles = corruptedFiles.length;
-        const retryFailed = await this.downloadFilesParallel(corruptedFiles);
-
-        // Se ainda falhar, adicionar aos failedFiles
-        if (retryFailed && retryFailed.length > 0) {
-          for (const f of retryFailed) {
-            if (!failedFiles.some(ff => ff.file === f.file)) {
-              failedFiles.push(f);
-            }
-          }
-        } else {
-          // Remover dos failedFiles os que foram corrigidos
-          for (const cf of corruptedFiles) {
-            const idx = failedFiles.findIndex(ff => ff.file === cf.name);
-            if (idx >= 0) failedFiles.splice(idx, 1);
-          }
-        }
+        this.totalFiles = failedFiles.length;
+        await this.downloadFilesParallel(failedFiles);
       }
 
       // 6. Salvar info da atualização
       // IMPORTANTE: Só salvar headers se TODOS os arquivos foram baixados com sucesso.
       // Se houver falhas, não salvar — assim na próxima execução o hasRemoteChanged()
       // vai retornar changed=true e forçar re-verificação dos arquivos faltantes.
-      if (this._pendingHeaders && (!failedFiles || failedFiles.length === 0)) {
+      if (this._pendingXmlHash && (!failedFiles || failedFiles.length === 0)) {
         this.saveUpdateInfo({
-          lastModified: this._pendingHeaders.lastModified,
-          etag: this._pendingHeaders.etag,
+          xmlHash: this._pendingXmlHash,
           lastCheck: new Date().toISOString(),
           totalFiles: serverFiles.length,
           lastUpdateFiles: filesToUpdate.length

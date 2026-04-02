@@ -5,3 +5,5 @@ dist/
 build/
 *.log
 .env
+assets/cliente/
+assets/Pallet-Town-Theme.ogg

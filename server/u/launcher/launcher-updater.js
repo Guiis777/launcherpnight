@@ -30,65 +30,78 @@ class LauncherUpdater {
     }
   }
 
-  // Verifica e atualiza um arquivo de UI
-  async checkAndUpdateFile(filename, isRoot = false) {
+  // Baixa e atualiza um arquivo — usa arraybuffer para comparar bytes exatos
+  async checkAndUpdateFile(filename, isRoot = false, subdir = null) {
     try {
-      const remoteUrl = this.baseUrl + filename;
-      // Arquivos root vão para o diretório pai (raiz do app)
-      const targetDir = isRoot ? path.join(this.localPath, '..') : this.localPath;
+      const remoteUrl = this.baseUrl + (subdir ? subdir + '/' : '') + filename;
+      let targetDir;
+      if (subdir) {
+        targetDir = path.join(this.localPath, '..', subdir);
+      } else if (isRoot) {
+        targetDir = path.join(this.localPath, '..');
+      } else {
+        targetDir = this.localPath;
+      }
       const localFilePath = path.join(targetDir, filename);
-      
-      const response = await axios.get(remoteUrl, { 
-        responseType: 'text',
-        timeout: 10000 
+
+      const response = await axios.get(remoteUrl, {
+        responseType: 'arraybuffer',
+        timeout: 15000
       });
-      
-      const remoteContent = response.data;
-      const remoteMD5 = crypto.createHash('md5').update(remoteContent).digest('hex');
+
+      const remoteBuffer = Buffer.from(response.data);
+      const remoteMD5 = crypto.createHash('md5').update(remoteBuffer).digest('hex');
       const localMD5 = this.calculateMD5(localFilePath);
-      
+
       if (remoteMD5 !== localMD5) {
-        fs.writeFileSync(localFilePath, remoteContent, 'utf8');
+        fs.mkdirSync(path.dirname(localFilePath), { recursive: true });
+        fs.writeFileSync(localFilePath, remoteBuffer);
         console.log(`[LauncherUpdater] Atualizado: ${filename}`);
         return true;
       }
-      
+
       return false;
     } catch (error) {
-      console.log(`[LauncherUpdater] Arquivo ${filename} não encontrado no servidor (ok se não configurado)`);
+      console.log(`[LauncherUpdater] Falha ao baixar ${filename}: ${error.message}`);
       return false;
     }
   }
 
-  // Verifica todos os arquivos de UI usando o manifest
+  // Verifica todos os arquivos usando o manifest — downloads em paralelo
   async checkForUpdates() {
-    let updated = false;
-    
-    // Tenta usar manifest.json para lista dinâmica de arquivos
     const manifest = await this.fetchManifest();
-    
+
     if (manifest && manifest.files) {
-      for (const fileInfo of manifest.files) {
-        // Arquivos com root:true vão para o diretório pai (raiz do app)
-        const targetDir = fileInfo.root ? path.join(this.localPath, '..') : this.localPath;
-        const localMD5 = this.calculateMD5(path.join(targetDir, fileInfo.name));
-        
-        // Só baixa se o MD5 for diferente
-        if (localMD5 !== fileInfo.md5) {
-          const wasUpdated = await this.checkAndUpdateFile(fileInfo.name, fileInfo.root);
-          if (wasUpdated) updated = true;
+      // Filtra apenas os arquivos que realmente mudaram (comparação rápida pelo manifest)
+      const toUpdate = manifest.files.filter(fileInfo => {
+        let targetDir;
+        if (fileInfo.subdir) {
+          targetDir = path.join(this.localPath, '..', fileInfo.subdir);
+        } else if (fileInfo.root) {
+          targetDir = path.join(this.localPath, '..');
+        } else {
+          targetDir = this.localPath;
         }
-      }
+        const localMD5 = this.calculateMD5(path.join(targetDir, fileInfo.name));
+        return localMD5 !== fileInfo.md5;
+      });
+
+      if (toUpdate.length === 0) return false;
+
+      console.log(`[LauncherUpdater] ${toUpdate.length} arquivo(s) para atualizar`);
+
+      // Baixa todos em paralelo
+      const results = await Promise.all(
+        toUpdate.map(fileInfo => this.checkAndUpdateFile(fileInfo.name, fileInfo.root, fileInfo.subdir))
+      );
+
+      return results.some(Boolean);
     } else {
-      // Fallback: lista fixa caso manifest não exista ainda
+      // Fallback: lista fixa
       const fallbackFiles = ['index.html', 'styles.css', 'renderer.js', 'updater.js', 'auth.js'];
-      for (const file of fallbackFiles) {
-        const wasUpdated = await this.checkAndUpdateFile(file);
-        if (wasUpdated) updated = true;
-      }
+      const results = await Promise.all(fallbackFiles.map(f => this.checkAndUpdateFile(f)));
+      return results.some(Boolean);
     }
-    
-    return updated;
   }
 }
 

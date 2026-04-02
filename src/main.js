@@ -119,7 +119,7 @@ ipcMain.handle('select-folder', async () => {
 
 // Instalar VC Redist
 ipcMain.on('install-vcredist', (event) => {
-  const gamePath = path.join(__dirname, 'assets', 'cliente');
+  const gamePath = path.join(process.env.APPDATA || require('os').homedir(), 'PokeNight', 'cliente');
   const vcPath = path.join(gamePath, 'vc_redist.x86.exe');
 
   console.log('[VCRedist] Procurando em:', vcPath);

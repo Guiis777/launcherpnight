@@ -62,10 +62,11 @@ function createWindow() {
       enableRemoteModule: false,
       webSecurity: true
     },
-    icon: path.join(__dirname, 'assets', 'tamer_quest_icon.ico'),
+    icon: path.join(__dirname, 'assets', 'launcher-logo.ico'),
     backgroundColor: '#000000'
   });
 
+  mainWindow.maximize();
   mainWindow.loadFile('src/index.html');
 
   // Impede navegação inesperada e abertura de novas janelas dentro do app.

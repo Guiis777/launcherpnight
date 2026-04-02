@@ -9,15 +9,17 @@ const config = require('./config');
 // Configuração do Updater
 // ==========================================
 // O client NÃO vem embutido - é baixado do servidor na primeira execução
-// __dirname resolve corretamente em dev (src/) e em produção (resources/app/src/)
-const APP_PATH = path.join(__dirname, '..');
-const DEFAULT_GAME_PATH = path.join(APP_PATH, 'assets', 'cliente');
+// Usa AppData para garantir permissão de escrita mesmo instalado em Program Files
+const APP_DATA = process.env.APPDATA || path.join(require('os').homedir(), 'AppData', 'Roaming');
+const DEFAULT_GAME_PATH = path.join(APP_DATA, 'PokeNight', 'cliente');
 
 const updater = new Updater({
   baseUrl: config.FILES_BASE,
+  baseUrlRaw: config.FILES_BASE_RAW,
   hashFile: 'hash.xml',
   zipUrl: config.ZIP_URL || null,
   gamePath: localStorage.getItem('gamePath') || DEFAULT_GAME_PATH,
+  bundledClientPath: path.join(__dirname, '..', 'assets', 'cliente'),
   concurrentDownloads: 15,
   concurrentDownloadsFirstRun: 20,
 });
@@ -102,71 +104,36 @@ function formatBytes(bytes) {
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
 }
 
 // ==========================================
 // Eventos do Updater
 // ==========================================
 let _isDownloading = false;
-let _dlSpeedTracker = { bytes: 0, time: Date.now(), speed: 0 };
-
-function calcSpeed(receivedTotal) {
-  const now = Date.now();
-  const elapsed = (now - _dlSpeedTracker.time) / 1000;
-  if (elapsed >= 1) {
-    const diff = receivedTotal - _dlSpeedTracker.bytes;
-    _dlSpeedTracker.speed = diff / elapsed;
-    _dlSpeedTracker.bytes = receivedTotal;
-    _dlSpeedTracker.time = now;
-  }
-  return _dlSpeedTracker.speed;
-}
-
-function formatSpeed(bps) {
-  if (bps <= 0) return '';
-  if (bps > 1024 * 1024) return ` · ${(bps / 1024 / 1024).toFixed(1)} MB/s`;
-  return ` · ${(bps / 1024).toFixed(0)} KB/s`;
-}
 
 updater.on('status', (message) => {
-  // Não resetar a barra de progresso durante download de arquivo
-  if (!_isDownloading) {
-    updateProgress(0, message);
-  } else {
-    // Só atualiza o texto, mantém a barra onde está
-    progressText.textContent = message;
-  }
+  if (!_isDownloading) updateProgress(0, message);
   console.log('[Updater]', message);
 });
 
-updater.on('check-progress', ({ checked, total, file, needsUpdate }) => {
-  const percent = (checked / total) * 100;
-  updateProgress(percent, `Verificando: ${checked}/${total} (${needsUpdate} para atualizar)`);
+updater.on('check-progress', ({ checked, total }) => {
+  const pct = Math.round((checked / total) * 100);
+  updateProgress(pct, `Verificando... ${pct}%`);
 });
 
-updater.on('download-progress', ({ file, downloadedFiles, totalFiles }) => {
+updater.on('download-progress', ({ downloadedFiles, totalFiles }) => {
   _isDownloading = false;
-  const percent = totalFiles > 0 ? (downloadedFiles / totalFiles) * 100 : 0;
-  updateProgress(percent, `Baixando: ${file} (${downloadedFiles}/${totalFiles})`);
+  const pct = totalFiles > 0 ? Math.round((downloadedFiles / totalFiles) * 100) : 0;
+  updateProgress(pct, `${pct}%`);
 });
 
-let _totalReceived = 0;
-updater.on('file-download-progress', ({ file, received, total, percent, downloadedFiles, totalFiles }) => {
+updater.on('file-download-progress', ({ percent, downloadedFiles, totalFiles }) => {
   _isDownloading = true;
-  _totalReceived += received;
-  const speed = calcSpeed(_totalReceived);
-  const speedStr = formatSpeed(speed);
-  const dlInfo = totalFiles > 1 ? ` (${downloadedFiles}/${totalFiles})` : '';
-
-  if (total > 0 && percent >= 0) {
-    const eta = speed > 0 ? Math.round((total - received) / speed) : 0;
-    const etaStr = eta > 5 ? ` · ~${eta < 60 ? eta + 's' : Math.round(eta/60) + 'min'}` : '';
-    updateProgress(percent, `Baixando: ${file}${dlInfo} · ${percent}%${speedStr}${etaStr}`);
-  } else {
-    const fakePct = Math.min(95, Math.round((received / (500 * 1024 * 1024)) * 100));
-    updateProgress(fakePct, `Baixando: ${file}${dlInfo} · ${formatBytes(received)}${speedStr}`);
-  }
+  if (totalFiles <= 0) return;
+  const fileFraction = percent >= 0 ? percent / 100 : 0.5;
+  const pct = Math.min(99, Math.round(((downloadedFiles + fileFraction) / totalFiles) * 100));
+  updateProgress(pct, `${pct}%`);
 });
 
 updater.on('error', (message) => {
@@ -376,35 +343,10 @@ document.getElementById('btn-force-update')?.addEventListener('click', async () 
   isUpdating = false;
 });
 
-// Botão instalar VC Redist
+// Botão instalar VC Redist — redireciona para página de download
 document.getElementById('btn-vcredist')?.addEventListener('click', () => {
-  const btn = document.getElementById('btn-vcredist');
-  const gamePath = updater.getGamePath();
-  const vcPath = path.join(gamePath, 'vc_redist.x86.exe');
-
-  if (!fs.existsSync(vcPath)) {
-    btn.textContent = 'Não encontrado. Baixe o jogo primeiro.';
-    setTimeout(() => { btn.textContent = 'Instalar VC Redist'; }, 4000);
-    return;
-  }
-
-  btn.textContent = 'Instalando...';
-  btn.disabled = true;
-
-  const { exec } = require('child_process');
-  exec(`powershell -Command "Start-Process -FilePath '${vcPath.replace(/'/g, "''")}' -ArgumentList '/install','/passive','/norestart' -Verb RunAs"`, (err) => {
-    if (err) {
-      btn.textContent = 'Cancelado ou erro';
-      btn.disabled = false;
-      setTimeout(() => { btn.textContent = 'Instalar VC Redist'; }, 4000);
-    } else {
-      btn.textContent = 'Instalando... aguarde o Windows';
-      setTimeout(() => {
-        btn.textContent = 'Instalar VC Redist';
-        btn.disabled = false;
-      }, 15000);
-    }
-  });
+  const { shell } = require('electron');
+  shell.openExternal('https://pnight.com.br/download');
 });
 
 // ==========================================
@@ -430,25 +372,131 @@ document.querySelectorAll('.social-btn').forEach(btn => {
 const news = new NewsManager();
 
 
-// ==========================================
-// Status do servidor (sempre online)
-// ==========================================
 function checkServerStatus() {
   const statusIndicator = document.querySelector('.status-indicator');
   const statusText = document.querySelector('.status-text');
   const playersOnline = document.querySelector('.players-online');
-
   if (statusIndicator) statusIndicator.classList.add('online');
   if (statusText) statusText.textContent = 'Online';
   if (playersOnline) playersOnline.textContent = 'Servidor disponível';
 }
 
 // ==========================================
+// Música de fundo — Pallet Town Theme
+// ==========================================
+(function initMusic() {
+  const audio = document.getElementById('bg-music');
+  const btnMute = document.getElementById('btn-mute');
+  const iconSound = document.getElementById('icon-sound');
+  const iconMute  = document.getElementById('icon-mute');
+  if (!audio || !btnMute) return;
+
+  // Volume baixo — musiquinha de fundo discreta
+  audio.volume = 0.08;
+
+  // Estado salvo
+  let muted = localStorage.getItem('pn-music-muted') === '1';
+  function applyMute() {
+    audio.muted = muted;
+    btnMute.classList.toggle('muted', muted);
+    iconSound.style.display = muted ? 'none'  : '';
+    iconMute.style.display  = muted ? ''      : 'none';
+  }
+  applyMute();
+
+  // Autoplay — browsers bloqueiam sem interação; tentamos silencioso primeiro
+  audio.play().catch(() => {
+    // Sem interação ainda: aguarda primeiro clique
+    const unlock = () => { audio.play().catch(() => {}); document.removeEventListener('click', unlock); };
+    document.addEventListener('click', unlock, { once: true });
+  });
+
+  btnMute.addEventListener('click', () => {
+    muted = !muted;
+    localStorage.setItem('pn-music-muted', muted ? '1' : '0');
+    applyMute();
+    if (!muted) audio.play().catch(() => {});
+  });
+
+  // Fade in suave ao iniciar
+  audio.addEventListener('play', function fadeIn() {
+    let v = 0; audio.volume = 0;
+    const step = () => { if (audio.volume < 0.08) { audio.volume = Math.min(0.08, audio.volume + 0.004); requestAnimationFrame(step); } };
+    requestAnimationFrame(step);
+    audio.removeEventListener('play', fadeIn);
+  }, { once: true });
+})();
+
+// ==========================================
+// Partículas flutuantes
+// ==========================================
+(function initParticles() {
+  const canvas = document.getElementById('particles-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const COLORS = ['rgba(201,167,240,', 'rgba(157,111,217,', 'rgba(107,63,176,', 'rgba(255,220,255,'];
+  const COUNT = 38;
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function make() {
+    return {
+      x: rand(0, W), y: rand(0, H),
+      r: rand(1.2, 3.8),
+      vx: rand(-0.25, 0.25),
+      vy: rand(-0.55, -0.12),
+      alpha: rand(0.15, 0.65),
+      dalpha: rand(0.002, 0.007) * (Math.random() > 0.5 ? 1 : -1),
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      twinkleSpeed: rand(0.008, 0.022),
+      twinkleOffset: rand(0, Math.PI * 2)
+    };
+  }
+
+  for (let i = 0; i < COUNT; i++) particles.push(make());
+
+  let frame = 0;
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+    frame++;
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.alpha += p.dalpha;
+      if (p.alpha > 0.7 || p.alpha < 0.1) p.dalpha *= -1;
+      if (p.y < -10 || p.x < -10 || p.x > W + 10) { Object.assign(p, make(), { x: rand(0,W), y: H + 10 }); }
+
+      const glow = 0.5 + 0.5 * Math.sin(frame * p.twinkleSpeed + p.twinkleOffset);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + (p.alpha * glow).toFixed(3) + ')';
+      ctx.fill();
+
+      // halo suave
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * 2.8, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + (p.alpha * 0.12 * glow).toFixed(3) + ')';
+      ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+// ==========================================
 // Inicialização
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
   checkServerStatus();
-  setInterval(checkServerStatus, 30000);
   updatePlayButton();
   news.init();
 
@@ -511,24 +559,24 @@ const NEWS_POSTS = {
     title: 'PVP Casual & Ranked — Picks, Bans e Elos!',
     date: '05 Mar 2026',
     tag: 'Novo Sistema',
-    image: '../assets/cliente/updates/03/pvp_ranked_tamer_quest.png',
-    text: 'O novo sistema de PVP do Tamer Quest já está no ar! No modo Casual, você pode batalhar sem pressão e testar suas estratégias. No modo Ranked, a competição é real: picks e bans estratégicos, novo balanceamento completo e um sistema de Elos para você subir e provar seu valor. Mostre que você é o melhor Tamer do servidor!',
+    image: '',
+    text: 'O novo sistema de PVP do PokeNight já está no ar! No modo Casual, você pode batalhar sem pressão e testar suas estratégias. No modo Ranked, a competição é real: picks e bans estratégicos, novo balanceamento completo e um sistema de Elos para você subir e provar seu valor. Mostre que você é o melhor Treinador do servidor!',
     emblems: []
   },
   beta3: {
     title: 'Beta 3 — Uma Nova Era Começa!',
     date: '05 Mar 2026',
     tag: 'Atualização',
-    image: '../assets/cliente/updates/02/beta_3.png',
-    text: 'O Beta 3 do Tamer Quest chegou com mudanças profundas! Novo launcher, novo client, novas mecânicas e muito mais conteúdo. Estamos apenas começando — aguardem grandes novidades nas próximas semanas. Preparem-se, Tamers!',
+    image: '',
+    text: 'O Beta 3 do PokeNight chegou com mudanças profundas! Novo launcher, novo client, novas mecânicas e muito mais conteúdo. Estamos apenas começando — aguardem grandes novidades nas próximas semanas.',
     emblems: []
   },
   beta1e2: {
     title: 'Fim do Beta 1 & Beta 2 — Obrigado!',
     date: '27 Fev 2026',
     tag: 'Encerramento',
-    image: '../assets/cliente/updates/01/evento1k.png',
-    text: 'Encerramos oficialmente as fases Beta 1 e Beta 2 do Tamer Quest. Foram meses incríveis de testes, feedback e evolução. Agradecemos a cada jogador que participou, reportou bugs e nos ajudou a construir algo melhor. Vocês são a base de tudo. O que vem a seguir vai surpreender!',
+    image: '',
+    text: 'Encerramos oficialmente as fases Beta 1 e Beta 2 do PokeNight. Foram meses incríveis de testes, feedback e evolução. Agradecemos a cada jogador que participou, reportou bugs e nos ajudou a construir algo melhor. Vocês são a base de tudo. O que vem a seguir vai surpreender!',
     emblems: [
       '../assets/emblems/beta1e2/emblem_first_32x32_sheet_1.png',
       '../assets/emblems/beta1e2/emblem_first_32x32_sheet_2.png'

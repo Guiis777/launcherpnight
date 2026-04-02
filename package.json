@@ -24,7 +24,7 @@
       "sign": null,
       "signingHashAlgorithms": null
     },
-    "compression": "maximum",
+    "compression": "store",
     "artifactName": "PokeNight-Setup-${version}.${ext}",
     "nsis": {
       "oneClick": false,
@@ -40,10 +40,36 @@
       "shortcutName": "PokeNight Launcher"
     },
     "files": [
-      "**/*",
-      "!dist/**",
+      "main.js",
+      "package.json",
+      "src/**/*",
+      "assets/launcher-logo.ico",
+      "assets/launcher-logo.webp",
+      "assets/launcher-wallpaper.png",
+      "assets/Pallet-Town-Theme.ogg",
+      "assets/fonts/**/*",
+      "assets/emblems/**/*",
+      "assets/comments.json",
+      "assets/cliente/**/*",
+      "!assets/cliente/.launcher-update-info.json",
+      "!assets/cliente/.updater-version",
+      "!assets/cliente/**/*.log",
+      "!assets/cliente/**/*.tmp",
+      "!node_modules/archiver/**",
+      "!node_modules/archiver-utils/**",
+      "!node_modules/zip-stream/**",
+      "!node_modules/compress-commons/**",
+      "!node_modules/basic-ftp/**",
+      "!node_modules/fs-extra/**",
+      "!node_modules/ssh2/**",
+      "!node_modules/cpu-features/**",
+      "!node_modules/nan/**",
+      "!admin-main.js",
+      "!admin.html",
+      "!admin-settings.json",
+      "!electron-builder-admin.json",
       "!server/**",
-      "!.git/**"
+      "!dist/**"
     ],
     "extraResources": [],
     "asar": false

@@ -5,7 +5,11 @@
 
 module.exports = {
   // URL base do servidor de arquivos (onde ficam os updates do jogo)
-  FILES_BASE: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/',
+  // jsDelivr CDN — rápido para assets (texturas, sons, scripts)
+  FILES_BASE: 'https://cdn.jsdelivr.net/gh/Guiis777/launcherpnight@main/server/u/',
+
+  // raw.githubusercontent para binários (.exe, .dll) — jsDelivr bloqueia esses por política (403)
+  FILES_BASE_RAW: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/',
 
   // URL base do launcher updater
   LAUNCHER_BASE: 'https://cdn.jsdelivr.net/gh/Guiis777/launcherpnight@main/server/u/launcher/',
@@ -23,6 +27,6 @@ module.exports = {
   API_KEY: 'pk_72Bf9xKzQm4sWdR1TgYp5vCeAhNj8uLo',
 
   // Links sociais
-  DISCORD_URL: 'https://discord.gg/BwHs5k4sMF',
-  SITE_URL: 'https://github.com/Guiis777/launcherpnight',
+  DISCORD_URL: 'https://discord.gg/h755xjPyA',
+  SITE_URL: 'https://pnight.com.br/',
 };

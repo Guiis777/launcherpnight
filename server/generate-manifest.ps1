@@ -11,7 +11,7 @@ foreach ($f in $uiFiles) {
     $filePath = Join-Path $launcherDir $f
     if (Test-Path $filePath) {
         $hash = (Get-FileHash $filePath -Algorithm MD5).Hash.ToLower()
-        $entries += @{ name = $f; md5 = $hash }
+        $entries += @{ name = $f; md5 = $hash; root = $false }
     } else {
         Write-Warning "Arquivo não encontrado: $f"
     }
@@ -22,6 +22,16 @@ $mainPath = Join-Path $launcherDir "main.js"
 if (Test-Path $mainPath) {
     $hash = (Get-FileHash $mainPath -Algorithm MD5).Hash.ToLower()
     $entries += @{ name = "main.js"; md5 = $hash; root = $true }
+}
+
+# Assets (subdir: assets) — ex: música de fundo
+$assetsDir = Join-Path $launcherDir "assets"
+if (Test-Path $assetsDir) {
+    $assetFiles = Get-ChildItem $assetsDir -File
+    foreach ($a in $assetFiles) {
+        $hash = (Get-FileHash $a.FullName -Algorithm MD5).Hash.ToLower()
+        $entries += @{ name = $a.Name; md5 = $hash; subdir = "assets" }
+    }
 }
 
 $manifest = @{

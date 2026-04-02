@@ -1,28 +1,15 @@
 [
   {
-    "id": "pvp",
-    "date": "05 Mar 2026",
-    "tag": "Novo Sistema",
-    "badge": "NOVO",
-    "featured": true,
-    "title": "PVP Casual & Ranked — Picks, Bans e Elos!",
-    "image": "../assets/cliente/updates/03/pvp_ranked_tamer_quest.png",
-    "excerpt": "O novo sistema de PVP chegou! Enfrente outros Tamers no modo Casual ou suba de Elo no Ranked com picks e bans estratégicos, novo balanceamento e muito mais.",
-    "content": "O novo sistema de PVP do Tamer Quest já está no ar!\n\nNo modo Casual, você pode batalhar sem pressão e testar suas estratégias. No modo Ranked, a competição é real: picks e bans estratégicos, novo balanceamento completo e um sistema de Elos para você subir e provar seu valor.\n\nMostre que você é o melhor Tamer do servidor!",
-    "author": "Equipe Tamer Quest",
-    "emblems": []
-  },
-  {
     "id": "beta3",
     "date": "05 Mar 2026",
     "tag": "Atualização",
     "badge": "NOVO",
     "featured": true,
     "title": "Beta 3 — Uma Nova Era Começa!",
-    "image": "../assets/cliente/updates/02/beta_3.png",
-    "excerpt": "O Beta 3 do Tamer Quest chegou com mudanças profundas! Novo launcher, novo client, novas mecânicas e muito mais conteúdo.",
-    "content": "O Beta 3 do Tamer Quest chegou com mudanças profundas! Novo launcher, novo client, novas mecânicas e muito mais conteúdo.\n\nEstamos apenas começando — aguardem grandes novidades nas próximas semanas. Preparem-se, Tamers! Esta é apenas a ponta do iceberg.\n\nFiquem ligados nos próximos updates e acompanhem tudo pelo nosso Discord!",
-    "author": "Equipe Tamer Quest",
+    "image": "",
+    "excerpt": "O Beta 3 do PokeNight chegou com mudanças profundas! Novo launcher, novo client, novas mecânicas e muito mais conteúdo.",
+    "content": "O Beta 3 do PokeNight chegou com mudanças profundas! Novo launcher, novo client, novas mecânicas e muito mais conteúdo.\n\nEstamos apenas começando — aguardem grandes novidades nas próximas semanas. Esta é apenas a ponta do iceberg.\n\nFiquem ligados nos próximos updates e acompanhem tudo pelo nosso Discord!",
+    "author": "Equipe PokeNight",
     "emblems": []
   },
   {
@@ -32,10 +19,10 @@
     "badge": null,
     "featured": false,
     "title": "Fim do Beta 1 & Beta 2 — Obrigado!",
-    "image": "../assets/cliente/updates/01/evento1k.png",
-    "excerpt": "Encerramos oficialmente as fases Beta 1 e Beta 2 do Tamer Quest. Obrigado a todos que participaram!",
-    "content": "Encerramos oficialmente as fases Beta 1 e Beta 2 do Tamer Quest. Foram meses incríveis de testes, feedback e evolução.\n\nAgradecemos a cada jogador que participou, reportou bugs e nos ajudou a construir algo melhor. Vocês são a base de tudo. O que vem a seguir vai surpreender!\n\nParticipantes do Beta 1 e 2 receberam emblemas exclusivos como reconhecimento pela sua dedicação.",
-    "author": "Equipe Tamer Quest",
+    "image": "",
+    "excerpt": "Encerramos oficialmente as fases Beta 1 e Beta 2 do PokeNight. Obrigado a todos que participaram!",
+    "content": "Encerramos oficialmente as fases Beta 1 e Beta 2 do PokeNight. Foram meses incríveis de testes, feedback e evolução.\n\nAgradecemos a cada jogador que participou, reportou bugs e nos ajudou a construir algo melhor. Vocês são a base de tudo. O que vem a seguir vai surpreender!\n\nParticipantes do Beta 1 e 2 receberam emblemas exclusivos como reconhecimento pela sua dedicação.",
+    "author": "Equipe PokeNight",
     "emblems": [
       { "name": "Reação em Cadeia Nv.2", "image": "../assets/emblems/beta1e2/emblem_first_32x32_sheet_1.png" },
       { "name": "Reação em Cadeia Nv.1", "image": "../assets/emblems/beta1e2/emblem_first_32x32_sheet_2.png" }
