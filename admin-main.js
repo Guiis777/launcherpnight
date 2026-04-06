@@ -179,6 +179,22 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
     const msg = commitMsg || `update game files ${new Date().toISOString().slice(0,10)}`;
     const gitOpts = { cwd: repoDir, maxBuffer: 256 * 1024 * 1024 };
 
+    // Repara o histórico local de forma segura:
+    // 1. Fetch traz os objetos do remoto
+    // 2. update-ref move o ponteiro do branch local para o remoto (sem tocar nos arquivos)
+    // 3. reset --mixed atualiza o index para o estado do remoto (sem tocar nos arquivos)
+    // Resultado: working tree = nossos arquivos, HEAD = origin/main → push é fast-forward garantido
+    send('🔄 Alinhando com o remoto...');
+    try {
+      execSync('git fetch origin main', gitOpts);
+      execSync('git update-ref refs/heads/main refs/remotes/origin/main', gitOpts);
+      execSync('git symbolic-ref HEAD refs/heads/main', gitOpts);
+      execSync('git reset --mixed HEAD', gitOpts);
+    } catch (fetchErr) {
+      // Se o remoto ainda não tem a branch (primeiro push), ignora e segue
+      send('ℹ️ Branch remota ainda não existe — criando...');
+    }
+
     execSync('git add .', gitOpts);
     try {
       execSync(`git commit -m "${msg}"`, gitOpts);
@@ -189,7 +205,7 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
       }
       throw e;
     }
-    execSync('git push', gitOpts);
+    execSync('git push -u origin main', gitOpts);
     send('✅ Push concluído! O launcher vai se atualizar automaticamente.');
 
     return { success: true, log };
@@ -267,6 +283,17 @@ ipcMain.handle('deploy-launcher-only', async (_, { repoDir, commitMsg }) => {  c
     send('🚀 Fazendo git commit e push...');
     const msg = commitMsg || `update launcher ${new Date().toISOString().slice(0,10)}`;
     const gitOpts = { cwd: repoDir, maxBuffer: 256 * 1024 * 1024 };
+
+    send('🔄 Alinhando com o remoto...');
+    try {
+      execSync('git fetch origin main', gitOpts);
+      execSync('git update-ref refs/heads/main refs/remotes/origin/main', gitOpts);
+      execSync('git symbolic-ref HEAD refs/heads/main', gitOpts);
+      execSync('git reset --mixed HEAD', gitOpts);
+    } catch (fetchErr) {
+      send('ℹ️ Branch remota ainda não existe — criando...');
+    }
+
     execSync('git add .', gitOpts);
     try {
       execSync(`git commit -m "${msg}"`, gitOpts);
@@ -277,7 +304,7 @@ ipcMain.handle('deploy-launcher-only', async (_, { repoDir, commitMsg }) => {  c
       }
       throw e;
     }
-    execSync('git push', gitOpts);
+    execSync('git push -u origin main', gitOpts);
     send('✅ Push do launcher concluído!');
 
     return { success: true, log };

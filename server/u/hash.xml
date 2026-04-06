@@ -13355,7 +13355,7 @@
     <hashing name="data/styles/10-buttons.otui" hash="911844BAE4D806906E37DAAFC3CD7ABA"/>
     <hashing name="data/styles/10-checkboxes.otui" hash="00AAFD377A1DA368F5FAF37A6FF55E45"/>
     <hashing name="data/styles/10-comboboxes.otui" hash="79F61E15EDBF0C7764E6E05C8F8CB689"/>
-    <hashing name="data/styles/10-creaturebuttons.otui" hash="A12CFD8F818AEE80DD737391D0315CC9"/>
+    <hashing name="data/styles/10-creaturebuttons.otui" hash="08D248C941E0442ED21C4A88496EEADC"/>
     <hashing name="data/styles/10-creatures.otui" hash="24A20E0835A60726FE7618F782BA0BBD"/>
     <hashing name="data/styles/10-creaturess.otui" hash="6EA88EB4F63295E27BFA92C33A4FB29F"/>
     <hashing name="data/styles/10-items.otui" hash="59DC2696CC426D0E41D2BE2CF5BE06F9"/>
@@ -13383,7 +13383,7 @@
     <hashing name="data/styles/30-tooltip.otui" hash="621D6F8569607E88F47C71E388F441DA"/>
     <hashing name="data/styles/31-pokemoninfo.otui" hash="E1C1AC7B0158AF869A0CC58E4B1FB7F7"/>
     <hashing name="data/styles/33-addonwindow.otui" hash="3CC0A4E6794C76BEE8798E5CB3529F86"/>
-    <hashing name="data/styles/40-console.otui" hash="2D1BF6C2E32E1A5A81D58F89C372891E"/>
+    <hashing name="data/styles/40-console.otui" hash="C9B38AEA3BB451D729DD7856DF08530C"/>
     <hashing name="data/styles/40-container.otui" hash="26207CEFB675CE0A9DB400D4907F0E96"/>
     <hashing name="data/styles/40-dialog.otui" hash="678C0FA75C5CC686DB50BFA070CF8BAC"/>
     <hashing name="data/styles/40-entergame.otui" hash="9EBB23DB26A7E1EC54F5A7D3B17CEB2D"/>
@@ -13928,7 +13928,9 @@
     <hashing name="data/things/854/FileParts/part_579.spr" hash="31233A7C7EFA7A8716CFA824A7592E8C"/>
     <hashing name="data/things/854/FileParts/part_58.spr" hash="6B781448ED07B9A9F6B6E328D674A917"/>
     <hashing name="data/things/854/FileParts/part_580.spr" hash="84E7F69A9687EDD2906CB61979B86C99"/>
-    <hashing name="data/things/854/FileParts/part_581.spr" hash="F4A0047E8A7DCF483D103B848021A280"/>
+    <hashing name="data/things/854/FileParts/part_581.spr" hash="CF201D747C55725E40B8CF5C12274C95"/>
+    <hashing name="data/things/854/FileParts/part_582.spr" hash="CA769BFE5126F2176407D58CADAE809C"/>
+    <hashing name="data/things/854/FileParts/part_583.spr" hash="A8EED5E986932840E9CE03128FA8375C"/>
     <hashing name="data/things/854/FileParts/part_59.spr" hash="9B5B1EDD5192295E4ACFE0F8382CDCDD"/>
     <hashing name="data/things/854/FileParts/part_6.spr" hash="1698942E3B4546BFFF761AD452ADABAE"/>
     <hashing name="data/things/854/FileParts/part_60.spr" hash="71CF034AADB209DD10AF2D7567749C8B"/>
@@ -13974,14 +13976,10 @@
     <hashing name="data/things/854/FileParts/part_97.spr" hash="D0D5D1F6097C9CA3B55E1503FF876736"/>
     <hashing name="data/things/854/FileParts/part_98.spr" hash="E557A8B9FC7175BE732C41E5593EFCB6"/>
     <hashing name="data/things/854/FileParts/part_99.spr" hash="2B5B064811E758A0EA4C5011B09C8E4A"/>
-    <hashing name="data/things/854/Tibia.dat" hash="16052B7325FC229CA8963BCAB96DCF55"/>
-    <hashing name="data/Tibia.dat" hash="2D74503245DE75D348D250ECA4EF1767"/>
+    <hashing name="data/things/854/Tibia.dat" hash="95285BFB36D3F8F6B9F82C82845B28BF"/>
     <hashing name="init.lua" hash="63123CBFA8CA41FF67C5A0B3FB4AF551"/>
     <hashing name="libEGL.dll" hash="05570A5B5980A4E66A83CCB8CC7FAC35"/>
     <hashing name="libGLESv2.dll" hash="9B8DDA72B13B49668F1AE0FB9D1D0C18"/>
-    <hashing name="modules/admin_panel/admin_panel.lua" hash="B1AE3309CD0C4C4C22AF47C9C9D5AA5E"/>
-    <hashing name="modules/admin_panel/admin_panel.otmod" hash="508986DC1CE7971550E237263057EAB3"/>
-    <hashing name="modules/admin_panel/admin_panel.otui" hash="C368FAB4720636E5D09B2605516BBA84"/>
     <hashing name="modules/bank/bank.lua" hash="1F9C0B0946F4C34C71DB42C06AEEB0DB"/>
     <hashing name="modules/bank/bank.otmod" hash="19248E6CC86071A010C547D9205CA772"/>
     <hashing name="modules/bank/bank.otui" hash="F98008371A244370E16B675CED8D1DCE"/>
@@ -14020,15 +14018,15 @@
     <hashing name="modules/client_mobile/mobile.otmod" hash="617E90B7C723F104C4C1E2F0DE057DEE"/>
     <hashing name="modules/client_mobile/mobile.otui" hash="CD84A629243860CB29316AD8F7F994C5"/>
     <hashing name="modules/client_options/audio.otui" hash="FA179D74387C877C105D119804B7076B"/>
-    <hashing name="modules/client_options/console.otui" hash="7EBD841DFF115DF379C72D681AC31862"/>
+    <hashing name="modules/client_options/console.otui" hash="6BCDCE56286055A77A251AA80A646A85"/>
     <hashing name="modules/client_options/custom.otui" hash="EFCA30C4675CDF94519AA0204ADD2109"/>
     <hashing name="modules/client_options/fallback_styles.otui" hash="04E69B5F4A95511E2D996A50AB97590D"/>
-    <hashing name="modules/client_options/game.otui" hash="1C160B168F0CA9001F416FBDB54A254D"/>
+    <hashing name="modules/client_options/game.otui" hash="0288D1F2230D5214A148B23BC79BF556"/>
     <hashing name="modules/client_options/graphics.otui" hash="86DC3A840890F41C12755D54D7F826FE"/>
-    <hashing name="modules/client_options/interface.otui" hash="B59A7ED920BD742BDCD6F5B03246DD1B"/>
-    <hashing name="modules/client_options/options.lua" hash="759779F84DED087F6B811D90C7D2B31A"/>
+    <hashing name="modules/client_options/interface.otui" hash="A8850BCCA5E9D2761A28E53DEA791B04"/>
+    <hashing name="modules/client_options/options.lua" hash="9465103EDEEAE4272B5353D7699B1566"/>
     <hashing name="modules/client_options/options.otmod" hash="FD9E77F0C6EF3165758B79D5CD3EAE78"/>
-    <hashing name="modules/client_options/options.otui" hash="9B1FF21C8E92916E4CC1F554CB188932"/>
+    <hashing name="modules/client_options/options.otui" hash="5CDCA43145FF78C8C0FBD226D755129F"/>
     <hashing name="modules/client_processos/client_processos.otmod" hash="8A4BAF22EC11C8A370B7159810DED23A"/>
     <hashing name="modules/client_processos/processos.lua" hash="66F849133FDF611F5777E593743C7032"/>
     <hashing name="modules/client_processos/processos.otui" hash="7EDFFC866469A5E7ACEB28CEDBD8F9D3"/>
@@ -14048,7 +14046,7 @@
     <hashing name="modules/client_textedit/textedit.otui" hash="0F76B5E4AB959CA78B9F8542E66E34A5"/>
     <hashing name="modules/client_textfind/extended.lua" hash="FE7877075F5FFD7C4594979A6D79026E"/>
     <hashing name="modules/client_textfind/extended.otmod" hash="98279D8EE3BD8E4AFA86D462AEB28205"/>
-    <hashing name="modules/client_topmenu/topmenu.lua" hash="B68FCCC99EBB8C60E09D08B07878209C"/>
+    <hashing name="modules/client_topmenu/topmenu.lua" hash="7EF6E60648B445A02AEEFA89A3567CCD"/>
     <hashing name="modules/client_topmenu/topmenu.otmod" hash="1456FBFE46A0549B9BF37C007CCFF969"/>
     <hashing name="modules/corelib/base64.lua" hash="C2EEDBA6CFAEE0411B7590B71589630E"/>
     <hashing name="modules/corelib/bitwise.lua" hash="BC3ADB96F385410677C6129E7C4BCF98"/>
@@ -14196,7 +14194,7 @@
     <hashing name="modules/gamelib/spells.lua" hash="6F78B493EEC16573B416CB9E55E53E5A"/>
     <hashing name="modules/gamelib/textmessages.lua" hash="710514A2EFEA25DD86E4E049911B976C"/>
     <hashing name="modules/gamelib/thing.lua" hash="7CABADDB51911D6178A80962AC6CED22"/>
-    <hashing name="modules/gamelib/ui/uicreaturebutton.lua" hash="ACEC70E403807C28843FF91F123D4A3B"/>
+    <hashing name="modules/gamelib/ui/uicreaturebutton.lua" hash="425558E0297DA257D39DBD4036EEE718"/>
     <hashing name="modules/gamelib/ui/uiitem.lua" hash="9D6CE5E692E388D604D9462392835E60"/>
     <hashing name="modules/gamelib/ui/uiminimap.lua" hash="102FC19DF7E7FD6A59C7EB2C409AD7AE"/>
     <hashing name="modules/gamelib/util.lua" hash="475AF34F4124B3518CF75608D285F0B3"/>
@@ -14351,7 +14349,7 @@
     <hashing name="modules/game_casino/images/widgetnfocus2.png" hash="755CAF952F528462A7C352208DDE8442"/>
     <hashing name="modules/game_console/channelswindow.otui" hash="D1F0731E4B3A51BC6EB9C2B5100ACD0D"/>
     <hashing name="modules/game_console/communicationwindow.otui" hash="41516896EAD8906C34498A6E27EF1982"/>
-    <hashing name="modules/game_console/console.lua" hash="07939B4604D9B3FCDD643920A410DFDD"/>
+    <hashing name="modules/game_console/console.lua" hash="F3F38465999682561AFEDCDB403D231D"/>
     <hashing name="modules/game_console/console.otmod" hash="21C55CEB025947EDE87215B0D0E73DA7"/>
     <hashing name="modules/game_console/console.otui" hash="46A1321700DEC526D8720A9276186A4C"/>
     <hashing name="modules/game_console/fund.png" hash="84D3874F4ABFA58AA708575D51B7015F"/>
@@ -14436,57 +14434,14 @@
     <hashing name="modules/game_daily/daily.lua" hash="3FA3EC91F30AB96BDDD2B5839433E5B6"/>
     <hashing name="modules/game_daily/daily.otmod" hash="3CE9E4E0400387FA1E831C5C9F8F88E1"/>
     <hashing name="modules/game_daily/daily.otui" hash="7052521A85EC44CC9589E91B45D1A468"/>
-    <hashing name="modules/game_dailyboss/assets/arrow.png" hash="D4A1BDC01F98765E2037AF56DB6789C6"/>
-    <hashing name="modules/game_dailyboss/assets/arrow_e.png" hash="DFD341D2B3DCA904DB0E1F36F4BA1C81"/>
-    <hashing name="modules/game_dailyboss/assets/arrow_n.png" hash="F50384D44AFF9660D082410E4DAB9C15"/>
-    <hashing name="modules/game_dailyboss/assets/arrow_ne.png" hash="36C4A5BF6CBDF3E83F17CFB7C41945D3"/>
-    <hashing name="modules/game_dailyboss/assets/arrow_nw.png" hash="CC0E852F8211B2139AC065BD2CE8FB3F"/>
-    <hashing name="modules/game_dailyboss/assets/arrow_s.png" hash="66D029CFF7FEAC1FD88184DFB0D4A20A"/>
-    <hashing name="modules/game_dailyboss/assets/arrow_se.png" hash="C8618505E3728DF8D6E0682FA0C15340"/>
-    <hashing name="modules/game_dailyboss/assets/arrow_sw.png" hash="616E1BCD3DCACAB9839C312DDAC5FF38"/>
-    <hashing name="modules/game_dailyboss/assets/arrow_w.png" hash="881D1CA339D253EDB93244AE54B5D7A4"/>
-    <hashing name="modules/game_dailyboss/assets/background.png" hash="BECACD5DBA7FF46C3A3C55F63B0A8AB6"/>
-    <hashing name="modules/game_dailyboss/assets/backgroundModal.png" hash="F50D9A1C7D343B53DA46775DF0C886FB"/>
-    <hashing name="modules/game_dailyboss/assets/background_free.png" hash="6872BCA84F4B9059B760A3DB90C35539"/>
-    <hashing name="modules/game_dailyboss/assets/background_plus.png" hash="1C76C2302A8765F8C3A3A342981C7CCC"/>
-    <hashing name="modules/game_dailyboss/assets/blockedIcon.png" hash="48A4F1FE745EEE0DEEE66766FD8F6780"/>
-    <hashing name="modules/game_dailyboss/assets/buttonCancel.png" hash="30E5598E9C2384D2D6165E8E142DD151"/>
-    <hashing name="modules/game_dailyboss/assets/buttonCancelHover.png" hash="1103A7691F3A5E54064F3D5CDB9D464D"/>
-    <hashing name="modules/game_dailyboss/assets/buttonConfirm.png" hash="757B690A0792516535EF039D93A24BC0"/>
-    <hashing name="modules/game_dailyboss/assets/buttonConfirmHover.png" hash="DC7835DCC940943597B246DE86E379AC"/>
-    <hashing name="modules/game_dailyboss/assets/check.png" hash="F002B9F6722085B5022E172FF6CAF011"/>
-    <hashing name="modules/game_dailyboss/assets/closeButton.png" hash="1FAB2723C394F8630C8C6CB32911DBE7"/>
-    <hashing name="modules/game_dailyboss/assets/closeButtonHover.png" hash="C2542ED92EDE83C7C9B0E2E7584D70B0"/>
-    <hashing name="modules/game_dailyboss/assets/infoPanelBackground.png" hash="5BE1976159E2D782146D38985B446964"/>
-    <hashing name="modules/game_dailyboss/assets/item.png" hash="0F1F46E0A182BF4C1E66F77B4314EB57"/>
-    <hashing name="modules/game_dailyboss/assets/item_collect.png" hash="D8C1A48886606899011BB89872DA7A50"/>
-    <hashing name="modules/game_dailyboss/assets/locked_icon.png" hash="B787FE0BB4F79A25382230A601CAEAC1"/>
-    <hashing name="modules/game_dailyboss/assets/number_background.png" hash="4189176C5F7834694D7EFDE9638DCDF8"/>
-    <hashing name="modules/game_dailyboss/assets/order.png" hash="49E7A590A1CFFE8C9B2DB2671C62CDA4"/>
-    <hashing name="modules/game_dailyboss/assets/timmer.png" hash="953A9FE86F7ABBC668CFD2BD9404D344"/>
-    <hashing name="modules/game_dailyboss/assets/title.png" hash="BE1F485829DCCE4C01ABED6015F4C169"/>
-    <hashing name="modules/game_dailyboss/assets/title_plus.png" hash="B8EDD70697652AB22D1E916A0A4383C0"/>
-    <hashing name="modules/game_dailyboss/assets/vip_icon.png" hash="B6FE1FC1966E57CAE7F87070CC5A90DE"/>
     <hashing name="modules/game_dailyboss/dailyboss.lua" hash="DBAC2DDD4C99FFA484139F1A91EF8F4B"/>
     <hashing name="modules/game_dailyboss/dailyboss.otmod" hash="380DFE98615023B9DC0F6325A7F4B5DB"/>
     <hashing name="modules/game_dailyboss/dailybosswindow.lua" hash="EC2838A995C2B823A09C34009452280F"/>
     <hashing name="modules/game_dailyboss/dailybosswindow.otui" hash="BF7D752822D4C07204773B5FF2543C91"/>
-    <hashing name="modules/game_dailyboss/images/arrow.png" hash="3F38B0978C07D6CBA579752875B03AD8"/>
-    <hashing name="modules/game_dailyboss/images/arrow_e.png" hash="C55CF586EC84CB3FF68F1917A9743579"/>
-    <hashing name="modules/game_dailyboss/images/arrow_n.png" hash="0252F4ED5EFF021A67009E48CA096910"/>
-    <hashing name="modules/game_dailyboss/images/arrow_ne.png" hash="1C62E8E8B0B544EB150D98A77411732B"/>
-    <hashing name="modules/game_dailyboss/images/arrow_nw.png" hash="6A402CC9033E4D5DE3A5CDFE1C6BB5F3"/>
-    <hashing name="modules/game_dailyboss/images/arrow_s.png" hash="1C2AE865E4474A777D64DF6860DA8072"/>
-    <hashing name="modules/game_dailyboss/images/arrow_se.png" hash="9993A50E96EE35810B47872836E01227"/>
-    <hashing name="modules/game_dailyboss/images/arrow_sw.png" hash="E7EFAE0A9B951878CE2FC8C5B733558F"/>
-    <hashing name="modules/game_dailyboss/images/arrow_w.png" hash="E188C39064B21C9187A83AE6499DDF4F"/>
     <hashing name="modules/game_dailyboss/images/articuno.png" hash="E86954BF61661F8CCA6611F27E2AD2D2"/>
     <hashing name="modules/game_dailyboss/images/mew.png" hash="AB3E646EBAE7C37F3421537325CD1EB6"/>
     <hashing name="modules/game_dailyboss/images/mewtwo.png" hash="93ED49D5A610795FB54C5CF4100D199D"/>
     <hashing name="modules/game_dailyboss/images/moltres.png" hash="7056BE5B88990622D422070DC6C88C21"/>
-    <hashing name="modules/game_dailyboss/images/regice.png" hash="1297721310A435496A5AC008BA18B9AB"/>
-    <hashing name="modules/game_dailyboss/images/regirock.png" hash="EDDC94504D2EA15D3A6E01066BC912C3"/>
-    <hashing name="modules/game_dailyboss/images/registeel.png" hash="A826FAD92FB64580A418A8C9E1ECCDCD"/>
     <hashing name="modules/game_dailyboss/images/textures.png" hash="203D58FB3BDA966A49D211461CD82C3D"/>
     <hashing name="modules/game_dailylogin/assets/background.png" hash="80F08BE91A66F61F1DB68F7EE01EB425"/>
     <hashing name="modules/game_dailylogin/assets/backgroundModal.png" hash="98BCF347FE921ECF1EE4796AD844024A"/>
@@ -14794,6 +14749,8 @@
     <hashing name="modules/game_fly/fly.otui" hash="0ABE750CD582B2CB9101015153839F57"/>
     <hashing name="modules/game_fly/images/down.png" hash="C9BD004A9CD8841D2B0C83FD59D14FA2"/>
     <hashing name="modules/game_fly/images/up.png" hash="8FA08C63954554FAB77CA853C2866351"/>
+    <hashing name="modules/game_grouptag/game_grouptag.otmod" hash="9286EC92DE7DD635C460DD1543987754"/>
+    <hashing name="modules/game_grouptag/grouptag.lua" hash="D49446D6374A22C96920D07F57F374CD"/>
     <hashing name="modules/game_guardian_customizer/guardian_customizer.lua" hash="8A9AE2C9BA8AAA2F19A8B9AC57D62ECA"/>
     <hashing name="modules/game_guardian_customizer/guardian_customizer.otmod" hash="2F9B83E2F59B560A34D99E9429F303DD"/>
     <hashing name="modules/game_guardian_customizer/guardian_customizer.otui" hash="E983638C3F36DFEC8864AED1B54EA55D"/>
@@ -14835,7 +14792,7 @@
     <hashing name="modules/game_house/images/window.png" hash="57AA7DE1170BDAF58C745BE68D4E4A67"/>
     <hashing name="modules/game_interface/gameinterface.lua" hash="A94B3C3B75F6A491FD2BF7776831DC29"/>
     <hashing name="modules/game_interface/gameinterface.otui" hash="C02B6CB8881D7E1B5F7EAF6C7379A5EA"/>
-    <hashing name="modules/game_interface/interface.otmod" hash="324BB5E39BF8D4E9436B3A0313CF5F06"/>
+    <hashing name="modules/game_interface/interface.otmod" hash="DB333AA6BF6364F9A5049413287837FE"/>
     <hashing name="modules/game_interface/styles/countwindow.otui" hash="D249529DB80D13F5A453F550EB63B1C0"/>
     <hashing name="modules/game_interface/styles/itemdropconfirmationwindow.otui" hash="DC6464BFD33FBC11382548931DC7D3F1"/>
     <hashing name="modules/game_interface/widgets/uigamemap.lua" hash="208763F193A8C8453FB84D1F2FF02407"/>
@@ -16086,11 +16043,9 @@
     <hashing name="modules/game_pokebar/images/female.png" hash="C11D36AA36F3AAB01BB53F2A18627B2A"/>
     <hashing name="modules/game_pokebar/images/floorDown.png" hash="BFBC0F2031B8720F600EAF6012E21804"/>
     <hashing name="modules/game_pokebar/images/floorUp.png" hash="46EF43A1F36D5FA9B48A1723C08CED41"/>
-    <hashing name="modules/game_pokebar/images/held.png" hash="5CCF04F0E6A67F4AC2861F04AD99A9D3"/>
     <hashing name="modules/game_pokebar/images/indefinido.png" hash="22E54EEBE24A897146CD4A1868833E74"/>
     <hashing name="modules/game_pokebar/images/level_fog.png" hash="2AA3B7C1A8E711DC50E8882293DC16B6"/>
     <hashing name="modules/game_pokebar/images/male.png" hash="63C88655CF035A3D00BCE6C412C8ACAD"/>
-    <hashing name="modules/game_pokebar/images/mega_icon.png" hash="5F248AC65D6D7ED3554E300B05DFA155"/>
     <hashing name="modules/game_pokebar/images/stages/buffattack.png" hash="397514514AD9B3FF13AE30CF9AB3C6C5"/>
     <hashing name="modules/game_pokebar/images/stages/buffdef.png" hash="E892AD52E5C4187DC8E98D90C34443EA"/>
     <hashing name="modules/game_pokebar/images/stages/buffspattack.png" hash="8CAB3FBF16FD3D375726C50E50898FD6"/>
@@ -16106,7 +16061,7 @@
     <hashing name="modules/game_pokebar/images/undefined.png" hash="778E0861043EE8636587212BC202AB06"/>
     <hashing name="modules/game_pokebar/pokebar.lua" hash="D10179673F6E0BF96059F6B0907A922F"/>
     <hashing name="modules/game_pokebar/pokebar.otmod" hash="3BA2E6BAE17ADA1AE17765CD66742169"/>
-    <hashing name="modules/game_pokebar/pokebar.otui" hash="1BBC34B11B7750DE0AC904E190EF11FA"/>
+    <hashing name="modules/game_pokebar/pokebar.otui" hash="F0C3FA998B7304821B9C71901C72E162"/>
     <hashing name="modules/game_pokebar/pokebar_stages.lua" hash="3135C18EFF0E7EE0885C9A560D18B936"/>
     <hashing name="modules/game_pokebar/protocol.lua" hash="33CBCA8B07146B827C90D59B7D6BD74F"/>
     <hashing name="modules/game_pokedex/game_carregando.otui" hash="FE59DAA65BC7E6255587EC4D29F4F11B"/>
@@ -18730,7 +18685,7 @@
     <hashing name="modules/game_ruleviolation/ruleviolation.lua" hash="06D5B3E903D4D5328A07EF7751096CC2"/>
     <hashing name="modules/game_ruleviolation/ruleviolation.otmod" hash="FA5C06CF4138833B7E5A3FDFBDBA17F6"/>
     <hashing name="modules/game_ruleviolation/ruleviolation.otui" hash="9E03AF9F1EE63C51F90E75E2AEEEAFD4"/>
-    <hashing name="modules/game_serverclock/game_serverclock.lua" hash="05C21684D46640AD71CAA83285515FAB"/>
+    <hashing name="modules/game_serverclock/game_serverclock.lua" hash="43D078FD49C644F000572C2D4589FD2C"/>
     <hashing name="modules/game_serverclock/game_serverclock.otmod" hash="480F5FA34F28FEC8F75D02D580400B92"/>
     <hashing name="modules/game_serverclock/game_serverclock.otui" hash="08E8B0CC849DEBD8E707E3BF75C6A51F"/>
     <hashing name="modules/game_serverclock/images/clock_moon.png" hash="A3F7AFE4014AFE86DA2A59C151E231E9"/>
@@ -18946,7 +18901,6 @@
     <hashing name="modules/game_shaders/shaders/shader/map/map_light_snow_vertex.frag" hash="50F22DB6D4F26FBB7B17E12974B028A7"/>
     <hashing name="modules/game_shaders/shaders/shader/map/map_scaling.frag" hash="F2B0E85BF1A586102A6F19112799F8D9"/>
     <hashing name="modules/game_shaders/shaders/shader/map/map_vertex.frag" hash="F1A2EAABD368997201D582F2B9FA8EE9"/>
-    <hashing name="modules/game_shaders/shaders/shader/map/textures/cloud.png" hash="43850E35465A47542D9BA1615847CE20"/>
     <hashing name="modules/game_shaders/shaders/shader/map/textures/folhas.png" hash="D6F549843FFBB31F6D8944EEDF9E3F92"/>
     <hashing name="modules/game_shaders/shaders/shader/map/textures/heavy_fog.png" hash="11A5292E6281979398B37BBA22469A9D"/>
     <hashing name="modules/game_shaders/shaders/shader/map/textures/heavy_rain.png" hash="1F9369D52AEC3D3FCD33F54D0E410CCB"/>
@@ -19033,7 +18987,6 @@
     <hashing name="modules/game_shaders/shaders/shader/widget/pepega.frag" hash="E60AD5C58E4BE6D1617BAE4C7199DD8C"/>
     <hashing name="modules/game_shaders/shaders/shader/widget/widget_default_vertex.frag" hash="469278E1CCAF029AEC2497B72F4ADD9E"/>
     <hashing name="modules/game_shaders/shaders/shaders/bloom.frag" hash="C6795A423DAAEDBD7E32C8A16FFFC65C"/>
-    <hashing name="modules/game_shaders/shaders/shaders/clouds.frag" hash="0E92B332B11D37E992169C46C6BAC019"/>
     <hashing name="modules/game_shaders/shaders/shaders/default.frag" hash="C318DFD21903C7F39A7611603C41443D"/>
     <hashing name="modules/game_shaders/shaders/shaders/default.vert" hash="691F5F629ADC67C0510503C1BF45124A"/>
     <hashing name="modules/game_shaders/shaders/shaders/fog.frag" hash="1E14EE76CE8AD3D479DCD4AB06D6EEE5"/>
@@ -19120,8 +19073,6 @@
     <hashing name="modules/game_spycam/spycam.lua" hash="EE4BE74D3DC2983421A43E49A1B05C07"/>
     <hashing name="modules/game_spycam/spycam.otmod" hash="C19517654ABF9A9310D5D0AA7356B22E"/>
     <hashing name="modules/game_spycam/spycam.otui" hash="DF0FAF5DCE3DC561D83BEA767E17DEA1"/>
-    <hashing name="modules/game_stafftags/stafftags.lua" hash="7926020409388ED577130131D231AE77"/>
-    <hashing name="modules/game_stafftags/stafftags.otmod" hash="6357EB14E1EE178AAF0132CC38CC981B"/>
     <hashing name="modules/game_stats/stats.lua" hash="F6750B8D752F93B34DEB8AF9DE770B8C"/>
     <hashing name="modules/game_stats/stats.otmod" hash="40B709487D82E5658473F27431CF16BF"/>
     <hashing name="modules/game_stats/stats.otui" hash="29D42F326D75E301C85B67803FCA032F"/>
@@ -19732,7 +19683,7 @@
     <hashing name="modules/game_task/task.otmod" hash="A5767848AF43B635F56B4A58241D38CF"/>
     <hashing name="modules/game_task/task.otui" hash="A222F9F34D7B9DC942E74A0407F79590"/>
     <hashing name="modules/game_textmessage/down.png" hash="0E5C404E834AA8150EEF45D04765FB85"/>
-    <hashing name="modules/game_textmessage/textmessage.lua" hash="81A41FB21DE639DA6070EDCFD41B95BE"/>
+    <hashing name="modules/game_textmessage/textmessage.lua" hash="ACBF3C6C57F16CF491A52E77C099FB79"/>
     <hashing name="modules/game_textmessage/textmessage.otmod" hash="DBB36D876D5BA46A31A298ACBF1F2262"/>
     <hashing name="modules/game_textmessage/textmessage.otui" hash="7BA520E492A722EBB0EF4896FEAAB0C1"/>
     <hashing name="modules/game_textmessage/up.png" hash="A0892DC32FEDEE015F4D68EE03E378C2"/>
@@ -19963,141 +19914,16 @@
     <hashing name="modules/game_workshop/workshop.otmod" hash="5447C83CFA9340A06394B85E7F6073B0"/>
     <hashing name="modules/game_workshop/workshop.otui" hash="4BB0CC53C502E9B2BBB0C5BC60360781"/>
     <hashing name="modules/rc_sound/music/0821.ogg" hash="C0CFC98906529DCEAD5499DA7F0BDEE6"/>
-    <hashing name="modules/rc_sound/music/ambient/cave.ogg" hash="6A4E013811351DE9E3D05EE7422E766F"/>
-    <hashing name="modules/rc_sound/music/ambient/cave1.ogg" hash="570286E20CA78FE7AFBD6C5BA6068408"/>
-    <hashing name="modules/rc_sound/music/ambient/cavegelo.ogg" hash="1C53C20A32B9E306DBF4F1247F81F951"/>
-    <hashing name="modules/rc_sound/music/ambient/cemiterio.ogg" hash="15C62B60C01B3BED1A46F31BE3601A3B"/>
-    <hashing name="modules/rc_sound/music/ambient/coldcave1.ogg" hash="AE9CCEFDB578A79C99E5EA98715B99F5"/>
-    <hashing name="modules/rc_sound/music/ambient/coldwind.ogg" hash="E49CB137BB43EE5ACD591CD8BC7CCE12"/>
-    <hashing name="modules/rc_sound/music/ambient/deserto.ogg" hash="FFFA27825B06A787A274877FE7626F48"/>
-    <hashing name="modules/rc_sound/music/ambient/forest.ogg" hash="098609DC0F8E3F844E8519266E832DF0"/>
-    <hashing name="modules/rc_sound/music/ambient/hotspot.ogg" hash="EC57B735953EA2822C2E4D4D21F9D0D4"/>
-    <hashing name="modules/rc_sound/music/ambient/lake.ogg" hash="A192D148BB13494D0581388205597F2A"/>
-    <hashing name="modules/rc_sound/music/ambient/lavaspot.ogg" hash="A71D095CDF670B4E2315E669173D8363"/>
-    <hashing name="modules/rc_sound/music/ambient/lava_lake.ogg" hash="2ED371A63922431E757E87B6214DAE10"/>
-    <hashing name="modules/rc_sound/music/ambient/montanha.ogg" hash="E5345A10BEAFFE678D858FB65B5E9C64"/>
-    <hashing name="modules/rc_sound/music/ambient/mountain.ogg" hash="12170F38FAA44611449FFA5F206C7CD5"/>
-    <hashing name="modules/rc_sound/music/ambient/neve.ogg" hash="2F351D734988BCC86F998F47C56EDEFD"/>
-    <hashing name="modules/rc_sound/music/ambient/neve1.ogg" hash="8AAC8996237F329956DF445992F4F795"/>
-    <hashing name="modules/rc_sound/music/ambient/neve2.ogg" hash="3DE3BE789C3A8B818E1E43AF9DC306EA"/>
-    <hashing name="modules/rc_sound/music/ambient/nwbeach.ogg" hash="CC433F9E0ADD9866C5961730990B1199"/>
-    <hashing name="modules/rc_sound/music/ambient/ocean.ogg" hash="2C7F5DE24AF5867AB4526ECDFF7B8E9D"/>
-    <hashing name="modules/rc_sound/music/ambient/oceano.ogg" hash="5C01135B94F01A570A1744BB8E49ECEE"/>
-    <hashing name="modules/rc_sound/music/ambient/pantano.ogg" hash="076F70C70C48CE8BA2D46088C4B4B56C"/>
-    <hashing name="modules/rc_sound/music/ambient/pantano1.ogg" hash="E79B196A60094AD75B73AE3FC2061F4D"/>
-    <hashing name="modules/rc_sound/music/ambient/praia.ogg" hash="54329C94A0EDA6D9C07720D68D10D9D0"/>
-    <hashing name="modules/rc_sound/music/ambient/rainloop.ogg" hash="B1B058C2AA28D61212D28F62C95E5FD1"/>
-    <hashing name="modules/rc_sound/music/ambient/selva.ogg" hash="54612CC7FE88D72D25C6CBC81A0A025E"/>
-    <hashing name="modules/rc_sound/music/ambient/selva1.ogg" hash="BC4BFE6702ED62019E16A920063342E7"/>
-    <hashing name="modules/rc_sound/music/ambient/selva2.ogg" hash="282149244975B5FBB8E93A8A5D51842F"/>
-    <hashing name="modules/rc_sound/music/ambient/selva3.ogg" hash="DFFB587D5AE14E957FD1CA797A394706"/>
-    <hashing name="modules/rc_sound/music/ambient/selva4.ogg" hash="C0005A15C26124F52162E12904356FCA"/>
-    <hashing name="modules/rc_sound/music/ambient/selva5.ogg" hash="F6C36ED2D874B1DC660D3836C75B233C"/>
-    <hashing name="modules/rc_sound/music/ambient/selva6.ogg" hash="27CAA2F4851BCB81B685260CCE827150"/>
-    <hashing name="modules/rc_sound/music/ambient/selva7.ogg" hash="E2CA85E0C257949CC837B664EE09910E"/>
-    <hashing name="modules/rc_sound/music/ambient/selvrio.ogg" hash="BDB5F0B3A6CEDFFA520669D9EE065BFD"/>
-    <hashing name="modules/rc_sound/music/ambient/swamp.ogg" hash="865F4064F73B14AA321C230EEF9D9E7D"/>
-    <hashing name="modules/rc_sound/music/ambient/swampspot.ogg" hash="A3626360CB2AE6AFD68AFE6D2BAACF0E"/>
-    <hashing name="modules/rc_sound/music/ambient/terra.ogg" hash="3EE6E787C4068E960ED093F9829A8AAA"/>
-    <hashing name="modules/rc_sound/music/ambient/thunder.ogg" hash="96A97242588A28BEA94838B3F368A041"/>
-    <hashing name="modules/rc_sound/music/ambient/thunder1.ogg" hash="9F7925B9CF1C32F42ADF7D035CBE6712"/>
-    <hashing name="modules/rc_sound/music/ambient/thunder2.ogg" hash="9E11E38A04308072F5C54280372438BF"/>
-    <hashing name="modules/rc_sound/music/ambient/thunder3.ogg" hash="2A8C439D7D5681C278298BCA8C34FA98"/>
-    <hashing name="modules/rc_sound/music/ambient/tower_cine1.ogg" hash="9E32FC3E7C8F29005E90A51460AC7AD7"/>
-    <hashing name="modules/rc_sound/music/ambient/tower_cine2.ogg" hash="A600335D3219D8ECCC163AD57298ADD4"/>
-    <hashing name="modules/rc_sound/music/ambient/tower_cine3.ogg" hash="FE05B84BBF757580486266C580045D0E"/>
-    <hashing name="modules/rc_sound/music/ambient/underwater.ogg" hash="B9D0FC112358D061F6A610A07F8A40C1"/>
-    <hashing name="modules/rc_sound/music/ambient/underwater1.ogg" hash="99C3580C133FA69A04E07B44EA2C81A8"/>
-    <hashing name="modules/rc_sound/music/ambient/vento.ogg" hash="5EA62C9051EB9737CB7A5788BB4873FF"/>
-    <hashing name="modules/rc_sound/music/ambient/vento1.ogg" hash="DC79DC29EDD345D0F65B0C9C554A0A5F"/>
-    <hashing name="modules/rc_sound/music/ambient/volcano.ogg" hash="2D14A63696FC74A880CFE4FBB62ECFAC"/>
-    <hashing name="modules/rc_sound/music/ambient/volcano1.ogg" hash="BDF4BB07DDBCD6A80EBD2976A87B1949"/>
-    <hashing name="modules/rc_sound/music/ambient/volcano2.ogg" hash="995F6240CDC3826647DC3D27B922DEC7"/>
-    <hashing name="modules/rc_sound/music/ambient/volcano3.ogg" hash="FED0E85D5448A8996BFECBE31D2A72D7"/>
-    <hashing name="modules/rc_sound/music/ambient/waterfall.ogg" hash="604517F5FD440B20DE1BC5400A80A0E1"/>
-    <hashing name="modules/rc_sound/music/ambient/wetcave.ogg" hash="3989E0F3E7C2EDBFB2C7350720E2E317"/>
-    <hashing name="modules/rc_sound/music/battle/battle1.ogg" hash="AB993E2A15B467FF8FE30CF7E5CE1AA6"/>
-    <hashing name="modules/rc_sound/music/battle/battle2.ogg" hash="60467DD9336E031A9743322C5143D44A"/>
-    <hashing name="modules/rc_sound/music/battle/battle3.ogg" hash="C9EC5365469A83C02483832C158B18AC"/>
-    <hashing name="modules/rc_sound/music/battle/battle4.ogg" hash="D756645F24DECD05D561122B70315DEB"/>
-    <hashing name="modules/rc_sound/music/battle/battle5.ogg" hash="68C32144462A7C81AFF7FF5130313757"/>
-    <hashing name="modules/rc_sound/music/battle/battle6.ogg" hash="F6CE296B524A76F273E2261AF8FD30E8"/>
-    <hashing name="modules/rc_sound/music/battle/battle7.ogg" hash="BDABC24D6C7E056AE4C8EE64BD8957EF"/>
-    <hashing name="modules/rc_sound/music/battle/battle8.ogg" hash="6CA3BBCD287092618C59137BD1EF1944"/>
-    <hashing name="modules/rc_sound/music/battle/torneio.ogg" hash="B8AA9A775A13D3ABBFAB3C9813C454D9"/>
     <hashing name="modules/rc_sound/music/bp/capture.ogg" hash="9675223FF4FA53F131E51FA6B9A7566E"/>
     <hashing name="modules/rc_sound/music/bp/OGG.ogg" hash="830624950121FAD4CCF32549D0C6B2C3"/>
     <hashing name="modules/rc_sound/music/bp/rare.ogg" hash="74B6ACF871AD333A954CDB058DCB68AA"/>
     <hashing name="modules/rc_sound/music/bp/stone.ogg" hash="6F225DB119AB8DB823CF853E1AA209B9"/>
     <hashing name="modules/rc_sound/music/button_hover.ogg" hash="74A1F8287B8B4C461C4DE0BCA971D4B1"/>
     <hashing name="modules/rc_sound/music/capture.ogg" hash="C3F26BED7204EB61048F118BAF48A378"/>
+    <hashing name="modules/rc_sound/music/Celadon-City-Theme.ogg" hash="5AB354E53C9DD0A27C7613F4CE17DFAE"/>
+    <hashing name="modules/rc_sound/music/Cerulean-City-Theme.ogg" hash="22D4D180EAC1A22C4C5114ADFE162D93"/>
     <hashing name="modules/rc_sound/music/change_option.ogg" hash="C3F3320BC9DB39283CB229E21D9F4D26"/>
-    <hashing name="modules/rc_sound/music/city/altomare.ogg" hash="2DE5D91F2FFE677AACCEE85746C5557D"/>
-    <hashing name="modules/rc_sound/music/city/azaleatown.ogg" hash="FDE4F545CDF9F9B695D69B22FD922DFB"/>
-    <hashing name="modules/rc_sound/music/city/azaleatown2.ogg" hash="90420E171E85559C586678D0B7B7C4B1"/>
-    <hashing name="modules/rc_sound/music/city/blackthorn.ogg" hash="15E90FCBB1967695572AD832420B21A0"/>
-    <hashing name="modules/rc_sound/music/city/burnedtower.ogg" hash="5F4E65E141FC509327BB20F467E22975"/>
-    <hashing name="modules/rc_sound/music/city/celadon.ogg" hash="2646586D6FC5A98EF48B52FADB10F5DA"/>
-    <hashing name="modules/rc_sound/music/city/cerulean.ogg" hash="8132E1E1207ACFF00F20A61E3F9C696E"/>
-    <hashing name="modules/rc_sound/music/city/cherrygrove1.ogg" hash="4EDC62F7BD64AD72A591C273B9B563BA"/>
-    <hashing name="modules/rc_sound/music/city/cherrygrove2.ogg" hash="342CFB424D22809A7B430D3F3B0FE71F"/>
-    <hashing name="modules/rc_sound/music/city/christmas.ogg" hash="2B8F9F7720403A9AE60BC5B006435E8B"/>
-    <hashing name="modules/rc_sound/music/city/cianwood.ogg" hash="D07850E8F6DFB289FCEC116B479008BF"/>
-    <hashing name="modules/rc_sound/music/city/cidadegrande1.ogg" hash="34135CA6D6C006E9794A08EE8BBA3957"/>
-    <hashing name="modules/rc_sound/music/city/cidadegrande2.ogg" hash="82BD628CED9DD3DDF278580C47ED9A90"/>
-    <hashing name="modules/rc_sound/music/city/cidadegrande3.ogg" hash="07AEA726579B064D3246DEDBB8B98D57"/>
-    <hashing name="modules/rc_sound/music/city/cidadegrande4.ogg" hash="FDAB4B7B8364F729A19C789BBFFAEDA3"/>
-    <hashing name="modules/rc_sound/music/city/cidadegrande5.ogg" hash="3DD63DE49841983D4AE45E2621C783BD"/>
-    <hashing name="modules/rc_sound/music/city/cidadegrande6.ogg" hash="8B7CE09B97A71F36966D07F60E798FD3"/>
-    <hashing name="modules/rc_sound/music/city/cidadegrande7.ogg" hash="AB051946F5ECA5C2BC61BCBB4A4FA44F"/>
-    <hashing name="modules/rc_sound/music/city/cinnabar.ogg" hash="E8F205EA0D53CE29F3900F96F1BDB5FE"/>
-    <hashing name="modules/rc_sound/music/city/dragonsden.ogg" hash="570C19443340309BDE45A2F7F6C23513"/>
-    <hashing name="modules/rc_sound/music/city/ecruteak.ogg" hash="F7D7F1E1CF83308C592666D8AF34204B"/>
-    <hashing name="modules/rc_sound/music/city/elmlab.ogg" hash="C741C4F1D412A44C95939EBFF6AA440C"/>
-    <hashing name="modules/rc_sound/music/city/fuchsia.ogg" hash="666E7E4F7D5D40CEC6789D492403AEDD"/>
-    <hashing name="modules/rc_sound/music/city/goldenrod.ogg" hash="000ACFC717BB4A17CA8AACE7598D6FE9"/>
-    <hashing name="modules/rc_sound/music/city/goldenrod2.ogg" hash="8C38480F7730298539174665DCE051A0"/>
-    <hashing name="modules/rc_sound/music/city/gym.ogg" hash="0FF54E6099457D72E08C95B8AF328E61"/>
-    <hashing name="modules/rc_sound/music/city/halloffame.ogg" hash="D901A1B717ED6108CCD2CFBE2501BD3C"/>
-    <hashing name="modules/rc_sound/music/city/hamlinisland.ogg" hash="CE749A68EE500F77FB8415439517C42B"/>
-    <hashing name="modules/rc_sound/music/city/icepath.ogg" hash="E345CDCBF3599985AEE3FE39AFA3EEB7"/>
-    <hashing name="modules/rc_sound/music/city/ilexforest.ogg" hash="B542EF8616D6BC59FEDB061619DADF45"/>
-    <hashing name="modules/rc_sound/music/city/kimonogirls.ogg" hash="3AB8A13101024BF5086C509FCA40C9A6"/>
-    <hashing name="modules/rc_sound/music/city/labtutorial.ogg" hash="F6CD777615CD352B14B009E70B7C8A28"/>
-    <hashing name="modules/rc_sound/music/city/lavender.ogg" hash="E06D2F117A105FA742564E9A422CEA96"/>
-    <hashing name="modules/rc_sound/music/city/mahogany.ogg" hash="18E456FF3769EE38DD5EA386370E32AD"/>
-    <hashing name="modules/rc_sound/music/city/moomoofarm.ogg" hash="8AA9C1506B77369D7F03ED799CFD6A15"/>
-    <hashing name="modules/rc_sound/music/city/mtsilver.ogg" hash="BB522EF7ABCA019C7CC0B1B0D9CA522B"/>
-    <hashing name="modules/rc_sound/music/city/nationalpark.ogg" hash="69C84811E803D74AA22AE71CCD2F0EDB"/>
-    <hashing name="modules/rc_sound/music/city/newbark1.ogg" hash="620587BB5AD3CA3D39B1D03814E59A4C"/>
-    <hashing name="modules/rc_sound/music/city/newbark2.ogg" hash="205FD965E464E672CCA5EBBDBF321D76"/>
-    <hashing name="modules/rc_sound/music/city/nwcidades.ogg" hash="2F1F77B518FAFA93F4965E5BDE7ED333"/>
-    <hashing name="modules/rc_sound/music/city/olivinecity.ogg" hash="00773D51EE4E17CB71FCEF9E1E1A48AC"/>
-    <hashing name="modules/rc_sound/music/city/olivinelighthouse.ogg" hash="5D09A565449C46539D2160F098F4367E"/>
-    <hashing name="modules/rc_sound/music/city/pallet.ogg" hash="E61BF00A835A1E859917634F4FEA56AB"/>
-    <hashing name="modules/rc_sound/music/city/pewtersaffron.ogg" hash="4C1F2874173F7ED663E46B426DF066CD"/>
-    <hashing name="modules/rc_sound/music/city/pokecenter.ogg" hash="540628BC7C4D5340C3D15D63D7F7D752"/>
-    <hashing name="modules/rc_sound/music/city/pokemart.ogg" hash="A448AF07F411296F640771332CCD80AC"/>
-    <hashing name="modules/rc_sound/music/city/pokepark.ogg" hash="AD51BB94D57B45225F22D8454B8929DC"/>
-    <hashing name="modules/rc_sound/music/city/ruinsofalph.ogg" hash="D6D3FB9AEB177AB7F3D6BFFD4E1D4CA1"/>
-    <hashing name="modules/rc_sound/music/city/safarizone.ogg" hash="92CBA9DC617DEE25370AABCA3D035971"/>
-    <hashing name="modules/rc_sound/music/city/saffarizone.ogg" hash="4FE73187A62CAF1F3AA1F5CB718ED19F"/>
-    <hashing name="modules/rc_sound/music/city/shamouti.ogg" hash="4074CBF5CABF5C5C6165D71C0F29DE45"/>
-    <hashing name="modules/rc_sound/music/city/ssanne.ogg" hash="CCAE407C24BD5185DADFE887452419B8"/>
-    <hashing name="modules/rc_sound/music/city/tracktc.ogg" hash="AE7A640376D2312769BF18B889949CCE"/>
-    <hashing name="modules/rc_sound/music/city/vermilion.ogg" hash="21BE861C5B20FFEC4F28CA2C20C5FDB6"/>
-    <hashing name="modules/rc_sound/music/city/violetcity.ogg" hash="8ED8AC1894A1AEDB87DBBE1AF10ABDF4"/>
-    <hashing name="modules/rc_sound/music/city/viridian.ogg" hash="59B80BA1191625FCC2CE95BC487671C5"/>
-    <hashing name="modules/rc_sound/music/citys/Celadon-City-Theme.ogg" hash="6381BCAE8C5DB0226D99C492B216AE79"/>
-    <hashing name="modules/rc_sound/music/citys/Cerulean-City-Theme.ogg" hash="C17607BD5C25DBC53FDA5892262BC84A"/>
-    <hashing name="modules/rc_sound/music/citys/Cinnabar-Island-Theme.ogg" hash="94D936CE0F8B581A2295D3DBEA3AA548"/>
-    <hashing name="modules/rc_sound/music/citys/Fuchsia-City.ogg" hash="37C12673C9FC20C985C36859DB94D727"/>
-    <hashing name="modules/rc_sound/music/citys/Lavender-Town-Theme.ogg" hash="232C23D536BBDD5CFD39458C516F146E"/>
-    <hashing name="modules/rc_sound/music/citys/Pallet-Town-Theme.ogg" hash="35D5405ADD9C8EB226F1F28871355174"/>
-    <hashing name="modules/rc_sound/music/citys/Pewter-City-Theme.ogg" hash="42CB38E4BFF7E51B19867EFC2E8F19B8"/>
-    <hashing name="modules/rc_sound/music/citys/Saffron-City.ogg" hash="4590E1698F3AF54A0409B7DF1F73C509"/>
-    <hashing name="modules/rc_sound/music/citys/Vermillion-City-Theme.ogg" hash="638ECCF70218215266D73D11268CC6CC"/>
-    <hashing name="modules/rc_sound/music/citys/Viridian Forest.ogg" hash="A66A93A0A027AB2D1BEB4651933E04C5"/>
+    <hashing name="modules/rc_sound/music/Cinnabar-Island-Theme.ogg" hash="135A3824940946C15A2CE2F438F2B74B"/>
     <hashing name="modules/rc_sound/music/effects/abilitie_drop.ogg" hash="01B1A6FEF716BE798ECE70A4D3638D4E"/>
     <hashing name="modules/rc_sound/music/effects/beach.ogg" hash="24E5717978A3C8ECC6246766B26BF701"/>
     <hashing name="modules/rc_sound/music/effects/bombermon_death.ogg" hash="4FDA7EE128DDB0AFDAFC0EA9A3C0F5CD"/>
@@ -20190,249 +20016,22 @@
     <hashing name="modules/rc_sound/music/effects/wood_break.ogg" hash="CFF1AE46B8F245E3362A0D801C9C4E51"/>
     <hashing name="modules/rc_sound/music/effects/yipee.ogg" hash="1252ABBB611D05928444F04B01477D95"/>
     <hashing name="modules/rc_sound/music/event_drop.ogg" hash="135DC5F5502A00D042BAC8935B6A9D22"/>
-    <hashing name="modules/rc_sound/music/hallo/haddonfield_streets.ogg" hash="EF12C4B74CA517BF06B6D2A489346EA5"/>
-    <hashing name="modules/rc_sound/music/hallo/shape_stalks.ogg" hash="BBE0BBA1412E3234DDC9AB02C43DC8AD"/>
-    <hashing name="modules/rc_sound/music/hallo/texas_theme.ogg" hash="A3CF13993C078F15150D61E1A4511A68"/>
+    <hashing name="modules/rc_sound/music/Fuchsia-City.ogg" hash="7EB6F5BC81084F5DD90F852A04627DE3"/>
+    <hashing name="modules/rc_sound/music/Lavender-Town-Theme.ogg" hash="E356EB42431E355AACFA8DD44A5676EC"/>
     <hashing name="modules/rc_sound/music/menu_hover.ogg" hash="83C75C5EC7C4D154CC7F7853AE57C0BE"/>
     <hashing name="modules/rc_sound/music/message_alert.ogg" hash="BA0DA755571F97412BE633F2668D096F"/>
     <hashing name="modules/rc_sound/music/message_alert2.ogg" hash="CBFE197F22987CE79B0C69F8E30F1203"/>
     <hashing name="modules/rc_sound/music/minigame_accept.ogg" hash="470BEAF2D894153389AC5248BF18E8D0"/>
     <hashing name="modules/rc_sound/music/minigame_back.ogg" hash="252B2C77DE8325F5EB3DCA61E60D4A8F"/>
     <hashing name="modules/rc_sound/music/minigame_choose.ogg" hash="3EEA84C3B05DA6ADA7EAF76C52BB6AF3"/>
-    <hashing name="modules/rc_sound/music/music/arborville.ogg" hash="CA18F79236757F45CBEC985E31DEF894"/>
-    <hashing name="modules/rc_sound/music/music/arboville.ogg" hash="272923B8D2A46316E2C4F2FC8498777F"/>
-    <hashing name="modules/rc_sound/music/music/arch_rival_music.ogg" hash="3B2DBD319F48FB6A3F27B13C10B79D24"/>
-    <hashing name="modules/rc_sound/music/music/balada1.ogg" hash="4A7B8955B5EDA86CFA9835EF1722BE34"/>
-    <hashing name="modules/rc_sound/music/music/balada2_loop.ogg" hash="DBA563C8B15E0C0FD37D123A0D140EA4"/>
-    <hashing name="modules/rc_sound/music/music/balada3_loop.ogg" hash="ACC03E8D360B3FD5ACE3FC980E76817E"/>
-    <hashing name="modules/rc_sound/music/music/balada4_loop.ogg" hash="2860B06A25287EEB2F3CE242BD2C09A7"/>
-    <hashing name="modules/rc_sound/music/music/balada5_loop.ogg" hash="5B170E93ECC0D0BB044168433D29D255"/>
-    <hashing name="modules/rc_sound/music/music/balada6_loop.ogg" hash="9FE8C1895C41E7B67D89B987CC506004"/>
-    <hashing name="modules/rc_sound/music/music/battle_alakazam.ogg" hash="B7F2FBF4EE37809829578EF8A51B7A63"/>
-    <hashing name="modules/rc_sound/music/music/battle_boss_dorabelle.ogg" hash="BFF7C8FD4AAF31F01CE3DC40E065AEAD"/>
-    <hashing name="modules/rc_sound/music/music/battle_boss_dragonair.ogg" hash="4045736625979A57CA408A3B5C9A0A88"/>
-    <hashing name="modules/rc_sound/music/music/battle_boss_ghost.ogg" hash="BB6B36702E1CDB56B8133A78A9688F48"/>
-    <hashing name="modules/rc_sound/music/music/battle_boss_magcargo.ogg" hash="38DFCA311190AC04608058A3B29413BE"/>
-    <hashing name="modules/rc_sound/music/music/battle_boss_noctu.ogg" hash="74B9815BB34E8FC766B723F8BF653BC2"/>
-    <hashing name="modules/rc_sound/music/music/battle_boss_tyranitar.ogg" hash="9676C2A64DEB43EBA9C32A42DBDD0A5C"/>
-    <hashing name="modules/rc_sound/music/music/battle_celebi.ogg" hash="57961368B0DC33DFEBFF8F7CFD962BEA"/>
-    <hashing name="modules/rc_sound/music/music/battle_cry.ogg" hash="3564E9BA77B6CEF9EBF76973BAA74445"/>
-    <hashing name="modules/rc_sound/music/music/battle_entei.ogg" hash="2D8FC9BDDF7578081D544797A81EE4C0"/>
-    <hashing name="modules/rc_sound/music/music/battle_giratina.ogg" hash="624F9CA04E61D642A6CF264501335965"/>
-    <hashing name="modules/rc_sound/music/music/battle_hisuian_pokemon.ogg" hash="1680CE093536F5E8D1BEC860C9698292"/>
-    <hashing name="modules/rc_sound/music/music/battle_ho-oh.ogg" hash="C96E9477BD47EA12838A3AABBCFE76F6"/>
-    <hashing name="modules/rc_sound/music/music/battle_kanto_leader.ogg" hash="E6C637EC72B6BD38C51A3D3A5598C242"/>
-    <hashing name="modules/rc_sound/music/music/battle_mamoswine.ogg" hash="A736BD45D0254CE146BB5F8A75FA10D4"/>
-    <hashing name="modules/rc_sound/music/music/battle_primal.ogg" hash="4B32174DBD7B5166A3BF48E2B73DC2C0"/>
-    <hashing name="modules/rc_sound/music/music/battle_raikou.ogg" hash="B116F60DD82F3CC67AD69590AC7B295C"/>
-    <hashing name="modules/rc_sound/music/music/battle_rayquaza.ogg" hash="828525FB01975782C5D902024006C6F7"/>
-    <hashing name="modules/rc_sound/music/music/battle_red_gyarados.ogg" hash="A5E96489437BDAE1E5522019F743DBDF"/>
-    <hashing name="modules/rc_sound/music/music/battle_regi.ogg" hash="5204CF6CA19815A20495516886697DB8"/>
-    <hashing name="modules/rc_sound/music/music/battle_saturn.ogg" hash="A167050A20EE07B1BAE87995CD0873CD"/>
-    <hashing name="modules/rc_sound/music/music/battle_silver.ogg" hash="0064CC081DBAF42817CED0867907D021"/>
-    <hashing name="modules/rc_sound/music/music/battle_star.ogg" hash="BAF93AF73469DFB3C481FA4C61EF9EFA"/>
-    <hashing name="modules/rc_sound/music/music/battle_suicune.ogg" hash="662E341A11E0B4D4A3F919E46962CBA5"/>
-    <hashing name="modules/rc_sound/music/music/battle_suicune_paradox.ogg" hash="7B0697AB631D845D9B3C630E646C2F8B"/>
-    <hashing name="modules/rc_sound/music/music/battle_surge.ogg" hash="16F3A2327F3B9267F99721AD93F006FA"/>
-    <hashing name="modules/rc_sound/music/music/battle_terror_aero.ogg" hash="D14933B802779E29DA8EA1A546E61EF6"/>
-    <hashing name="modules/rc_sound/music/music/battle_terror_alakazamAndGengar.ogg" hash="4A23B64BA822DE781E290C4063B71F09"/>
-    <hashing name="modules/rc_sound/music/music/battle_terror_blastoise.ogg" hash="A5B8CF6A69E3AC190EC6E537E83B6B1E"/>
-    <hashing name="modules/rc_sound/music/music/battle_terror_charizard.ogg" hash="C61EB15E6FC3544BB60B0206E5095D34"/>
-    <hashing name="modules/rc_sound/music/music/battle_terror_electabuzz.ogg" hash="E29F18EAEF8002A331DE17D07D750FB9"/>
-    <hashing name="modules/rc_sound/music/music/battle_terror_ghost.ogg" hash="AAF5C2738E42B1CA788F904D48A878F6"/>
-    <hashing name="modules/rc_sound/music/music/battle_terror_glitch.ogg" hash="F9DEE5C629E59D38BD82583541E154B7"/>
-    <hashing name="modules/rc_sound/music/music/battle_terror_gyarados.ogg" hash="BDCB32C38EA5E0B55D93DF584FEEE5EA"/>
-    <hashing name="modules/rc_sound/music/music/battle_terror_kabutops.ogg" hash="C6D726E2150931F65E1A39DCD8F1A1E8"/>
-    <hashing name="modules/rc_sound/music/music/battle_terror_machamp.ogg" hash="7EAC3CC0A194266581F73C336F4600BA"/>
-    <hashing name="modules/rc_sound/music/music/battle_terror_venusaur.ogg" hash="39A60B3708281C89703B42D7202899AA"/>
-    <hashing name="modules/rc_sound/music/music/battle_terror_zoroark.ogg" hash="B66063956E3D4C55A58D08A73102C202"/>
-    <hashing name="modules/rc_sound/music/music/battle_tower.ogg" hash="5912F1C0CDCF510A11DEA0EFF63EBD21"/>
-    <hashing name="modules/rc_sound/music/music/birthday_theme.ogg" hash="AB700F395B85EB965592D9A62E50DB6D"/>
-    <hashing name="modules/rc_sound/music/music/bowstoise_theme.ogg" hash="10D600AA57F098ACB25D68C95A62752E"/>
-    <hashing name="modules/rc_sound/music/music/bulbasaur15th_dungeon_theme.ogg" hash="0B0E2E60D1B6B4D2BC21D4BB3886184E"/>
-    <hashing name="modules/rc_sound/music/music/cassino1.ogg" hash="3E1B0FF0A5461BAB23D2EA019E4320F0"/>
-    <hashing name="modules/rc_sound/music/music/cassino2.ogg" hash="00FFB912274D7EE7700A61D9A5782FEB"/>
-    <hashing name="modules/rc_sound/music/music/cassino3.ogg" hash="9BF7339CF8C66E4F736A914D40F3AE38"/>
-    <hashing name="modules/rc_sound/music/music/celebi_song.ogg" hash="F939B602193E64C2036999B8A1781FF6"/>
-    <hashing name="modules/rc_sound/music/music/celebi_song_instrumental.ogg" hash="B6A8391DE153BB652A43CE20B111C115"/>
-    <hashing name="modules/rc_sound/music/music/cemiterio1.ogg" hash="63A3AF439259AFB596B23753A9C615C1"/>
-    <hashing name="modules/rc_sound/music/music/cemiterio2.ogg" hash="736E82EA83D9B83EC3FAD14E064FB5CF"/>
-    <hashing name="modules/rc_sound/music/music/cemiterio3.ogg" hash="E24020BB7BD4CAD30D7C87C295F7C12D"/>
-    <hashing name="modules/rc_sound/music/music/charmander15th_dungeon_theme.ogg" hash="D5CF40B4641E85B1232DC9AA44498D7C"/>
-    <hashing name="modules/rc_sound/music/music/christmas.ogg" hash="F1616893F3A1B3438DFEF93B7D3060C4"/>
-    <hashing name="modules/rc_sound/music/music/christmas2.ogg" hash="F9DC198A41AA2B195D358FCBA58214B9"/>
-    <hashing name="modules/rc_sound/music/music/clans.ogg" hash="CD7336BB853D6E9FE47944F91B91B353"/>
-    <hashing name="modules/rc_sound/music/music/coliseu.ogg" hash="D5A14EB2B87B6C77116C4C13E024446E"/>
-    <hashing name="modules/rc_sound/music/music/coliseu2.ogg" hash="5A9C9ADDFE55D3D941E75206F09A49A0"/>
-    <hashing name="modules/rc_sound/music/music/crystalcave.ogg" hash="6746392097E3573CA1F1AF13A064F29C"/>
-    <hashing name="modules/rc_sound/music/music/desert.ogg" hash="1990DEA60822EB68F5C45DA0CC8C84D9"/>
-    <hashing name="modules/rc_sound/music/music/ditto_laboratory.ogg" hash="C073B96293666D62B960A61CD78CE2AD"/>
-    <hashing name="modules/rc_sound/music/music/dojo.ogg" hash="F05D79BA7D0F6984FFE7A7630496227D"/>
-    <hashing name="modules/rc_sound/music/music/dream.ogg" hash="9CDD98C257B9765A929F86CF9C63C780"/>
-    <hashing name="modules/rc_sound/music/music/dream_mystery.ogg" hash="89C6CABA3340D9D75E2C32C44D3DC000"/>
-    <hashing name="modules/rc_sound/music/music/dr_mime_music.ogg" hash="E42C88FF1E86047264395744D241C8F3"/>
-    <hashing name="modules/rc_sound/music/music/dw_theme.ogg" hash="CFE58EA521E9E57DA10D624BA40593CA"/>
-    <hashing name="modules/rc_sound/music/music/ecruteak_festival.ogg" hash="C8F2067582ADDB6653A7927FC6893D3A"/>
-    <hashing name="modules/rc_sound/music/music/eletrico1.ogg" hash="A1B5B0429FE4CCF1E57F15D53E104FD3"/>
-    <hashing name="modules/rc_sound/music/music/eletrico2.ogg" hash="064B53BD68579A2DF00B850CC0664E28"/>
-    <hashing name="modules/rc_sound/music/music/ezio.ogg" hash="383797191487DD6A1F5405B8D1CD1177"/>
-    <hashing name="modules/rc_sound/music/music/factoryAlert.ogg" hash="997E91BCE58AFF96AC791F1FFB1922CB"/>
-    <hashing name="modules/rc_sound/music/music/factoryBasic.ogg" hash="E2587B40CE7ADB4EF727E2B688276B6A"/>
-    <hashing name="modules/rc_sound/music/music/fairy1.ogg" hash="06F87297C6D4336CBE86CA85FB3AD1FD"/>
-    <hashing name="modules/rc_sound/music/music/fairy2.ogg" hash="9582887C29BC09017096FA2C32A75392"/>
-    <hashing name="modules/rc_sound/music/music/fear_forest.ogg" hash="D85128FEC32BD1470360DCC96C2F558B"/>
-    <hashing name="modules/rc_sound/music/music/fifa.ogg" hash="A715FB78B475E50F59DEF2A89B77941E"/>
-    <hashing name="modules/rc_sound/music/music/finalDesert.ogg" hash="0698968B095CC285009BF024FDADAF3D"/>
-    <hashing name="modules/rc_sound/music/music/fly.ogg" hash="A6E0893C9FD297EF20E9D4E57F445058"/>
-    <hashing name="modules/rc_sound/music/music/flying_dutchman_theme.ogg" hash="97788B4D12901979C978D4D9BA4F4AF9"/>
-    <hashing name="modules/rc_sound/music/music/fogoepantano.ogg" hash="CDC59BC4CCA7491919B72930E7501BE9"/>
-    <hashing name="modules/rc_sound/music/music/footGolemTheme.ogg" hash="71824C7640FBD8063C49D76EBE84D46D"/>
-    <hashing name="modules/rc_sound/music/music/golden.ogg" hash="220C04C9755309A410574A866EA43929"/>
-    <hashing name="modules/rc_sound/music/music/gym_leader.ogg" hash="7632566CDA7663F7B1EC0FD141279E20"/>
-    <hashing name="modules/rc_sound/music/music/gyroscope_sinister.ogg" hash="6449519FF91CAF7CB2C4092B0775CC7B"/>
-    <hashing name="modules/rc_sound/music/music/halloween_venusaur.ogg" hash="BA54A0CC9CEDBDF89A12162B01F2CA76"/>
-    <hashing name="modules/rc_sound/music/music/harryPotterTheme.ogg" hash="ECF64AF72CC43199E23D5E99D539D3CE"/>
-    <hashing name="modules/rc_sound/music/music/hisuian_dungeon.ogg" hash="C8DE0E34BFDB4281818DD50C0C9180FB"/>
-    <hashing name="modules/rc_sound/music/music/imite_house_interior.ogg" hash="05A3CB108A3D734404DAEF3D9BC537F1"/>
-    <hashing name="modules/rc_sound/music/music/impossible_mission.ogg" hash="77D9B152FA2DA93A56E3426050C10092"/>
-    <hashing name="modules/rc_sound/music/music/jasonDungeonSFX.ogg" hash="5DC944250FC37FE36638010C4E1062CF"/>
-    <hashing name="modules/rc_sound/music/music/johto_gym.ogg" hash="1D441E08D2E3F4963E9312A82D8A2639"/>
-    <hashing name="modules/rc_sound/music/music/jtcave.ogg" hash="6E1112166DF185FD9EB3404104113C19"/>
-    <hashing name="modules/rc_sound/music/music/jtcave2.ogg" hash="28D141577323B7F017F2D21BD59B0714"/>
-    <hashing name="modules/rc_sound/music/music/jtcave3.ogg" hash="286F308FAC2279905289A04C949D525E"/>
-    <hashing name="modules/rc_sound/music/music/jtcavewind.ogg" hash="D3A7D3639FACD6D95AECE276B523840C"/>
-    <hashing name="modules/rc_sound/music/music/jtelectric.ogg" hash="597D7252FF873CE473CBAA0D53A575C7"/>
-    <hashing name="modules/rc_sound/music/music/jtfairy.ogg" hash="93AFAB2762831917A30BB8D1370B545D"/>
-    <hashing name="modules/rc_sound/music/music/jtforest.ogg" hash="4AF71FED935AE049774F498E6E1398FA"/>
-    <hashing name="modules/rc_sound/music/music/jtforest2.ogg" hash="F8E47126BF4CEC1701A07A6A3C2A1EF9"/>
-    <hashing name="modules/rc_sound/music/music/jtforest3.ogg" hash="8EC8E5AFF93D8C27F05F2949235F71CB"/>
-    <hashing name="modules/rc_sound/music/music/jtforest4.ogg" hash="146BDF5AD0FB81AE1602A09DA2DA8170"/>
-    <hashing name="modules/rc_sound/music/music/jtgraveyard.ogg" hash="EC7D52B164253ADC53B807C8A0706B7B"/>
-    <hashing name="modules/rc_sound/music/music/jtgraveyard2.ogg" hash="BA0F7D4AD5802AE53837C41743F78C79"/>
-    <hashing name="modules/rc_sound/music/music/jtinfernodreams.ogg" hash="11C4ACFBCDF409214C2BF8714A43843A"/>
-    <hashing name="modules/rc_sound/music/music/jtlacuevadelfogo.ogg" hash="2EF47F19072E3E7C739EF89715A7D558"/>
-    <hashing name="modules/rc_sound/music/music/jtsavannah.ogg" hash="55A8051066DDDEB2700BE1DDD634A436"/>
-    <hashing name="modules/rc_sound/music/music/jtsewer.ogg" hash="6A5C7911DA3480A7372DB4B1049A4A97"/>
-    <hashing name="modules/rc_sound/music/music/jtswamp.ogg" hash="4931F2F6A9C58EEC3B6B4BF91F877CA4"/>
-    <hashing name="modules/rc_sound/music/music/jtswamp2.ogg" hash="E8FF7E1A1DDACB554169A88CA2140BA4"/>
-    <hashing name="modules/rc_sound/music/music/jtswampmusic.ogg" hash="A58FDE1077BBA6A7CE4152CC87AD9CE2"/>
-    <hashing name="modules/rc_sound/music/music/jttension.ogg" hash="5AA894DEA2C2BDA5FC799EA2ECE19D17"/>
-    <hashing name="modules/rc_sound/music/music/jtunderthepalms.ogg" hash="C0C4831FB6A53C06F0BE4CC5DC9D689B"/>
-    <hashing name="modules/rc_sound/music/music/jtunderwater.ogg" hash="1974D4EB27F4CB95072CEFF884EF0CCE"/>
-    <hashing name="modules/rc_sound/music/music/kraken_battle_theme.ogg" hash="0444AA8E1BDF8413CD426EA930FAA84E"/>
-    <hashing name="modules/rc_sound/music/music/lavender.ogg" hash="895A2383FACE8A00D74D712CCDF9D54C"/>
-    <hashing name="modules/rc_sound/music/music/lugia.ogg" hash="F7D1163431661E9E7BE1CD35BECCD7EC"/>
-    <hashing name="modules/rc_sound/music/music/lullaby_freddy.ogg" hash="BB227BCBD2BC5D9E156A71F2192DC3D1"/>
-    <hashing name="modules/rc_sound/music/music/masked_marauder_theme.ogg" hash="B30ED7BAA5ACAA4D8D1853AE76B61293"/>
-    <hashing name="modules/rc_sound/music/music/merchant.ogg" hash="4D5D5E0B412EE4A48657E525EDF34C10"/>
-    <hashing name="modules/rc_sound/music/music/meteorfalls.ogg" hash="F1D1E32E1F7723E21327C089D2F744F6"/>
-    <hashing name="modules/rc_sound/music/music/mewtwo.ogg" hash="EEA8AF6BC2DE462727583B4CE7BD519A"/>
-    <hashing name="modules/rc_sound/music/music/mewtwoloop.ogg" hash="27E9B06C220B8669C72509022692EFAD"/>
-    <hashing name="modules/rc_sound/music/music/mewtwotheme.ogg" hash="4D7E4CCED3567A55AA1AA982466C9705"/>
-    <hashing name="modules/rc_sound/music/music/mew_theme.ogg" hash="D240A3E0189D21C4647CD899480A24AD"/>
-    <hashing name="modules/rc_sound/music/music/mount_silver_dungeon.ogg" hash="E14C68CF63518B9CEFBB854F8A34A72A"/>
-    <hashing name="modules/rc_sound/music/music/mousersAttackArcade.ogg" hash="7D8DFFF3643EC8763F5CF258C06BA91E"/>
-    <hashing name="modules/rc_sound/music/music/mtchimney.ogg" hash="7D5819219441D68CFABEC555E52C76A3"/>
-    <hashing name="modules/rc_sound/music/music/mtMoonSoundTrack.ogg" hash="7675A5CE7AD945BB2D3519229EDA4EFF"/>
-    <hashing name="modules/rc_sound/music/music/museu.ogg" hash="27EFADF273E51D6B98771A06175FBE64"/>
-    <hashing name="modules/rc_sound/music/music/nightmareAlakazam.ogg" hash="15A44CDF05AEE2C203544FD54BAB78C1"/>
-    <hashing name="modules/rc_sound/music/music/nto_boss.ogg" hash="7B764BA9B3CC3B8CF5EDEA5D0DF0258A"/>
-    <hashing name="modules/rc_sound/music/music/nto_sorrow.ogg" hash="8DC9A99A29114DEDB295BA761A66A00D"/>
-    <hashing name="modules/rc_sound/music/music/nto_theme.ogg" hash="3F17B796216AF57EE8F89BBF8864F52B"/>
-    <hashing name="modules/rc_sound/music/music/nwhighhunts.ogg" hash="C8DD4A0DA9369C8C53091E1EC0C99AA7"/>
-    <hashing name="modules/rc_sound/music/music/nwlowhunts.ogg" hash="913F46C50A0BA2ED57A33BF1081172E8"/>
-    <hashing name="modules/rc_sound/music/music/og_battle_rayquaza.ogg" hash="A6EC2DBA930961CB506D23BCA96E3F8D"/>
-    <hashing name="modules/rc_sound/music/music/og_rayquaza_entrance.ogg" hash="BD4E622163242B51DCDAEB60267A982B"/>
-    <hashing name="modules/rc_sound/music/music/outland1.ogg" hash="4518A901594D95BB8DC68600EA2890E7"/>
-    <hashing name="modules/rc_sound/music/music/outland2.ogg" hash="5DEB1BD0B57B58B543FD7396D767AD72"/>
-    <hashing name="modules/rc_sound/music/music/pacman.ogg" hash="7EB21EB5576DF8F7C003641B5F8D09E1"/>
-    <hashing name="modules/rc_sound/music/music/photography_mystery.ogg" hash="65AF96428A24DC23AA6A70069967B1A7"/>
-    <hashing name="modules/rc_sound/music/music/piramide1.ogg" hash="78F014E99F001C9D7CDB510F7573A62B"/>
-    <hashing name="modules/rc_sound/music/music/piramide2.ogg" hash="0AFEC98B87D854AA2EC7FF3C6262AA12"/>
-    <hashing name="modules/rc_sound/music/music/piramide3.ogg" hash="CE99EFA1607EE8E86C0A849C98A633F7"/>
-    <hashing name="modules/rc_sound/music/music/pokepark.ogg" hash="5B5393BA3E798A52B4D0BDDEF5A26E29"/>
-    <hashing name="modules/rc_sound/music/music/policia.ogg" hash="4E780D78F43F8B3C5E6E5CFF801D09BF"/>
-    <hashing name="modules/rc_sound/music/music/porygon.ogg" hash="53392AC8E61A43DE3AA4A5592901F656"/>
-    <hashing name="modules/rc_sound/music/music/quest1.ogg" hash="43489C88861CC6F6A0DAB8FFCC79FE23"/>
-    <hashing name="modules/rc_sound/music/music/quest2.ogg" hash="C18275C39167C8DE4CD471266C21EBBC"/>
-    <hashing name="modules/rc_sound/music/music/quest3.ogg" hash="5DCFA0A66CAF273B9C7911C68A77D96E"/>
-    <hashing name="modules/rc_sound/music/music/quest4.ogg" hash="05A1A58739990D1A354D0E8E9D5C2595"/>
-    <hashing name="modules/rc_sound/music/music/quest5.ogg" hash="8E0B2149E604D4F027B0F5F2B660C0CF"/>
-    <hashing name="modules/rc_sound/music/music/raichu_halloween_end.ogg" hash="C1887CAC3D196AFE75F18B12993F05AC"/>
-    <hashing name="modules/rc_sound/music/music/raichu_halloween_mid.ogg" hash="E5A6238A323703C2E37A266E0519840C"/>
-    <hashing name="modules/rc_sound/music/music/raichu_halloween_start.ogg" hash="C759C85A60245AE7F91DD5EE93C06676"/>
-    <hashing name="modules/rc_sound/music/music/rayquaza_entrance.ogg" hash="1CC5AEAEB84470924B4FD19F6B22F820"/>
-    <hashing name="modules/rc_sound/music/music/relic_song.ogg" hash="759171CC2D5397F9993A25CAEC5DC970"/>
-    <hashing name="modules/rc_sound/music/music/resistance.ogg" hash="36224833F6DE3B6BEADBA68298ECC928"/>
-    <hashing name="modules/rc_sound/music/music/rocket1.ogg" hash="29C9F625AE92A87B4733DB6C6A6E7BF3"/>
-    <hashing name="modules/rc_sound/music/music/rocket2.ogg" hash="99DD676A77806B33779ED7DDF795137B"/>
-    <hashing name="modules/rc_sound/music/music/rocket3.ogg" hash="70F3871D2AFF2EE1C0BF91B4C94718AC"/>
-    <hashing name="modules/rc_sound/music/music/rockethideout.ogg" hash="6F15F23B360D923ED66D0F83A3E916F7"/>
-    <hashing name="modules/rc_sound/music/music/rocket_ambush.ogg" hash="91E4D93EEE701CB2663431489FE5205C"/>
-    <hashing name="modules/rc_sound/music/music/rocket_archer.ogg" hash="2E2BF6A6AD2A3A291FD9F1C327718CD9"/>
-    <hashing name="modules/rc_sound/music/music/rocket_encounter.ogg" hash="E7D5A972B40F418A635537CB49C987C9"/>
-    <hashing name="modules/rc_sound/music/music/rocket_executive.ogg" hash="0C57C1FAC56945D364F24BA8CCA7DE2C"/>
-    <hashing name="modules/rc_sound/music/music/rocket_hideout_mahogany.ogg" hash="4642D11B2A9DFF5FA0FC3561AAF33751"/>
-    <hashing name="modules/rc_sound/music/music/rocket_johto.ogg" hash="AAE9FE0CC67856C0B27E0D636A99CF82"/>
-    <hashing name="modules/rc_sound/music/music/rocket_theme.ogg" hash="44ACD375C65C9422E98F5CF0732A06C4"/>
-    <hashing name="modules/rc_sound/music/music/route26.ogg" hash="ECD56CDF211EC30047C62B300B0C7D4A"/>
-    <hashing name="modules/rc_sound/music/music/route29.ogg" hash="87417BCA56CA85C16558E7E38D7C0A81"/>
-    <hashing name="modules/rc_sound/music/music/route30.ogg" hash="28626F793D12F6392250C3C39881D53A"/>
-    <hashing name="modules/rc_sound/music/music/route34.ogg" hash="041D0B9BFF810C9590620499BAD6F045"/>
-    <hashing name="modules/rc_sound/music/music/route38.ogg" hash="1FFF0EB8B5B79CA3B9E772507AD84DE9"/>
-    <hashing name="modules/rc_sound/music/music/route42.ogg" hash="666F53A6B2DC7662216102B171015437"/>
-    <hashing name="modules/rc_sound/music/music/route47.ogg" hash="33EB503FAB92BA0062BE99EDD501AE53"/>
-    <hashing name="modules/rc_sound/music/music/secretlab.ogg" hash="EEACFBE4A5A5E456D70088B36B0AC038"/>
-    <hashing name="modules/rc_sound/music/music/shamouti.ogg" hash="08FBF54F7250151F30ACD619EE2907EB"/>
-    <hashing name="modules/rc_sound/music/music/sleep_sound.ogg" hash="D389AB2DD831D086FD19FFBAE97FC92E"/>
-    <hashing name="modules/rc_sound/music/music/slowpoke_well.ogg" hash="8794B091911BB7939DCE07F5245EE87C"/>
-    <hashing name="modules/rc_sound/music/music/soundCharizardValentines.ogg" hash="F79E5F98FC536998D00023D211337828"/>
-    <hashing name="modules/rc_sound/music/music/spaceInvasion.ogg" hash="26262D217E4764BCAAE0A38E1F69DD43"/>
-    <hashing name="modules/rc_sound/music/music/sprout_tower.ogg" hash="A87787D702679D99328737909F6A0AA6"/>
-    <hashing name="modules/rc_sound/music/music/squirtle15th_dungeon_theme.ogg" hash="D8CC0FFDF8F310A5635A6800FFA5CCA1"/>
-    <hashing name="modules/rc_sound/music/music/startup.ogg" hash="0E545B885AE6797847F98630F5898D56"/>
-    <hashing name="modules/rc_sound/music/music/streamstore_chest.ogg" hash="4BCFE298B53408639B33B3DA51B2C770"/>
-    <hashing name="modules/rc_sound/music/music/summon_hooh.ogg" hash="96514E50D891F0FD8E91C8A67679E086"/>
-    <hashing name="modules/rc_sound/music/music/surge_final.ogg" hash="354A158D2B3397D2E17E97869D4508F2"/>
-    <hashing name="modules/rc_sound/music/music/teamrocket.ogg" hash="5BCE94B80AE66964D020C5743383DF35"/>
-    <hashing name="modules/rc_sound/music/music/teamrocket2.ogg" hash="9985318199120C62D511306CF050A309"/>
-    <hashing name="modules/rc_sound/music/music/tekken_fight_music.ogg" hash="5CDDDF09A53B010654751CCC87291B29"/>
-    <hashing name="modules/rc_sound/music/music/tgbattle.ogg" hash="F904FA844A9223994F7BED109BE1677F"/>
-    <hashing name="modules/rc_sound/music/music/tgduelbattle.ogg" hash="68067119D9FB0A0D1B49C3B256721631"/>
-    <hashing name="modules/rc_sound/music/music/tgfame.ogg" hash="32C3E8ED62FE816956531D47507B0F8B"/>
-    <hashing name="modules/rc_sound/music/music/tgHQ_theme.ogg" hash="7D74D2E9FFD81ECBC2C6F0A93A56EA9D"/>
-    <hashing name="modules/rc_sound/music/music/tgspectator.ogg" hash="B88486AA5192DD91F953887CBDF30843"/>
-    <hashing name="modules/rc_sound/music/music/time_dungeon.ogg" hash="D6F0B68AED34E621AD644A9B2CBCF19B"/>
-    <hashing name="modules/rc_sound/music/music/tourDeAltoMare.ogg" hash="4C95E2030B5D0EA392B360FE83328443"/>
-    <hashing name="modules/rc_sound/music/music/trackcave.ogg" hash="DFF4363020696540F47F26F470E0D94A"/>
-    <hashing name="modules/rc_sound/music/music/trackcemiterio.ogg" hash="10455EBC9CA6305EAA6C3746AC4D65E0"/>
-    <hashing name="modules/rc_sound/music/music/trackclone.ogg" hash="589A605223E4364831B7B85C898874F3"/>
-    <hashing name="modules/rc_sound/music/music/trackcoliseu.ogg" hash="A93A4CB4D32D0DC0785547EDB86B6884"/>
-    <hashing name="modules/rc_sound/music/music/trackdeserto.ogg" hash="372F057DD89B2872601EE72EF8E610EC"/>
-    <hashing name="modules/rc_sound/music/music/trackdojo.ogg" hash="AE1F4F3F6CF2DED2C3E8ADBE1193ADDF"/>
-    <hashing name="modules/rc_sound/music/music/trackfada.ogg" hash="7A8CA53F6525BC1343ED2545D3630A7A"/>
-    <hashing name="modules/rc_sound/music/music/trackfada01.ogg" hash="5987042F47728993D25E7824B52478D0"/>
-    <hashing name="modules/rc_sound/music/music/trackfly.ogg" hash="C56DDD0956C019F00BFE5922F27013A7"/>
-    <hashing name="modules/rc_sound/music/music/trackneve.ogg" hash="108451DDB41F28159E8DE32B0AFFBA9A"/>
-    <hashing name="modules/rc_sound/music/music/trackpiramide01.ogg" hash="6B47FEEE570F14E4D5F9B44630DC1296"/>
-    <hashing name="modules/rc_sound/music/music/trackpiramide02.ogg" hash="D64B27EBED03EB7232D111049A3FE1C0"/>
-    <hashing name="modules/rc_sound/music/music/trackpraiasurf.ogg" hash="A0C30174C24D69919669291EDCEBE1F8"/>
-    <hashing name="modules/rc_sound/music/music/trackrocket.ogg" hash="AFA56E2366667930B51C0A619549EDE8"/>
-    <hashing name="modules/rc_sound/music/music/trackselva.ogg" hash="90E6227258B6226A3DD3FC4A07334CA1"/>
-    <hashing name="modules/rc_sound/music/music/trackunderwater.ogg" hash="E183D69F5D191335BCE58045D72743FD"/>
-    <hashing name="modules/rc_sound/music/music/trade2.ogg" hash="FEC261D98A34813067656AD7D405AC72"/>
-    <hashing name="modules/rc_sound/music/music/tradecenter.ogg" hash="99313D2D0D86C3F0B4EAFE7784E268B2"/>
-    <hashing name="modules/rc_sound/music/music/tradecenter2.ogg" hash="E85AB0A0D75A52455A26D12357DF5108"/>
-    <hashing name="modules/rc_sound/music/music/unown.ogg" hash="670E1B3BB506F0D4848D8ACD9401BCD8"/>
-    <hashing name="modules/rc_sound/music/music/unown_battle.ogg" hash="FC8F4F2C0177AE5FF5B443ACB103BCEC"/>
-    <hashing name="modules/rc_sound/music/music/victory_road.ogg" hash="C7012B8CAB85C622165F69DB5A6E9B46"/>
-    <hashing name="modules/rc_sound/music/music/voidmania_theme.ogg" hash="2DCCDC5C6BF26A4A7FC9547CCBB5D633"/>
-    <hashing name="modules/rc_sound/music/music/xatu_predict.ogg" hash="A88C2BC4DEDAB49059A61B529B5447E5"/>
     <hashing name="modules/rc_sound/music/mysterygengar.ogg" hash="7829BB328E0D3D8726093F0D29B1BDDD"/>
+    <hashing name="modules/rc_sound/music/Pallet-Town-Theme.ogg" hash="364C2DBAB07F1B06517E340FEBFDD473"/>
+    <hashing name="modules/rc_sound/music/Pewter-City-Theme.ogg" hash="5A976354A611821DA963AA0C03807D2C"/>
     <hashing name="modules/rc_sound/music/pickup item.ogg" hash="F1A683EA8CC5BD92DBEB76D4BA6D62DE"/>
     <hashing name="modules/rc_sound/music/quest_log.ogg" hash="1139DEE140CB9F5B24CBC88EC2D7DFC4"/>
     <hashing name="modules/rc_sound/music/quit.ogg" hash="4CF6700198C8967602080B46422C6F5B"/>
     <hashing name="modules/rc_sound/music/rare.ogg" hash="7CC4256853D5A43C00FE78E815E7A249"/>
+    <hashing name="modules/rc_sound/music/Saffron-City.ogg" hash="BD481D35FDBB529F8DA363F7A3DF4D0B"/>
     <hashing name="modules/rc_sound/music/show.ogg" hash="538B1E364507DBDF3379BB320EC3C687"/>
     <hashing name="modules/rc_sound/music/startup.ogg" hash="C04B7D211B4EDE374F0229D3165352AF"/>
     <hashing name="modules/rc_sound/music/tema_bestial.ogg" hash="F134A2CC8ED5A5C1B3FA878C93B7A5B0"/>
@@ -20448,7 +20047,9 @@
     <hashing name="modules/rc_sound/music/ui/quit.ogg" hash="CB61BFACBA4C70EDFBE8A30507F6D151"/>
     <hashing name="modules/rc_sound/music/ui/show.ogg" hash="6168BDAAB4E8C11995384D8832FDDD49"/>
     <hashing name="modules/rc_sound/music/vander.ogg" hash="0E4AB6C724B61D24627500B446F6A2B2"/>
-    <hashing name="modules/rc_sound/rcsound.lua" hash="107D4E6168E750F32F264DD5ECA80B47"/>
+    <hashing name="modules/rc_sound/music/Vermillion-City-Theme.ogg" hash="7D47560E33F74E54D068132187BE77FB"/>
+    <hashing name="modules/rc_sound/music/Viridian Forest.ogg" hash="71EEC1BA44B10842EA13DE10B235093E"/>
+    <hashing name="modules/rc_sound/rcsound.lua" hash="CB2EE7CA7D3D20B3807A0AA7FCC4446D"/>
     <hashing name="modules/rc_sound/rcsound.otmod" hash="E5AE0E35D4713A05CE45AF37E816B90D"/>
     <hashing name="modules/rc_sound/rcsound.otui" hash="E187101E9D5D6BE3D8D842BD920E2608"/>
     <hashing name="modules/space_phone/images/background.png" hash="891DA7EA5E9F24B4791E997D7BE4D445"/>
@@ -20466,7 +20067,7 @@
     <hashing name="modules/space_phone/space_phone.lua" hash="1C09D5B7EF02AC03F686C7F7AB0DC782"/>
     <hashing name="modules/space_phone/space_phone.otmod" hash="8E20CEB040BA68D7E1278B64339B0019"/>
     <hashing name="modules/space_phone/space_phone.otui" hash="AB12BCC9EBF9FA576641EE880CAB2052"/>
-    <hashing name="modules/taunt_icon/taunt_icon.lua" hash="251CC348F40AFF61D7AC179009BEE79A"/>
+    <hashing name="modules/taunt_icon/taunt_icon.lua" hash="E440DAE4C77E4826B77769675694912E"/>
     <hashing name="modules/taunt_icon/taunt_icon.otmod" hash="6AC5E37FC76973B3D2D400E50B0E1165"/>
     <hashing name="modules/updater/updater.lua" hash="A857C744D733FA2250ED2D2E081DDB1E"/>
     <hashing name="modules/updater/updater.otmod" hash="1551F3DB7CF085FEB30185B348C9ADAE"/>
