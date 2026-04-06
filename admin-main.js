@@ -206,6 +206,21 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
       throw e;
     }
     execSync('git push -u origin main', gitOpts);
+
+    // Purgar cache do jsDelivr para garantir que o CDN serve o hash.xml novo imediatamente
+    send('🧹 Purgando cache do CDN...');
+    try {
+      const purgePaths = ['server/u/hash.xml', 'server/u/launcher/manifest.json'];
+      const purgeReqs = purgePaths.map(p =>
+        new Promise(resolve => {
+          const purgeUrl = `https://purge.jsdelivr.net/gh/Guiis777/launcherpnight@main/${p}`;
+          const mod = require('https');
+          mod.get(purgeUrl, res => { res.resume(); resolve(); }).on('error', resolve);
+        })
+      );
+      await Promise.all(purgeReqs);
+    } catch (_) {}
+
     send('✅ Push concluído! O launcher vai se atualizar automaticamente.');
 
     return { success: true, log };
@@ -305,6 +320,20 @@ ipcMain.handle('deploy-launcher-only', async (_, { repoDir, commitMsg }) => {  c
       throw e;
     }
     execSync('git push -u origin main', gitOpts);
+
+    // Purgar cache do jsDelivr
+    try {
+      const purgePaths = ['server/u/launcher/manifest.json'];
+      const purgeReqs = purgePaths.map(p =>
+        new Promise(resolve => {
+          const purgeUrl = `https://purge.jsdelivr.net/gh/Guiis777/launcherpnight@main/${p}`;
+          const mod = require('https');
+          mod.get(purgeUrl, res => { res.resume(); resolve(); }).on('error', resolve);
+        })
+      );
+      await Promise.all(purgeReqs);
+    } catch (_) {}
+
     send('✅ Push do launcher concluído!');
 
     return { success: true, log };

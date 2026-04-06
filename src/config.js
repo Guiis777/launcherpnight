@@ -5,14 +5,14 @@
 
 module.exports = {
   // URL base do servidor de arquivos (onde ficam os updates do jogo)
-  // jsDelivr CDN — rápido para assets (texturas, sons, scripts)
-  FILES_BASE: 'https://cdn.jsdelivr.net/gh/Guiis777/launcherpnight@main/server/u/',
+  // raw.githubusercontent: sem cache CDN — sempre serve a versão mais recente após o push
+  FILES_BASE: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/',
 
-  // raw.githubusercontent para binários (.exe, .dll) — jsDelivr bloqueia esses por política (403)
+  // raw.githubusercontent para todos os arquivos (binários e assets)
   FILES_BASE_RAW: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/',
 
   // URL base do launcher updater
-  LAUNCHER_BASE: 'https://cdn.jsdelivr.net/gh/Guiis777/launcherpnight@main/server/u/launcher/',
+  LAUNCHER_BASE: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/launcher/',
 
   // URL do client.zip para primeira instalação (Google Drive ou outro host rápido)
   // Deixe vazio ('') para desativar o zip e usar download incremental
