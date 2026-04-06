@@ -174,38 +174,56 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
       send('✅ manifest.json do launcher gerado');
     }
 
-    // 6. Git add + commit + push
-    send('🚀 Fazendo git commit e push...');
+    // 6. Git — push em lotes para não estourar o limite de 2GB do GitHub
+    send('🚀 Fazendo git commit e push em lotes...');
     const msg = commitMsg || `update game files ${new Date().toISOString().slice(0,10)}`;
     const gitOpts = { cwd: repoDir, maxBuffer: 256 * 1024 * 1024 };
 
-    // Repara o histórico local de forma segura:
-    // 1. Fetch traz os objetos do remoto
-    // 2. update-ref move o ponteiro do branch local para o remoto (sem tocar nos arquivos)
-    // 3. reset --mixed atualiza o index para o estado do remoto (sem tocar nos arquivos)
-    // Resultado: working tree = nossos arquivos, HEAD = origin/main → push é fast-forward garantido
+    // Alinha histórico local com remoto sem mexer nos arquivos
     send('🔄 Alinhando com o remoto...');
     try {
       execSync('git fetch origin main', gitOpts);
       execSync('git update-ref refs/heads/main refs/remotes/origin/main', gitOpts);
       execSync('git symbolic-ref HEAD refs/heads/main', gitOpts);
       execSync('git reset --mixed HEAD', gitOpts);
-    } catch (fetchErr) {
-      // Se o remoto ainda não tem a branch (primeiro push), ignora e segue
+    } catch (_) {
       send('ℹ️ Branch remota ainda não existe — criando...');
     }
 
-    execSync('git add .', gitOpts);
-    try {
-      execSync(`git commit -m "${msg}"`, gitOpts);
-    } catch (e) {
-      if (e.message.includes('nothing to commit')) {
-        send('ℹ️ Nenhuma mudança para commitar');
-        return { success: true, log };
+    // Pega todos os arquivos que o git vê como modificados/novos
+    const statusOut = execSync('git status --porcelain -u', gitOpts).toString();
+    const pendingFiles = statusOut.split('\n')
+      .map(l => l.trim().replace(/^[A-Z?]{1,2}\s+/, '').replace(/^"(.*)"$/, '$1'))
+      .filter(f => f.length > 0);
+
+    send(`📦 ${pendingFiles.length} arquivo(s) para sincronizar`);
+
+    if (pendingFiles.length === 0) {
+      send('ℹ️ Nenhuma mudança para commitar');
+    } else {
+      const BATCH = 500;
+      let batchNum = 0;
+      for (let i = 0; i < pendingFiles.length; i += BATCH) {
+        batchNum++;
+        const chunk = pendingFiles.slice(i, i + BATCH);
+        const total = Math.ceil(pendingFiles.length / BATCH);
+        send(`📤 Lote ${batchNum}/${total} — ${chunk.length} arquivos...`);
+
+        // Adiciona só os arquivos deste lote
+        const chunkArg = chunk.map(f => `"${f}"`).join(' ');
+        execSync(`git add -- ${chunkArg}`, gitOpts);
+
+        try {
+          execSync(`git commit -m "${msg} (lote ${batchNum}/${total})"`, gitOpts);
+        } catch (e) {
+          if (e.message.includes('nothing to commit')) continue;
+          throw e;
+        }
+
+        execSync('git push -u origin main', gitOpts);
+        send(`✅ Lote ${batchNum}/${total} enviado`);
       }
-      throw e;
     }
-    execSync('git push -u origin main', gitOpts);
 
     // Purgar cache do jsDelivr para garantir que o CDN serve o hash.xml novo imediatamente
     send('🧹 Purgando cache do CDN...');
