@@ -584,16 +584,18 @@ class Updater extends EventEmitter {
   }
 
   // Download em paralelo com alta concorrência
-  async downloadFilesParallel(files) {
-    this.downloadedFiles = 0;
-    this.totalFiles = files.length;
+  // startOffset: número de arquivos já concluídos antes desta chamada (para retry)
+  // totalOverride: total real de arquivos (para manter contador contínuo no retry)
+  async downloadFilesParallel(files, startOffset = 0, totalOverride = 0) {
+    this.downloadedFiles = startOffset;
+    this.totalFiles = totalOverride || files.length;
     this.downloadedSize = 0;
     this.failedFiles = [];
     
     // Limite alto mas que não mata o servidor
     const maxConcurrent = Math.min(this.concurrentDownloads, files.length);
     const queue = [...files];
-    let completedCount = 0;
+    let completedCount = startOffset;
     const workers = [];
 
     for (let i = 0; i < maxConcurrent; i++) {
@@ -605,7 +607,6 @@ class Updater extends EventEmitter {
           const result = await this.downloadFile(file);
           completedCount++;
           this.downloadedFiles = completedCount;
-          this.emit('status', `Baixando: ${file.name} (${completedCount}/${this.totalFiles})`);
           
           if (result && !result.success) {
             this.failedFiles.push(result);
@@ -939,18 +940,20 @@ class Updater extends EventEmitter {
 
       // 5. Verificação final: só re-baixa arquivos que realmente falharam
       if (failedFiles.length > 0) {
+        const successCount = filesToUpdate.length - failedFiles.length;
         console.log(`[Updater] ${failedFiles.length} arquivo(s) com falha — re-baixando...`);
         this.emit('status', `Re-baixando ${failedFiles.length} arquivo(s) com falha...`);
-        this.downloadedFiles = 0;
-        this.totalFiles = failedFiles.length;
-        await this.downloadFilesParallel(failedFiles);
+        // Continua a contagem a partir dos já baixados (evita parecer que reiniciou)
+        await this.downloadFilesParallel(failedFiles, successCount, filesToUpdate.length);
       }
 
       // 6. Salvar info da atualização
-      // IMPORTANTE: Só salvar headers se TODOS os arquivos foram baixados com sucesso.
-      // Se houver falhas, não salvar — assim na próxima execução o hasRemoteChanged()
-      // vai retornar changed=true e forçar re-verificação dos arquivos faltantes.
-      if (this._pendingXmlHash && (!failedFiles || failedFiles.length === 0)) {
+      // Salva o xmlHash mesmo com falhas 404 (arquivo inexistente no servidor não vai
+      // aparecer magicamente — salvar evita re-verificar todos os arquivos a cada abertura).
+      // Falhas de rede (não-404) não salvam o hash para forçar retry na próxima execução.
+      const only404Failures = !failedFiles || failedFiles.length === 0 ||
+        failedFiles.every(f => f.error && (f.error.includes('404') || f.error.includes('não encontrado')));
+      if (this._pendingXmlHash && only404Failures) {
         this.saveUpdateInfo({
           xmlHash: this._pendingXmlHash,
           lastCheck: new Date().toISOString(),
@@ -958,12 +961,9 @@ class Updater extends EventEmitter {
           lastUpdateFiles: filesToUpdate.length
         });
       } else if (failedFiles && failedFiles.length > 0) {
-        console.log(`[Updater] ${failedFiles.length} arquivo(s) falharam — cache de verificação NÃO salvo para forçar re-check na próxima execução`);
-        // Remove cache antigo para garantir nova verificação mesmo se hash.xml não mudar.
+        console.log(`[Updater] ${failedFiles.length} arquivo(s) falharam por erro de rede — cache NÃO salvo para retry na próxima execução`);
         try {
-          if (fs.existsSync(this.updateInfoFile)) {
-            fs.unlinkSync(this.updateInfoFile);
-          }
+          if (fs.existsSync(this.updateInfoFile)) fs.unlinkSync(this.updateInfoFile);
         } catch (e) {}
       }
 
