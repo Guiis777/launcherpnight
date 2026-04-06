@@ -92,10 +92,13 @@ function md5(filePath) {
 }
 
 // Gera hash.xml
+// Normaliza extensões para minúsculo (ex: .PNG → .png) pois GitHub é case-sensitive
+// e o git armazena os arquivos com extensão minúscula
 function generateHashXml(sourceDir, files) {
   const lines = files.map(f => {
     const hash = md5(path.join(sourceDir, f.replace(/\//g, path.sep)));
-    return `    <hashing name="${f}" hash="${hash}"/>`;
+    const normalizedName = f.replace(/(\.[^./]+)$/, ext => ext.toLowerCase());
+    return `    <hashing name="${normalizedName}" hash="${hash}"/>`;
   });
   return `<?xml version="1.0" encoding="UTF-8"?>\n<hashings>\n${lines.join('\n')}\n</hashings>`;
 }
