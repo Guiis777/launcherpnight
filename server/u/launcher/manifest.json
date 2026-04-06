@@ -1,5 +1,5 @@
 {
-  "version": "2026-04-06T18:55:49.209Z",
+  "version": "2026-04-06T18:55:55.399Z",
   "files": [
     {
       "name": "auth.js",
@@ -8,7 +8,7 @@
     },
     {
       "name": "config.js",
-      "md5": "93e207b87148d70e2dc570464aa62dd9",
+      "md5": "ca4ff93a7531d67879bb0a9be86be57c",
       "root": false
     },
     {
@@ -33,7 +33,7 @@
     },
     {
       "name": "renderer.js",
-      "md5": "989d5059d0b9bf8d1b3817d9a256df2d",
+      "md5": "206da6e26ff9b849bae897149a64c290",
       "root": false
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "name": "updater.js",
-      "md5": "df9c9ea14fd6c513714420e4f0477e35",
+      "md5": "e95d1020b76de5a5cbbcaeda93f25b97",
       "root": false
     },
     {

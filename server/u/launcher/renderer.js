@@ -16,6 +16,7 @@ const DEFAULT_GAME_PATH = path.join(APP_DATA, 'PokeNight', 'cliente');
 const updater = new Updater({
   baseUrl: config.FILES_BASE,
   baseUrlRaw: config.FILES_BASE_RAW,
+  hashBaseUrl: config.FILES_BASE_HASH,
   hashFile: 'hash.xml',
   zipUrl: config.ZIP_URL || null,
   gamePath: localStorage.getItem('gamePath') || DEFAULT_GAME_PATH,

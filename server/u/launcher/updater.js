@@ -8,8 +8,8 @@ const https = require('https');
 const http = require('http');
 
 // Agentes com keep-alive reutilizam conexões TCP — evita handshake por arquivo
-const _httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 32, timeout: 60000 });
-const _httpAgent  = new http.Agent({  keepAlive: true, maxSockets: 32, timeout: 60000 });
+const _httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 64, timeout: 60000 });
+const _httpAgent  = new http.Agent({  keepAlive: true, maxSockets: 64, timeout: 60000 });
 
 class Updater extends EventEmitter {
   constructor(options = {}) {
@@ -17,7 +17,9 @@ class Updater extends EventEmitter {
     this.baseUrl = options.baseUrl || 'https://tamerquest.com/u/';
     // URL alternativa para binários bloqueados pelo CDN principal (.exe, .dll)
     this.baseUrlRaw = options.baseUrlRaw || this.baseUrl;
-    this.configUrl = options.configUrl || (this.baseUrl + 'updater-config.json');
+    // URL para buscar hash.xml e updater-config.json — usa raw para evitar cache CDN
+    this.hashBaseUrl = options.hashBaseUrl || this.baseUrl;
+    this.configUrl = options.configUrl || (this.hashBaseUrl + 'updater-config.json');
     this.hashFile = options.hashFile || 'hash.xml';
     // __dirname resolve corretamente em dev e em produção com asar:false
     const appPath = path.join(__dirname, '..');
@@ -25,8 +27,8 @@ class Updater extends EventEmitter {
     this.filesToUpdate = [];
     this.totalSize = 0;
     this.downloadedSize = 0;
-    this.concurrentDownloads = options.concurrentDownloads || 3;
-    this.concurrentDownloadsFirstRun = options.concurrentDownloadsFirstRun || 6;
+    this.concurrentDownloads = options.concurrentDownloads || 16;
+    this.concurrentDownloadsFirstRun = options.concurrentDownloadsFirstRun || 24;
     
     // Arquivo local para guardar info da última atualização
     this.updateInfoFile = path.join(this.gamePath, '.launcher-update-info.json');
@@ -254,7 +256,7 @@ class Updater extends EventEmitter {
   // Baixa o hash.xml do servidor
   async fetchHashList() {
     try {
-      const url = this.baseUrl + this.hashFile + '?t=' + Date.now();
+      const url = this.hashBaseUrl + this.hashFile + '?t=' + Date.now();
       this.emit('status', 'Verificando atualizações...');
       
       const response = await axios.get(url, { 
@@ -404,17 +406,18 @@ class Updater extends EventEmitter {
   }
 
   async _getDownloadResponse(fileName) {
-    // Binários (.exe, .dll, .so) são bloqueados por CDNs como jsDelivr — usa raw URL para eles
+    // Encode cada segmento do path separadamente para preservar '/' e tratar espaços/caracteres especiais
+    const encodedName = fileName.split('/').map(seg => encodeURIComponent(seg)).join('/');
     const isBinary = /\.(exe|dll|so|dylib|bin)$/i.test(fileName);
     const base = isBinary ? this.baseUrlRaw : this.baseUrl;
-    const primaryUrl = base + encodeURI(fileName);
+    const primaryUrl = base + encodedName;
     let res = await this._nativeGet(primaryUrl);
     let usedUrl = primaryUrl;
 
     if (res.statusCode === 404) {
       const fallbackBase = this._fallbackBaseUrl();
       if (fallbackBase) {
-        const fallbackUrl = fallbackBase + encodeURI(fileName);
+        const fallbackUrl = fallbackBase + encodedName;
         const fallbackRes = await this._nativeGet(fallbackUrl);
         if (fallbackRes.statusCode < 400) {
           console.warn(`[Updater] Fallback /otclient aplicado para ${fileName}`);
