@@ -394,7 +394,7 @@ class Updater extends EventEmitter {
         resolve(res);
       });
       req.on('error', reject);
-      req.setTimeout(600000, () => { req.destroy(); reject(new Error('Timeout na conexão')); });
+      req.setTimeout(20000, () => { req.destroy(); reject(new Error('Timeout na conexão')); });
     });
   }
 
