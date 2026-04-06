@@ -175,39 +175,20 @@ updater.on('first-run', () => {
 
 updater.on('complete', ({ updated, skipped, failed, failedFiles }) => {
   _isDownloading = false;
-  if (skipped) {
-    // hash.xml não mudou no servidor, pular verificação
-    hideProgress();
-    startGame();
-    return;
-  }
+  isUpdating = false;
 
   if (failed && failed > 0) {
-    // Não iniciar o jogo com falhas para evitar client corrompido em runtime.
-    const failedNames = failedFiles ? failedFiles.map(f => f.file || f).join(', ') : '';
-    const failedDetails = failedFiles
-      ? failedFiles
-          .slice(0, 2)
-          .map(f => `${f.file || 'arquivo'} (${f.error || 'erro desconhecido'})`)
-          .join(' | ')
-      : '';
-    updateProgress(100, `${updated} atualizados, ${failed} com erro: ${failedNames}${failedDetails ? ' -> ' + failedDetails : ''}`);
-    console.error('[Updater] Arquivos com falha:', failedFiles);
-    setTimeout(() => {
-      hideProgress();
-      setPlayButtonState('enabled', 'REPARAR');
-    }, 5000);
-    return;
+    console.warn(`[Updater] ${failed} arquivo(s) com falha (404 no servidor):`, failedFiles);
   }
 
   if (updated > 0) {
-    updateProgress(100, `${updated} arquivos atualizados!`);
-  }
-  setTimeout(() => {
+    updateProgress(100, `${updated} arquivo(s) atualizado(s)!`);
+    setTimeout(() => { hideProgress(); updatePlayButton(); enablePlay(); }, 1200);
+  } else {
     hideProgress();
     updatePlayButton();
-    startGame();
-  }, 1000);
+    enablePlay();
+  }
 });
 
 // ==========================================
@@ -279,13 +260,21 @@ async function startGame() {
   }, 3000);
 }
 
+// Habilita o botão JOGAR e, na primeira vez, já abre o jogo
+let _autoStartDone = false;
+function enablePlay() {
+  updatePlayButton();
+  if (!_autoStartDone) {
+    _autoStartDone = true;
+    startGame();
+  }
+}
+
 async function checkAndUpdate(force = false) {
   if (isUpdating) return;
-  
   isUpdating = true;
   showProgress();
   setPlayButtonState('disabled', 'ATUALIZANDO...');
-  
   try {
     if (force) {
       await updater.forceUpdate();
@@ -294,16 +283,16 @@ async function checkAndUpdate(force = false) {
     }
   } catch (error) {
     console.error('Erro na atualização:', error);
+    isUpdating = false;
+    hideProgress();
+    updatePlayButton();
   }
-  
-  isUpdating = false;
 }
 
-// Botão Jogar/Instalar
+// Botão JOGAR — só abre o jogo, não re-dispara update
 playBtn.addEventListener('click', () => {
-  const currentText = playBtn.querySelector('.play-text')?.textContent || '';
-  const forceRepair = currentText.toUpperCase().includes('REPARAR');
-  checkAndUpdate(forceRepair);
+  if (isUpdating) return;
+  startGame();
 });
 
 // ==========================================
@@ -531,10 +520,8 @@ document.addEventListener('DOMContentLoaded', () => {
     fs.mkdirSync(gamePath, { recursive: true });
   }
 
-  // Se não está instalado, mostrar estado correto
-  if (!isGameInstalled()) {
-    console.log('[Launcher] Primeira execução - jogo será baixado do servidor');
-  }
+  // Verificar e baixar atualizações automaticamente ao abrir
+  checkAndUpdate();
 });
 
 // Listener para quando o jogo iniciar
