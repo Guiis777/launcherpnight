@@ -260,11 +260,11 @@ async function startGame() {
   }, 3000);
 }
 
-// Habilita o botão JOGAR e, na primeira vez, já abre o jogo
+// Habilita o botão JOGAR e, se o exe existe, já abre o jogo automaticamente
 let _autoStartDone = false;
 function enablePlay() {
   updatePlayButton();
-  if (!_autoStartDone) {
+  if (!_autoStartDone && isGameInstalled()) {
     _autoStartDone = true;
     startGame();
   }
@@ -289,10 +289,15 @@ async function checkAndUpdate(force = false) {
   }
 }
 
-// Botão JOGAR — só abre o jogo, não re-dispara update
+// Botão JOGAR — se instalado abre direto, senão baixa
 playBtn.addEventListener('click', () => {
   if (isUpdating) return;
-  startGame();
+  const currentText = playBtn.querySelector('.play-text')?.textContent || '';
+  if (currentText.toUpperCase().includes('INSTALAR')) {
+    checkAndUpdate(true);
+  } else {
+    startGame();
+  }
 });
 
 // ==========================================
