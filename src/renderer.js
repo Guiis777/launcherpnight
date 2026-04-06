@@ -21,8 +21,8 @@ const updater = new Updater({
   zipUrl: config.ZIP_URL || null,
   gamePath: localStorage.getItem('gamePath') || DEFAULT_GAME_PATH,
   bundledClientPath: path.join(__dirname, '..', 'assets', 'cliente'),
-  concurrentDownloads: 15,
-  concurrentDownloadsFirstRun: 20,
+  concurrentDownloads: 32,
+  concurrentDownloadsFirstRun: 48,
 });
 
 // ==========================================

@@ -4,16 +4,16 @@
 // Troque para o seu domínio ao hospedar em servidor próprio
 
 module.exports = {
-  // URL base para DOWNLOAD dos arquivos do jogo — jsDelivr CDN é rápido para assets
-  FILES_BASE: 'https://cdn.jsdelivr.net/gh/Guiis777/launcherpnight@main/server/u/',
+  // raw.githubusercontent — único que funciona para repos grandes (jsDelivr 403 acima de ~200MB)
+  FILES_BASE: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/',
 
-  // URL para buscar hash.xml e updater-config.json — raw.githubusercontent sem cache CDN
+  // URL para buscar hash.xml — raw sem cache
   FILES_BASE_HASH: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/',
 
-  // raw.githubusercontent para binários (.exe, .dll) — jsDelivr bloqueia esses por política (403)
+  // raw para binários também
   FILES_BASE_RAW: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/',
 
-  // URL base do launcher updater — raw para sempre pegar a versão mais recente sem cache CDN
+  // URL base do launcher updater
   LAUNCHER_BASE: 'https://raw.githubusercontent.com/Guiis777/launcherpnight/main/server/u/launcher/',
 
   // URL do client.zip para primeira instalação (Google Drive ou outro host rápido)
