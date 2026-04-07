@@ -194,9 +194,10 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
     }
 
     // Pega todos os arquivos que o git vê como modificados/novos
-    const statusOut = execSync('git status --porcelain -u', gitOpts).toString();
+    // core.quotePath=false evita que o git escape nomes com caracteres especiais (ex: acentos)
+    const statusOut = execSync('git -c core.quotePath=false status --porcelain -u', { ...gitOpts, encoding: 'utf8' });
     const pendingFiles = statusOut.split('\n')
-      .map(l => l.trim().replace(/^[A-Z?]{1,2}\s+/, '').replace(/^"(.*)"$/, '$1'))
+      .map(l => l.trim().replace(/^[A-Z?]{1,2}\s+/, ''))
       .filter(f => f.length > 0);
 
     send(`📦 ${pendingFiles.length} arquivo(s) para sincronizar`);
@@ -206,15 +207,16 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
     } else {
       const BATCH = 500;
       let batchNum = 0;
+      const tmpListFile = path.join(repoDir, '.git', '_deploy_filelist.txt');
       for (let i = 0; i < pendingFiles.length; i += BATCH) {
         batchNum++;
         const chunk = pendingFiles.slice(i, i + BATCH);
         const total = Math.ceil(pendingFiles.length / BATCH);
         send(`📤 Lote ${batchNum}/${total} — ${chunk.length} arquivos...`);
 
-        // Adiciona só os arquivos deste lote
-        const chunkArg = chunk.map(f => `"${f}"`).join(' ');
-        execSync(`git add -- ${chunkArg}`, gitOpts);
+        // Usa arquivo temporário para evitar limite de tamanho do comando no Windows
+        fs.writeFileSync(tmpListFile, chunk.join('\n'), 'utf8');
+        execSync(`git add --pathspec-from-file="${tmpListFile}"`, gitOpts);
 
         try {
           execSync(`git commit -m "${msg} (lote ${batchNum}/${total})"`, gitOpts);
@@ -226,6 +228,7 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
         execSync('git push -u origin main', gitOpts);
         send(`✅ Lote ${batchNum}/${total} enviado`);
       }
+      try { fs.unlinkSync(tmpListFile); } catch (_) {}
     }
 
     // Purgar cache do jsDelivr para garantir que o CDN serve o hash.xml novo imediatamente
