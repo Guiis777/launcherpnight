@@ -190,11 +190,16 @@ class Updater extends EventEmitter {
     }
   }
 
-  // Detecta se é primeira instalação (nenhum exe do client existe)
+  // Detecta se é primeira instalação — pasta vazia ou inexistente
+  // Não depende dos .exe pois eles só chegam depois do primeiro download
   isFirstRun() {
-    const exeDx = path.join(this.gamePath, 'PokeNight_DX.exe');
-    const exeGl = path.join(this.gamePath, 'PokeNight_GL.exe');
-    return !fs.existsSync(exeDx) && !fs.existsSync(exeGl);
+    if (!fs.existsSync(this.gamePath)) return true;
+    try {
+      const entries = fs.readdirSync(this.gamePath).filter(e => !e.startsWith('.'));
+      return entries.length === 0;
+    } catch (e) {
+      return true;
+    }
   }
 
   // Carrega informações da última atualização
