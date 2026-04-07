@@ -205,30 +205,18 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
     if (pendingFiles.length === 0) {
       send('ℹ️ Nenhuma mudança para commitar');
     } else {
-      const BATCH = 500;
-      let batchNum = 0;
-      const tmpListFile = path.join(repoDir, '.git', '_deploy_filelist.txt');
-      for (let i = 0; i < pendingFiles.length; i += BATCH) {
-        batchNum++;
-        const chunk = pendingFiles.slice(i, i + BATCH);
-        const total = Math.ceil(pendingFiles.length / BATCH);
-        send(`📤 Lote ${batchNum}/${total} — ${chunk.length} arquivos...`);
+      // Adiciona tudo de uma vez — evita limite de linha de comando
+      send(`📤 Adicionando ${pendingFiles.length} arquivo(s)...`);
+      execSync('git add server/ main.js src/', gitOpts);
 
-        // Usa arquivo temporário para evitar limite de tamanho do comando no Windows
-        fs.writeFileSync(tmpListFile, chunk.join('\n'), 'utf8');
-        execSync(`git add --pathspec-from-file="${tmpListFile}"`, gitOpts);
-
-        try {
-          execSync(`git commit -m "${msg} (lote ${batchNum}/${total})"`, gitOpts);
-        } catch (e) {
-          if (e.message.includes('nothing to commit')) continue;
-          throw e;
-        }
-
-        execSync('git push -u origin main', gitOpts);
-        send(`✅ Lote ${batchNum}/${total} enviado`);
+      try {
+        execSync(`git commit -m "${msg}"`, gitOpts);
+      } catch (e) {
+        if (!e.message.includes('nothing to commit')) throw e;
       }
-      try { fs.unlinkSync(tmpListFile); } catch (_) {}
+
+      execSync('git push -u origin main', gitOpts);
+      send('✅ Push concluído!');
     }
 
     // Purgar cache do jsDelivr para garantir que o CDN serve o hash.xml novo imediatamente
