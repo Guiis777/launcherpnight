@@ -1,5 +1,5 @@
 {
-  "version": "2026-04-07T19:38:54.762Z",
+  "version": "2026-04-07T19:39:00.051Z",
   "files": [
     {
       "name": "auth.js",
@@ -43,7 +43,7 @@
     },
     {
       "name": "updater.js",
-      "md5": "51d57d4f5a9b85b6465065f6a43768da",
+      "md5": "6d9ac4233ed0dc80b7599ff72a367dd4",
       "root": false
     },
     {

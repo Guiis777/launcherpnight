@@ -871,7 +871,20 @@ class Updater extends EventEmitter {
           // Apagar arquivos de controle copiados da máquina de build — serão recriados frescos
           try { if (fs.existsSync(this.updateInfoFile)) fs.unlinkSync(this.updateInfoFile); } catch (e) {}
           try { if (fs.existsSync(this.versionFile)) fs.unlinkSync(this.versionFile); } catch (e) {}
-          // Continua abaixo para check incremental (atualiza diffs desde o installer)
+
+          // Busca o hash.xml e salva no cache — evita re-download de tudo
+          // pois o bundled já é da mesma versão do último deploy
+          try {
+            const { xmlContent: bundledXml } = await this.fetchHashList();
+            const xmlHash = crypto.createHash('md5').update(bundledXml).digest('hex');
+            this.saveUpdateInfo({ xmlHash, lastCheck: new Date().toISOString() });
+            this.saveUpdaterVersion();
+            this.emit('status', 'Instalação concluída!');
+            this.emit('complete', { updated: 1 });
+            return true;
+          } catch (e) {
+            // Se não conseguir buscar hash.xml, cai no check incremental normal
+          }
         } else {
           // Sem bundled — tenta baixar zip completo
           const zipInfo = await this.hasRemoteZip();
