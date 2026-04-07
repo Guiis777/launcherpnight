@@ -129,12 +129,20 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
     if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
 
     // 3. Copiar apenas arquivos que mudaram (comparar MD5)
+    // Destino sempre com extensão minúscula para compatibilidade com GitHub (case-sensitive)
     send('📋 Verificando o que mudou...');
     let copied = 0, skipped = 0;
     for (const file of files) {
+      const normalizedFile = file.replace(/(\.[^./]+)$/, ext => ext.toLowerCase());
       const src = path.join(sourceDir, file.replace(/\//g, path.sep));
-      const dst = path.join(destDir, file.replace(/\//g, path.sep));
+      const dst = path.join(destDir, normalizedFile.replace(/\//g, path.sep));
+      const dstOrig = path.join(destDir, file.replace(/\//g, path.sep));
       fs.mkdirSync(path.dirname(dst), { recursive: true });
+
+      // Se existia arquivo com extensão maiúscula diferente do normalizado, remove
+      if (dstOrig !== dst && fs.existsSync(dstOrig)) {
+        fs.unlinkSync(dstOrig);
+      }
 
       let changed = true;
       if (fs.existsSync(dst)) {
@@ -205,9 +213,9 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
     if (pendingFiles.length === 0) {
       send('ℹ️ Nenhuma mudança para commitar');
     } else {
-      // Adiciona tudo de uma vez — evita limite de linha de comando
+      // Adiciona tudo de uma vez — inclui deleções (ex: renomear .PNG → .png)
       send(`📤 Adicionando ${pendingFiles.length} arquivo(s)...`);
-      execSync('git add server/ main.js src/', gitOpts);
+      execSync('git add -A', gitOpts);
 
       try {
         execSync(`git commit -m "${msg}"`, gitOpts);
