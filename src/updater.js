@@ -609,7 +609,7 @@ class Updater extends EventEmitter {
           this.downloadedFiles = completedCount;
           
           if (result && !result.success) {
-            this.failedFiles.push(result);
+            this.failedFiles.push({ ...file, error: result.error });
           }
         }
       })());
@@ -974,7 +974,7 @@ class Updater extends EventEmitter {
       const successCount = filesToUpdate.length - (failedFiles ? failedFiles.length : 0);
       
       if (failedFiles && failedFiles.length > 0) {
-        const failedNames = failedFiles.map(f => f.file).join(', ');
+        const failedNames = failedFiles.map(f => f.name || f.file).join(', ');
         this.emit('warning', `${successCount} arquivos atualizados, ${failedFiles.length} falharam: ${failedNames}`);
         console.error(`[Updater] Arquivos com falha: ${failedNames}`);
       }
