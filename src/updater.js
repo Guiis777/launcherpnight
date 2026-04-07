@@ -607,6 +607,14 @@ class Updater extends EventEmitter {
           const result = await this.downloadFile(file);
           completedCount++;
           this.downloadedFiles = completedCount;
+
+          // Emite progresso para todos os arquivos (sucesso ou falha) — mantém a barra avançando
+          this.emit('download-progress', {
+            downloadedFiles: completedCount,
+            totalFiles: this.totalFiles,
+            file: file.name,
+            success: result ? result.success : false
+          });
           
           if (result && !result.success) {
             this.failedFiles.push({ ...file, error: result.error });
