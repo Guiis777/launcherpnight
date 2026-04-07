@@ -188,10 +188,10 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
     // 6. Git — push em lotes para não estourar o limite de 2GB do GitHub
     send('🚀 Fazendo git commit e push em lotes...');
     const msg = commitMsg || `update game files ${new Date().toISOString().slice(0,10)}`;
-    const gitOpts = { cwd: repoDir, maxBuffer: 256 * 1024 * 1024 };
+    const gitOpts = { cwd: repoDir, maxBuffer: 256 * 1024 * 1024, encoding: 'utf8' };
 
     // Alinha histórico local com remoto sem mexer nos arquivos
-    send('🔄 Alinhando com o remoto...');
+    send('🔄 Alinhando com o remoto...');    
     try {
       execSync('git fetch origin main', gitOpts);
       execSync('git update-ref refs/heads/main refs/remotes/origin/main', gitOpts);
@@ -201,9 +201,43 @@ ipcMain.handle('deploy', async (_, { sourceDir, repoDir, commitMsg }) => {
       send('ℹ️ Branch remota ainda não existe — criando...');
     }
 
+    // Renomeia arquivos com extensão maiúscula no index do git (NTFS é case-insensitive,
+    // então precisamos: rm --cached + tmp rename + add)
+    send('🔄 Normalizando extensões maiúsculas no git...');
+    const allTracked = execSync('git -c core.quotePath=false ls-files "server/u/"', gitOpts)
+      .split('\n').filter(f => f.length > 0);
+    const needsRename = allTracked.filter(f => /\.[A-Z]{1,4}$/.test(f));
+
+    if (needsRename.length > 0) {
+      send(`   Renomeando ${needsRename.length} arquivo(s)...`);
+      const tmpRmList = path.join(repoDir, '.git', '_rm_upper.txt');
+      fs.writeFileSync(tmpRmList, needsRename.join('\n'), 'utf8');
+      execSync(`git rm --cached --pathspec-from-file="${tmpRmList}"`, gitOpts);
+      try { fs.unlinkSync(tmpRmList); } catch (_) {}
+
+      for (const oldRel of needsRename) {
+        const newRel = oldRel.replace(/(\.[^./]+)$/, ext => ext.toLowerCase());
+        const absOld = path.join(repoDir, oldRel.replace(/\//g, path.sep));
+        const absNew = path.join(repoDir, newRel.replace(/\//g, path.sep));
+        if (absOld.toLowerCase() !== absNew.toLowerCase()) {
+          // Extensões completamente diferentes — rename direto
+          if (fs.existsSync(absOld)) fs.renameSync(absOld, absNew);
+        } else {
+          // Só difere no case (NTFS = mesmo arquivo): usa arquivo temporário
+          const absTmp = absNew + '.__tmp__';
+          fs.copyFileSync(absOld, absTmp);
+          fs.unlinkSync(absOld);
+          fs.renameSync(absTmp, absNew);
+        }
+      }
+      send(`   ✅ ${needsRename.length} extensão(ões) renomeadas`);
+    } else {
+      send('   ✅ Nenhuma extensão maiúscula encontrada');
+    }
+    
     // Pega todos os arquivos que o git vê como modificados/novos
     // core.quotePath=false evita que o git escape nomes com caracteres especiais (ex: acentos)
-    const statusOut = execSync('git -c core.quotePath=false status --porcelain -u', { ...gitOpts, encoding: 'utf8' });
+    const statusOut = execSync('git -c core.quotePath=false status --porcelain -u', gitOpts);
     const pendingFiles = statusOut.split('\n')
       .map(l => l.trim().replace(/^[A-Z?]{1,2}\s+/, ''))
       .filter(f => f.length > 0);
